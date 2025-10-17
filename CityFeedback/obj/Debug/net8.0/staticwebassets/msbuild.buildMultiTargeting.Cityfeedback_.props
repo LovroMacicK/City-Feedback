@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\Cityfeedback_.props" />
-</Project>
