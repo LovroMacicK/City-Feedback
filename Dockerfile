@@ -1,30 +1,61 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# slika, ki jo uporabimo za osnovo/strežnik
 
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+
+# delovni direktorij v sliki
+
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
 
+ 
 
-# This stage is used to build the service project
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
+# vrata, ki jih želimo odpreti
+
+EXPOSE 80
+
+EXPOSE 443
+
+ 
+
+# slika, ki jo uporabimo za izgradnjo
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+
 WORKDIR /src
-COPY ["City-Feedback.csproj", "."]
-RUN dotnet restore "./City-Feedback.csproj"
+
+# kopiranje datotek v delovni direktorij
+
+COPY ["RGIS_PrijavaVSistem/RGIS_PrijavaVSistem.csproj", "RGIS_PrijavaVSistem/"]
+
+# zagon ukaza za obnovo vseh odvisnosti
+
+RUN dotnet restore "RGIS_PrijavaVSistem/RGIS_PrijavaVSistem.csproj"
+
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./City-Feedback.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
+WORKDIR "/src/RGIS_PrijavaVSistem"
+
+# zagon ukaza za izgradnjo projekta
+
+RUN dotnet build "RGIS_PrijavaVSistem.csproj" -c Release -o /app/build
+
+ 
+
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./City-Feedback.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+RUN dotnet publish "RGIS_PrijavaVSistem.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# zagon ukaza za objavo projekta
+
+ 
+
 FROM base AS final
+
 WORKDIR /app
+
+# kopiranje datotek iz začasne slike v končno
+
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "City-Feedback.dll"]
+
+# zagon ukaza za zagon aplikacije
+
+ENTRYPOINT ["dotnet", "RGIS_PrijavaVSistem.dll"]
