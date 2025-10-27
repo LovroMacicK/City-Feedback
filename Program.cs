@@ -22,4 +22,5 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 app.Run();
