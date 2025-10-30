@@ -1,17 +1,14 @@
+# Osnovna slika z runtime okoljem
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://+:8080
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-
-COPY ["City-Feedback.csproj", "."]
-
+COPY ["City-Feedback.csproj", "./"]
 RUN dotnet restore "City-Feedback.csproj"
-
 COPY . .
-
 RUN dotnet build "City-Feedback.csproj" -c Release -o /app/build
 
 FROM build AS publish
