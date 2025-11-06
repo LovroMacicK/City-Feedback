@@ -21,5 +21,6 @@ jobs:
     - name: Deploy Docker image to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: cityfeedback
-        images: 'lovro005/cityfeedback:latest'
+      app-name: cityfeedback-eecwf7fteze6gnd3
+      images: 'lovro005/cityfeedback:latest'
+
