@@ -1,0 +1,93 @@
+name: CI/CD CityFeedback
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (Release)
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests (TRX output)
+        run: dotnet test --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: '**/test-results.trx'
+
+      - name: Test report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: MSTest Results
+          path: '**/test-results.trx'
+          reporter: dotnet-trx
+
+  docker:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set tags
+        id: vars
+        run: |
+          echo "SHA=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Build & Push (latest + sha)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ steps.vars.outputs.SHA }}
+
+  deploy-test:
+    needs: docker
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Azure Web App (TEST)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'cityfeedback-test'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_TEST }}
+          images: '${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ github.sha }}'
+
+  deploy-prod:
+    needs: docker
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Azure Web App (PROD)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'cityfeedback'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PROD }}
+          images: '${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ github.sha }}'
