@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "u9Hn8yJG+Q0=",
+  "success": true,
+  "projectFilePath": "C:\\Github\\City-Feedback\\City-Feedback\\City-Feedback.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lovro\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.22.1\\microsoft.visualstudio.azure.containers.tools.targets.1.22.1.nupkg.sha512"
+  ],
+  "logs": []
+}
