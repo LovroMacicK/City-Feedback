@@ -1,24 +1,22 @@
 name: CI/CD CityFeedback
 
-permissions:
-  contents: read
-  checks: write
-  actions: read
-  statuses: write
-  pull-requests: write
-
 on:
   push:
     branches: [ main, master ]
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   tests:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET 8 SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
@@ -46,10 +44,12 @@ jobs:
           name: MSTest Results
           path: '**/test-results.trx'
           reporter: dotnet-trx
+          fail-on-error: true
 
   docker:
     needs: tests
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -63,8 +63,9 @@ jobs:
       - name: Set tags
         id: vars
         run: |
-          echo "SHA=${GITHUB_SHA}" >> $GITHUB_OUTPUT
-      - name: Build & Push (latest + sha)
+          echo "sha_tag=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Build & Push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -72,11 +73,13 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ steps.vars.outputs.SHA }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ steps.vars.outputs.sha_tag }}
+
   deploy-test:
     needs: docker
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+
     steps:
       - name: Deploy to Azure Web App (TEST)
         uses: azure/webapps-deploy@v3
@@ -89,6 +92,7 @@ jobs:
     needs: docker
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+
     steps:
       - name: Deploy to Azure Web App (PROD)
         uses: azure/webapps-deploy@v3
