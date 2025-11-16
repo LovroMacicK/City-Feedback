@@ -16,19 +16,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET 8 SDK
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
       - name: Restore
+        working-directory: ./City-Feedback
         run: dotnet restore
 
-      - name: Build (Release)
+      - name: Build
+        working-directory: ./City-Feedback
         run: dotnet build --configuration Release --no-restore
 
-      - name: Run tests (TRX output)
-        run: dotnet test --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
+      - name: Test
+        working-directory: ./City-Feedback.Tests
+        run: dotnet test --logger "trx;LogFileName=test-results.trx" --no-build
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -37,7 +40,7 @@ jobs:
           name: test-results
           path: '**/test-results.trx'
 
-      - name: Test report
+      - name: Publish test report
         uses: dorny/test-reporter@v1
         if: always()
         with:
@@ -45,6 +48,7 @@ jobs:
           path: '**/test-results.trx'
           reporter: dotnet-trx
           fail-on-error: true
+
 
   docker:
     needs: tests
@@ -60,20 +64,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set tags
-        id: vars
-        run: |
-          echo "sha_tag=${GITHUB_SHA}" >> $GITHUB_OUTPUT
-
       - name: Build & Push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./City-Feedback
+          file: ./City-Feedback/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ steps.vars.outputs.sha_tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ github.sha }}
+
 
   deploy-test:
     needs: docker
@@ -81,12 +81,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to Azure Web App (TEST)
+      - name: Deploy to TEST Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'cityfeedback-test'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_TEST }}
           images: '${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ github.sha }}'
+
 
   deploy-prod:
     needs: docker
@@ -94,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to Azure Web App (PROD)
+      - name: Deploy to PROD Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'cityfeedback'
