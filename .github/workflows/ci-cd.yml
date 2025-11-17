@@ -29,18 +29,6 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ github.sha }}
 
-  deploy-test:
-    needs: docker
-    if: github.ref == 'refs/heads/development'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy TEST
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'cityfeedback-test'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_TEST }}
-          images: '${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:${{ github.sha }}'
-
   deploy-prod:
     needs: docker
     if: github.ref == 'refs/heads/main'
