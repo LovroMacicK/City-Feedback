@@ -32,3 +32,4 @@ C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\refint\City-Feedback.dll
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\City-Feedback.pdb
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\City-Feedback.genruntimeconfig.cache
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\ref\City-Feedback.dll
+C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
