@@ -54,16 +54,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set tags
+      - name: Get SHA
         id: vars
-        run: |
-          echo "SHA=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+        run: echo "SHA=${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
-      - name: Build & Push (latest + sha)
+      - name: Build & Push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./City-Feedback
+          file: ./City-Feedback/Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/cityfeedback:latest
