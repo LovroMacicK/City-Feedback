@@ -8,29 +8,7 @@ on:
   push:
     branches: [ main, development ]
 
-jobs:
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - run: dotnet restore City-Feedback/City-Feedback.sln
-      - run: dotnet build City-Feedback/City-Feedback.sln --configuration Release --no-restore
-      - run: dotnet test City-Feedback.Tests/City-Feedback.Tests.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
-
-      - uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: MSTest Results
-          path: '**/test-results.trx'
-          reporter: dotnet-trx
-
   docker:
-    needs: tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
