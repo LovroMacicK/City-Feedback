@@ -27,7 +27,6 @@ C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.build.jso
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.development.json
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\swae.build.ex.cache
-C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\City-Feedback.dll
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\refint\City-Feedback.dll
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\City-Feedback.pdb
