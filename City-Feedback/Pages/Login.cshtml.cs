@@ -13,12 +13,17 @@ namespace City_Feedback.Pages
 {
     public class LoginModel : PageModel
     {
+<<<<<<< Updated upstream
         private readonly IWebHostEnvironment _webHostEnvironment;
         public LoginModel(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
         }
 
+=======
+        string Username { get; set; }
+        string Password { get; set; }
+>>>>>>> Stashed changes
         [BindProperty]
         public Credential credential { get; set; }
 
@@ -42,7 +47,24 @@ namespace City_Feedback.Pages
             {
                 return Page();
             }
+<<<<<<< Updated upstream
             var jsonFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "users.json");
+=======
+            foreach (var username in usernames)
+            {
+                if (credential.Username == username && credential.Password == password)
+                {
+                    return RedirectToPage("/Index");
+                }
+                else
+                {
+                        ModelState.AddModelError(string.Empty, "Napačno ime ali geslo");
+                        return Page();
+                }
+            }
+            return Page();
+        }
+>>>>>>> Stashed changes
 
             if (!System.IO.File.Exists(jsonFilePath))
             {
