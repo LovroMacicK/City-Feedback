@@ -1,13 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Github\\City-Feedback\\City-Feedback\\",
+  "WorkspaceRootPath": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9AEDFEA2-405E-45A5-9DA8-BE2558F3CFAE}|..\\City-Feedback.Tests\\City-Feedback.Tests.csproj|c:\\github\\city-feedback\\city-feedback.tests\\test1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\github\\city-feedback\\city-feedback\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -17,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 112,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -25,28 +26,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Test1.cs",
-              "DocumentMoniker": "C:\\Github\\City-Feedback\\City-Feedback.Tests\\Test1.cs",
-              "RelativeDocumentMoniker": "..\\City-Feedback.Tests\\Test1.cs",
-              "ToolTip": "C:\\Github\\City-Feedback\\City-Feedback.Tests\\Test1.cs",
-              "RelativeToolTip": "..\\City-Feedback.Tests\\Test1.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "Pages\\Index.cshtml.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Index.cshtml.cs",
+              "RelativeToolTip": "Pages\\Index.cshtml.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAYwF0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T10:31:01.087Z",
+              "WhenOpened": "2025-12-03T20:27:38.925Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Github\\City-Feedback\\City-Feedback\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Github\\City-Feedback\\City-Feedback\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T10:30:53.617Z",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Index.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Index.cshtml",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Index.cshtml*",
+              "RelativeToolTip": "Pages\\Index.cshtml*",
+              "ViewState": "AgIAACoAAAAAAAAAAAAYwEYAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-03T20:27:29.033Z",
               "EditorCaption": ""
             }
           ]
