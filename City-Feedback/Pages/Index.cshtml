@@ -6,5 +6,32 @@
 
 <div class="text-center">
     <h1 class="display-4">City Feedback</h1>
-    
+    <h2 class="display-4">
+        Prijave</h2class="display-4">
+
+        <form method="post" enctype="multipart/form-data">
+            <div>
+                <label for="Title">Naslov prijave</label><br />
+                <input type="text" id="Title" name="Title" style="width: 300px;" required />
+            </div>
+
+            <div style="margin-top: 10px;">
+                <label for="Description">Opis</label><br />
+                <textarea id="Description" name="Description" rows="4" cols="50" required></textarea>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <label for="Image">Slika (neobvezno)</label><br />
+                <input type="file" id="Image" name="Image" accept="image/*" />
+            </div>
+
+            <div style="margin-top: 10px;">
+                <button type="submit">Objavi</button>
+            </div>
+        </form>
+
+        <hr />
+
+        <h2>Objavljene prijave</h2>
+        <p>Tu pridejo objavlene objave</p></>
 </div>

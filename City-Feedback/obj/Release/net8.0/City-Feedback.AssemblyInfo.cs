@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("City-Feedback")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b39a87fd50c3a221fd331d931d760fe47c1a1b69")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a40b5d09418a962b46b0411d2307daeef1228b2")]
 [assembly: System.Reflection.AssemblyProductAttribute("City-Feedback")]
 [assembly: System.Reflection.AssemblyTitleAttribute("City-Feedback")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
