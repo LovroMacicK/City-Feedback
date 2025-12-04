@@ -177,3 +177,4 @@ C:\Github\City-Feedback\City-Feedback.Tests\bin\Debug\net8.0\City-Feedback.stati
 C:\Github\City-Feedback\City-Feedback.Tests\bin\Debug\net8.0\City-Feedback.exe
 C:\Github\City-Feedback\City-Feedback.Tests\bin\Debug\net8.0\City-Feedback.dll
 C:\Github\City-Feedback\City-Feedback.Tests\bin\Debug\net8.0\City-Feedback.pdb
+C:\Github\City-Feedback\City-Feedback.Tests\bin\Debug\net8.0\users.json

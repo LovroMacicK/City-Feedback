@@ -32,7 +32,6 @@ C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\refint\City-Feedback.dll
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\City-Feedback.pdb
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\City-Feedback.genruntimeconfig.cache
 C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\ref\City-Feedback.dll
-C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\user\source\repos\City-Feedback\City-Feedback\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\user\source\repos\City-Feedback\City-Feedback\bin\Debug\net8.0\appsettings.json
 C:\Users\user\source\repos\City-Feedback\City-Feedback\bin\Debug\net8.0\City-Feedback.staticwebassets.runtime.json
@@ -68,3 +67,5 @@ C:\Users\user\source\repos\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwe
 C:\Users\user\source\repos\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\user\source\repos\City-Feedback\City-Feedback\obj\Debug\net8.0\swae.build.ex.cache
 C:\Users\user\source\repos\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Github\City-Feedback\City-Feedback\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Github\City-Feedback\City-Feedback\bin\Debug\net8.0\users.json
