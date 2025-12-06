@@ -46,9 +46,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-dark">
-                                    Pozdravljen, @User.Identity.Name!
-                                </span>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Profile">Pozdravljen, @User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
                                 <form method="post" asp-page="/Logout">

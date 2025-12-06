@@ -1,18 +1,10 @@
 [
   {
-    "Username": "admin",
-    "Password": "geslo"
-  },
-  {
-    "Username": "user",
-    "Password": "geslo"
-  },
-  {
-    "Username": "miha",
-    "Password": "geslo"
-  },
-  {
-    "Username": "jan",
-    "Password": "geslo"
+    "Username": "testuser",
+    "Password": "password123",
+    "FullName": "Janez Novak",
+    "Email": "janez@example.com",
+    "PhoneNumber": "040123456",
+    "ProfilePicturePath": "/images/default_profile.png"
   }
 ]

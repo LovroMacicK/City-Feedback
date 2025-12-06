@@ -1,0 +1,131 @@
+﻿@page
+@model ProfileModel
+@{
+    ViewData["Title"] = "Profil";
+}
+
+<div class="container mt-5">
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4 text-center">
+            <div class="card p-3 h-100">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+
+                    <img src="@Model.ExistingProfilePicturePath"
+                         alt="Profilna slika"
+                         class="rounded-circle img-fluid border mb-3"
+                         style="width: 150px; height: 150px; object-fit: cover;"
+                         id="profilePreview">
+
+                    <div class="mb-4 w-100">
+                        <label for="fileUpload" class="btn btn-outline-secondary w-100 btn-sm">
+                            Zamenjaj sliko
+                        </label>
+
+                        <input asp-for="ProfilePicture" type="file" id="fileUpload" class="d-none" onchange="previewImage(event)">
+                    </div>
+
+                    <input type="hidden" asp-for="ExistingProfilePicturePath" />
+
+                    <hr class="w-100">
+
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch">
+                        <label class="form-check-label" for="darkModeSwitch">Temni način</label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card p-4 h-100">
+                <h3 class="mb-4">Podatki profila</h3>
+
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label asp-for="Input.FullName" class="form-label">Ime in priimek</label>
+                        <input asp-for="Input.FullName" class="form-control" />
+                        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label">E-poštni naslov</label>
+                        <input asp-for="Input.Email" type="email" class="form-control" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.PhoneNumber" class="form-label">Telefonska številka</label>
+                        <input asp-for="Input.PhoneNumber" type="tel" class="form-control" />
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                        <button type="button" class="btn btn-outline-secondary" onclick="window.history.back()">Prekliči</button>
+                        <form method="post" enctype="multipart/form-data">
+                        <button type="submit" class="btn btn-primary">Shrani</button>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        const output = document.getElementById('profilePreview');
+
+        // Če ni izbrana nobena datoteka, prekinemo
+        if (!event.target.files || event.target.files.length === 0) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(){
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const switchInput = document.getElementById('darkModeSwitch');
+        const htmlElement = document.documentElement;
+
+        // Nalaganje shranjene teme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            htmlElement.setAttribute('data-bs-theme', 'dark');
+            switchInput.checked = true;
+        } else {
+            htmlElement.setAttribute('data-bs-theme', 'light');
+        }
+
+        // Poslušanje sprememb
+        switchInput.addEventListener('change', () => {
+            if (switchInput.checked) {
+                htmlElement.setAttribute('data-bs-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                htmlElement.setAttribute('data-bs-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    });
+</script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
-using System.Security.Claims;
+﻿using City_Feedback.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
-using City_Feedback.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Security.Claims;
+using System.Text.Json;
 
 namespace City_Feedback.Pages
 {
@@ -37,7 +38,7 @@ namespace City_Feedback.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var jsonFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "users.json");
+            var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
 
             if (!System.IO.File.Exists(jsonFilePath))
             {
