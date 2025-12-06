@@ -18,8 +18,6 @@ namespace City_Feedback.Pages
         {
             _webHostEnvironment = webHostEnvironment;
         }
-        string Username { get; set; }
-        string Password { get; set; }
         [BindProperty]
         public Credential credential { get; set; }
 
