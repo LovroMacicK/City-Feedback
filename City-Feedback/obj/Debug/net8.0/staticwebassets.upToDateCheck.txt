@@ -58,6 +58,8 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\uploads\38d80940-a004-4711-811d-9337464d16fd_Posnetek zaslona 2024-12-27 200610.png
 wwwroot\uploads\405f3530-5f98-40c2-93a4-21a495fbb9ef_Posnetek zaslona 2024-12-27 200610.png
+wwwroot\uploads\75b2d915-e2bb-4d61-8c47-099415e1f784_Posnetek zaslona 2024-12-27 200610.png
 wwwroot\uploads\e3c68624-d05f-4c42-9cda-de01e5fbdc06_Posnetek zaslona 2024-12-27 200610.png
 wwwroot\uploads\f3bcd57b-356b-4cde-806d-ce85bc8e92b9_Posnetek zaslona 2024-12-27 200610.png

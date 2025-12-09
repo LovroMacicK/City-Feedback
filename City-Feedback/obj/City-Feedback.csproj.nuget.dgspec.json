@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Github\\City-Feedback\\City-Feedback\\City-Feedback.csproj": {}
+    "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\City-Feedback.csproj": {}
   },
   "projects": {
-    "C:\\Github\\City-Feedback\\City-Feedback\\City-Feedback.csproj": {
+    "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\City-Feedback.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Github\\City-Feedback\\City-Feedback\\City-Feedback.csproj",
+        "projectUniqueName": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\City-Feedback.csproj",
         "projectName": "City-Feedback",
-        "projectPath": "C:\\Github\\City-Feedback\\City-Feedback\\City-Feedback.csproj",
-        "packagesPath": "C:\\Users\\lovro\\.nuget\\packages\\",
-        "outputPath": "C:\\Github\\City-Feedback\\City-Feedback\\obj\\",
+        "projectPath": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\City-Feedback.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\lovro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

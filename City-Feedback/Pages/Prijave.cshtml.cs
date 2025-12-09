@@ -1,3 +1,4 @@
+using City_Feedback.Models; // Nujno, da najde PodatkovnaBaza
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
@@ -8,8 +9,6 @@ namespace City_Feedback.Pages
     {
         private readonly ILogger<PrijaveModel> _logger;
         private readonly IWebHostEnvironment _environment;
-
-        private static List<FeedbackItem> _vsePrijave = new List<FeedbackItem>();
 
         [BindProperty]
         public string Title { get; set; }
@@ -26,23 +25,39 @@ namespace City_Feedback.Pages
         {
             _logger = logger;
             _environment = environment;
-            Prijave = _vsePrijave;
+            // POPRAVEK 1: Povezava na skupno bazo
+            Prijave = PodatkovnaBaza.Prijave;
         }
 
-        public void OnGet()
+        public void OnGet(string sortOrder)
         {
-            if (_vsePrijave.Count == 0)
+            ViewData["CurrentSort"] = sortOrder;
+
+            // POPRAVEK 2: Uporaba skupne baze
+            var vsiPodatki = PodatkovnaBaza.Prijave;
+
+            switch (sortOrder)
             {
-                _vsePrijave.Add(new FeedbackItem
-                {
-                    Naslov = "Luknja na cesti",
-                    Opis = "Velika luknja na Prešernovi cesti.",
-                    Datum = DateTime.Now.AddDays(-1),
-                    SlikaPot = null // Ni slike
-                });
+                case "likes":
+                    Prijave = vsiPodatki.OrderByDescending(x => x.SteviloVseckov).ToList();
+                    break;
+                default:
+                    Prijave = vsiPodatki.OrderByDescending(x => x.Datum).ToList();
+                    break;
+            }
+        }
+
+        public IActionResult OnPostVote(Guid id)
+        {
+            // POPRAVEK 3: Iskanje v skupni bazi
+            var objava = PodatkovnaBaza.Prijave.FirstOrDefault(x => x.Id == id);
+
+            if (objava != null)
+            {
+                objava.SteviloVseckov++;
             }
 
-            Prijave = _vsePrijave.OrderByDescending(x => x.Datum).ToList();
+            return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -73,25 +88,22 @@ namespace City_Feedback.Pages
                 shranjenaPotSlike = "/uploads/" + uniqueFileName;
             }
 
+            // Preprièaj se, da FeedbackItem bereš iz Models (ne podvajaj razreda spodaj)
             var novaPrijava = new FeedbackItem
             {
+                Id = Guid.NewGuid(),
                 Naslov = Title,
                 Opis = Description,
                 Datum = DateTime.Now,
-                SlikaPot = shranjenaPotSlike
+                SlikaPot = shranjenaPotSlike,
+                SteviloVseckov = 0,
+                JeReseno = false
             };
 
-            _vsePrijave.Add(novaPrijava);
+            // POPRAVEK 4: Dodajanje v skupno bazo
+            PodatkovnaBaza.Prijave.Add(novaPrijava);
 
             return RedirectToPage();
         }
-    }
-
-    public class FeedbackItem
-    {
-        public string Naslov { get; set; }
-        public string Opis { get; set; }
-        public DateTime Datum { get; set; }
-        public string? SlikaPot { get; set; }
     }
 }

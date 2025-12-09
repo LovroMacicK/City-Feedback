@@ -41,7 +41,39 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <h3 class="mb-4">Objavljene prijave</h3>
+            <div class="row mb-4 align-items-center">
+                <div class="col">
+                    <h3>Objavljene prijave</h3>
+                </div>
+                <div class="col-auto">
+                    <form method="get" class="d-flex align-items-center">
+                        <label class="me-2 fw-bold">Razvrsti po:</label>
+                        <select name="sortOrder" class="form-select w-auto" onchange="this.form.submit()">
+
+                            <!- Če je trenutno izbrano 'date' ali nič (null), dodaj atribut 'selected' ->
+                            @if (ViewData["CurrentSort"] as string == "date" || ViewData["CurrentSort"] == null)
+                            {
+                                <option value="date" selected>📅 Najnovejše</option>
+                            }
+                            else
+                            {
+                                <option value="date">📅 Najnovejše</option>
+                            }
+
+                            <!- Če je trenutno izbrano 'likes', dodaj atribut 'selected' ->
+                            @if (ViewData["CurrentSort"] as string == "likes")
+                            {
+                                <option value="likes" selected>❤️ Najbolj priljubljene</option>
+                            }
+                            else
+                            {
+                                <option value="likes">❤️ Najbolj priljubljene</option>
+                            }
+
+                        </select>
+                    </form>
+                </div>
+            </div>
 
             @if (Model.Prijave.Count > 0)
             {
@@ -56,10 +88,28 @@
 
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="card-title text-primary mb-0">@prijava.Naslov</h5>
+                                <h5 class="card-title text-primary mb-0">
+                                    @prijava.Naslov
+
+                                    @if (prijava.JeReseno)
+                                    {
+                                        <span class="badge bg-success ms-2" style="font-size: 0.6em;">✅ OPRAVLJENO</span>
+                                    }
+                                </h5>
                                 <small class="text-muted">@prijava.Datum.ToString("dd.MM.yyyy HH:mm")</small>
                             </div>
                             <p class="card-text">@prijava.Opis</p>
+
+                            <hr />
+
+                            <div class="d-flex justify-content-end">
+                                <form method="post" asp-page-handler="Vote" asp-route-id="@prijava.Id">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        ❤️ <span class="badge bg-danger ms-1">@prijava.SteviloVseckov</span>
+                                    </button>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 }

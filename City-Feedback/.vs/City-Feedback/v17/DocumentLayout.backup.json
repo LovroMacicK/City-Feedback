@@ -3,12 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\prijave.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\prijave.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\prijave.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\prijave.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\obcina.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\obcina.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\pages\\obcina.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:pages\\obcina.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|c:\\users\\user\\source\\repos\\city-feedback\\city-feedback\\models\\podatkkovnabaza.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93864308-B604-46CD-8597-74765BC3F0B6}|City-Feedback.csproj|solutionrelative:models\\podatkkovnabaza.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 112,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,28 +46,94 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Index.cshtml.cs",
-              "RelativeDocumentMoniker": "Pages\\Index.cshtml.cs",
-              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Index.cshtml.cs",
-              "RelativeToolTip": "Pages\\Index.cshtml.cs",
-              "ViewState": "AgIAADoAAAAAAAAAAAAwwBMAAAAWAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T20:27:38.925Z",
+              "WhenOpened": "2025-12-09T15:12:19.102Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Index.cshtml",
-              "RelativeDocumentMoniker": "Pages\\Index.cshtml",
-              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Index.cshtml",
-              "RelativeToolTip": "Pages\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "Login.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Login.cshtml.cs",
+              "RelativeDocumentMoniker": "Pages\\Login.cshtml.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Login.cshtml.cs",
+              "RelativeToolTip": "Pages\\Login.cshtml.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAYwHMAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T15:07:40.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PodatkkovnaBaza.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Models\\PodatkkovnaBaza.cs",
+              "RelativeDocumentMoniker": "Models\\PodatkkovnaBaza.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Models\\PodatkkovnaBaza.cs",
+              "RelativeToolTip": "Models\\PodatkkovnaBaza.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T14:55:58.388Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Obcina.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Obcina.cshtml.cs",
+              "RelativeDocumentMoniker": "Pages\\Obcina.cshtml.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Obcina.cshtml.cs",
+              "RelativeToolTip": "Pages\\Obcina.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T14:50:10.888Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Obcina.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Obcina.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Obcina.cshtml",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Obcina.cshtml",
+              "RelativeToolTip": "Pages\\Obcina.cshtml",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAUwBsAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-12-03T20:27:29.033Z"
+              "WhenOpened": "2025-12-09T14:49:52.334Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Prijave.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Prijave.cshtml.cs",
+              "RelativeDocumentMoniker": "Pages\\Prijave.cshtml.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Prijave.cshtml.cs",
+              "RelativeToolTip": "Pages\\Prijave.cshtml.cs",
+              "ViewState": "AgIAAFUAAAAAAAAAAADwvwMAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-09T14:30:04.304Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Prijave.cshtml",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Prijave.cshtml",
+              "RelativeDocumentMoniker": "Pages\\Prijave.cshtml",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\Pages\\Prijave.cshtml",
+              "RelativeToolTip": "Pages\\Prijave.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-09T14:27:07.321Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -1,0 +1,49 @@
+﻿@page
+@model City_Feedback.Pages.ObcinaModel
+@{
+    ViewData["Title"] = "Upravljanje - Občina";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Administracija Občine</h1>
+
+    <table class="table table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Naslov</th>
+                <th>Opis</th>
+                <th>Všečkov</th>
+                <th>Status</th>
+                <th>Akcija</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PrijaveZaObcino)
+            {
+                <tr class="@(item.JeReseno ? "table-success" : "")">
+                    <td class="fw-bold">@item.Naslov</td>
+                    <td>@item.Opis</td>
+                    <td class="text-center">@item.SteviloVseckov ❤️</td>
+                    <td>
+                        @if (item.JeReseno)
+                        {
+                            <span class="badge bg-success">Opravljeno</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">V obdelavi</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!item.JeReseno)
+                        {
+                            <form method="post" asp-page-handler="OznaciKotReseno" asp-route-id="@item.Id">
+                                <button class="btn btn-sm btn-outline-success">✅ Označi kot opravljeno</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
