@@ -1,0 +1,78 @@
+﻿@page
+@model EditModel
+@{
+    ViewData["Title"] = "Uredi prijavo";
+}
+
+<div class="container mt-4">
+    <h2>✏ Uredi prijavo</h2>
+    <hr />
+
+    @if (TempData["Error"] != null)
+    {
+    <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (TempData["Message"] != null)
+    {
+    <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    <form method="post" enctype="multipart/form-data">
+
+        <input type="hidden" asp-for="Input.Id" />
+
+        <div class="mb-3">
+            <label asp-for="Input.Naslov" class="form-label fw-bold"></label>
+            <input asp-for="Input.Naslov" class="form-control" />
+            <span asp-validation-for="Input.Naslov" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Opis" class="form-label fw-bold"></label>
+            <textarea asp-for="Input.Opis" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Input.Opis" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Kategorija" class="form-label fw-bold">Kategorija</label>
+            <select asp-for="Input.Kategorija" class="form-select">
+                <option value="Ceste">🛣️ Ceste</option>
+                <option value="Javna razsvetljava">💡 Javna razsvetljava</option>
+                <option value="Parki in zelenice">🌳 Parki in zelenice</option>
+                <option value="Odpadki">🗑️ Odpadki</option>
+                <option value="Javni prevoz">🚌 Javni prevoz</option>
+                <option value="Vandalizem">⚠️ Vandalizem</option>
+                <option value="Ostalo">📋 Ostalo</option>
+            </select>
+        </div>
+
+        <!-- Slika -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Slika</label>
+
+            @if (!string.IsNullOrEmpty(Model.Input.SlikaPot))
+            {
+            <div class="mb-2">
+                <img src="@Model.Input.SlikaPot" style="max-height:200px; object-fit:cover;" class="img-thumbnail" />
+            </div>
+
+            <form method="post" asp-page-handler="RemoveImage">
+                <input type="hidden" name="id" value="@Model.Input.Id" />
+                <button type="submit" class="btn btn-danger btn-sm">🗑 Odstrani sliko</button>
+            </form>
+            }
+
+            <input asp-for="NewImage" type="file" class="form-control mt-2" />
+            <span asp-validation-for="NewImage" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">💾 Shrani spremembe</button>
+        <a href="/Index" class="btn btn-secondary ms-2">✖ Prekliči</a>
+
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

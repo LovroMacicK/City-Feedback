@@ -137,7 +137,7 @@
 
             @if (Model.Prijave.Count > 0)
             {
-                @foreach (var prijava in Model.Prijave)
+                foreach (var prijava in Model.Prijave)
                 {
                     var hasLiked = prijava.LikedBy != null && !string.IsNullOrEmpty(Model.CurrentUsername) && prijava.LikedBy.Contains(Model.CurrentUsername);
 
@@ -147,62 +147,71 @@
                             <img src="@prijava.SlikaPot" class="card-img-top" alt="Slika prijave" style="max-height: 400px; object-fit: cover;">
                         }
 
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="card-title text-primary mb-0">
-                                    @prijava.Naslov
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="card-title text-primary mb-0">
+                                @prijava.Naslov
 
-                                    @if (prijava.JeReseno)
+                                @if (prijava.JeReseno)
                                     {
-                                        <span class="badge bg-success ms-2" style="font-size: 0.6em;">✅ OPRAVLJENO</span>
+                                <span class="badge bg-success ms-2" style="font-size: 0.6em;">✅ OPRAVLJENO</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6em;">⏳ ČAKA</span>
+                                <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6em;">⏳ ČAKA</span>
                                     }
-                                </h5>
-                                <small class="text-muted">@prijava.Datum.ToString("dd.MM.yyyy HH:mm")</small>
-                            </div>
+                            </h5>
+                            <small class="text-muted">@prijava.Datum.ToString("dd.MM.yyyy HH:mm")</small>
+                        </div>
 
-                            <!-- Kategorija -->
-                            @if (!string.IsNullOrEmpty(prijava.Kategorija))
+                        <!-- Kategorija -->
+                        @if (!string.IsNullOrEmpty(prijava.Kategorija))
                             {
-                                <div class="mb-2">
-                                    <span class="badge bg-info text-dark">@prijava.Kategorija</span>
-                                </div>
+                        <div class="mb-2">
+                            <span class="badge bg-info text-dark">@prijava.Kategorija</span>
+                        </div>
                             }
 
-                            <!-- Prikaži uporabnika z profilno sliko -->
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="@(string.IsNullOrEmpty(prijava.OwnerProfilePicture) ? "/images/default_profile.png" : prijava.OwnerProfilePicture)"
-                                     alt="Profilna slika"
-                                     class="rounded-circle me-2"
-                                     style="width: 32px; height: 32px; object-fit: cover; border: 2px solid #dee2e6;">
-                                <small class="text-muted fw-bold">@(string.IsNullOrEmpty(prijava.OwnerUsername) ? "Neznani uporabnik" : prijava.OwnerUsername)</small>
-                            </div>
+                        <!-- Prikaži uporabnika z profilno sliko -->
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="@(string.IsNullOrEmpty(prijava.OwnerProfilePicture) ? "/images/default_profile.png" : prijava.OwnerProfilePicture)"
+                                 alt="Profilna slika"
+                                 class="rounded-circle me-2"
+                                 style="width: 32px; height: 32px; object-fit: cover; border: 2px solid #dee2e6;">
+                            <small class="text-muted fw-bold">@(string.IsNullOrEmpty(prijava.OwnerUsername) ? "Neznani uporabnik" : prijava.OwnerUsername)</small>
+                        </div>
 
-                            <p class="card-text">@prijava.Opis</p>
+                        <p class="card-text">@prijava.Opis</p>
 
-                            <hr />
+                        <hr />
 
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted">💬 @(prijava.Komentarji?.Count ?? 0) komentarjev</span>
-                                <form method="post" asp-page-handler="Vote" asp-route-id="@prijava.Id" onclick="event.stopPropagation();">
-                                    @if (hasLiked)
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">💬 @(prijava.Komentarji?.Count ?? 0) komentarjev</span>
+                            <form method="post" asp-page-handler="Vote" asp-route-id="@prijava.Id" onclick="event.stopPropagation();">
+                                @if (hasLiked)
                                     {
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            ❤️ <span class="badge bg-light text-danger ms-1">@prijava.SteviloVseckov</span>
-                                        </button>
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    ❤️ <span class="badge bg-light text-danger ms-1">@prijava.SteviloVseckov</span>
+                                </button>
                                     }
                                     else
                                     {
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
-                                            ❤️ <span class="badge bg-danger ms-1">@prijava.SteviloVseckov</span>
-                                        </button>
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    ❤️ <span class="badge bg-danger ms-1">@prijava.SteviloVseckov</span>
+                                </button>
                                     }
-                                </form>
-                            </div>
+                            </form>
                         </div>
+                        @if (User.Identity?.Name == prijava.OwnerUsername)
+{
+                        <a href="/Edit?id=@prijava.Id"
+                           class="btn btn-outline-primary btn-sm ms-2"
+                           onclick="event.stopPropagation();">
+                            ✏ Uredi
+                        </a>
+}
+
+                    </div>
                     </div>
                 }
             }
@@ -214,4 +223,4 @@
             }
         </div>
     </div>
-</div>
+</div>  
