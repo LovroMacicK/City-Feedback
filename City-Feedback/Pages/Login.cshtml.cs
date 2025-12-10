@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Http; // Potrebno za Session
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq; // Potrebno za .FirstOrDefault
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -52,10 +52,10 @@ namespace City_Feedback.Pages
                 // Nastavimo sejo, da vemo, da je to admin
                 HttpContext.Session.SetString("JeAdmin", "DA");
 
-                // Vseeno ga prijavimo v sistem (Cookies), da deluje [Authorize]
+                // POPRAVEK: Shrani "obcina" kot uporabniško ime, ne "Občina Admin"
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, "Občina Admin"),
+                    new Claim(ClaimTypes.Name, "obcina"),
                     new Claim(ClaimTypes.Role, "Admin")
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using City_Feedback.Models;
+using System;
 
 namespace City_Feedback.Pages
 {
     public class RegisterModel : PageModel
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
+
         public RegisterModel(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
@@ -49,8 +52,10 @@ namespace City_Feedback.Pages
             {
                 return Page();
             }
-            var jsonFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "users.json");
+
+            var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
             List<UserCredentials> allUsers = new List<UserCredentials>();
+
             if (System.IO.File.Exists(jsonFilePath))
             {
                 string jsonString = await System.IO.File.ReadAllTextAsync(jsonFilePath);
@@ -63,18 +68,24 @@ namespace City_Feedback.Pages
                     allUsers = new List<UserCredentials>();
                 }
             }
+
             if (allUsers.Any(u => u.Username.Equals(Input.Username, StringComparison.OrdinalIgnoreCase)))
             {
                 ModelState.AddModelError("Input.Username", "To uporabniško ime je že zasedeno.");
                 return Page();
             }
+
+            int newId = allUsers.Any() ? allUsers.Max(u => u.Id) + 1 : 1;
+
             var newUser = new UserCredentials
             {
+                Id = newId,
                 Username = Input.Username,
                 Password = Input.Password
             };
 
             allUsers.Add(newUser);
+
             var updatedJsonString = JsonSerializer.Serialize(allUsers, new JsonSerializerOptions { WriteIndented = true });
             await System.IO.File.WriteAllTextAsync(jsonFilePath, updatedJsonString);
 

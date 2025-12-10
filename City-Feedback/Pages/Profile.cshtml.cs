@@ -17,28 +17,19 @@ namespace City_Feedback.Pages
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly string _jsonFilePath;
-        private const string JsonFileName = "users.json";
         private const int MaxRetries = 3;
+        private const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
 
-        // POPRAVEK: Nastavitve za JSON (ignoriraj velike/male črke, lepo oblikovanje)
         private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
             WriteIndented = true
         };
 
-        // =======================================================
-        // KONSTRUKTOR IN INICIALIZACIJA POTI
-        // =======================================================
-
         public ProfileModel(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
-
-            // POPRAVEK: Uporabimo ContentRootPath. To je mapa, kjer teče aplikacija.
-            _jsonFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, JsonFileName);
-
-            System.Diagnostics.Debug.WriteLine($"[TRACE: INIT] Ciljna pot JSON datoteke: {_jsonFilePath}");
+            _jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
         }
 
         [BindProperty]
@@ -48,6 +39,7 @@ namespace City_Feedback.Pages
         public IFormFile ProfilePicture { get; set; }
 
         public string ExistingProfilePicturePath { get; set; } = "/images/default_profile.png";
+        public bool DarkMode { get; set; }
 
         public class InputModel
         {
@@ -56,14 +48,9 @@ namespace City_Feedback.Pages
             public string PhoneNumber { get; set; }
         }
 
-        // =======================================================
-        // NALOGA: PRIKAZ STRANI (GET)
-        // =======================================================
-
         public void OnGet()
         {
             var currentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
-            System.Diagnostics.Debug.WriteLine($"[TRACE: ONGET] Prijavljen uporabnik: {currentUsername ?? "NI PRIJAVLJEN"}");
 
             if (string.IsNullOrEmpty(currentUsername))
             {
@@ -83,169 +70,217 @@ namespace City_Feedback.Pages
                 ExistingProfilePicturePath = !string.IsNullOrEmpty(user.ProfilePicturePath)
                                              ? user.ProfilePicturePath
                                              : "/images/default_profile.png";
+                DarkMode = user.DarkMode;
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($"[TRACE: ONGET] Uporabnik '{currentUsername}' ni najden v JSON.");
                 Input = new InputModel();
                 ModelState.AddModelError(string.Empty, "Napaka: Profil uporabnika ni najden.");
             }
         }
 
-        // =======================================================
-        // NALOGA: SHRANJEVANJE PODATKOV (POST)
-        // =======================================================
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                var currentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
 
-        public async Task<IActionResult> OnPost()
+                if (string.IsNullOrEmpty(currentUsername))
+                {
+                    return RedirectToPage("/Login");
+                }
+
+                ModelState.Remove(nameof(ProfilePicture));
+
+                if (ProfilePicture != null && ProfilePicture.Length > MaxFileSize)
+                {
+                    ModelState.AddModelError(nameof(ProfilePicture), $"Slika ne sme biti večja od {MaxFileSize / 1024 / 1024} MB.");
+                }
+
+                if (ProfilePicture != null && ProfilePicture.Length > 0)
+                {
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var extension = Path.GetExtension(ProfilePicture.FileName).ToLowerInvariant();
+
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        ModelState.AddModelError(nameof(ProfilePicture), "Dovoljene so samo slike (.jpg, .jpeg, .png, .gif).");
+                    }
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    var user = LoadUserProfile(currentUsername);
+                    ExistingProfilePicturePath = user?.ProfilePicturePath ?? "/images/default_profile.png";
+                    DarkMode = user?.DarkMode ?? false;
+                    return Page();
+                }
+
+                var currentUser = LoadUserProfile(currentUsername);
+                string oldPath = currentUser?.ProfilePicturePath ?? "/images/default_profile.png";
+
+                string newPath = await ProcessUploadedFile(oldPath);
+
+                bool success = await SaveProfileChanges(currentUsername, Input, newPath);
+
+                if (success)
+                {
+                    TempData["Message"] = "Nastavitve profila so bile uspešno shranjene!";
+                    return RedirectToPage("./Profile");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Shranjevanje ni uspelo. Poskusite ponovno.");
+                    ExistingProfilePicturePath = newPath;
+                    DarkMode = currentUser?.DarkMode ?? false;
+                    return Page();
+                }
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Prišlo je do napake pri shranjevanju.");
+
+                var currentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
+                if (!string.IsNullOrEmpty(currentUsername))
+                {
+                    var user = LoadUserProfile(currentUsername);
+                    ExistingProfilePicturePath = user?.ProfilePicturePath ?? "/images/default_profile.png";
+                    DarkMode = user?.DarkMode ?? false;
+                }
+
+                return Page();
+            }
+        }
+
+        public async Task<IActionResult> OnPostToggleDarkModeAsync([FromBody] DarkModeRequest request)
         {
             var currentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
 
             if (string.IsNullOrEmpty(currentUsername))
             {
-                return RedirectToPage("/Login");
+                return new JsonResult(new { success = false, message = "Uporabnik ni prijavljen" });
             }
 
-            if (!ModelState.IsValid)
-            {
-                var user = LoadUserProfile(currentUsername);
-                ExistingProfilePicturePath = user?.ProfilePicturePath ?? "/images/default_profile.png";
-                return Page();
-            }
+            bool success = await UpdateDarkMode(currentUsername, request.DarkMode);
 
-            // 1. Obdelava slike (ohrani staro, če ni nove)
-            var currentUser = LoadUserProfile(currentUsername);
-            string oldPath = currentUser?.ProfilePicturePath ?? "/images/default_profile.png";
-
-            string newPath = await ProcessUploadedFile(oldPath);
-
-            // 2. Shranjevanje v JSON datoteko
-            bool success = await SaveProfileChanges(currentUsername, Input, newPath);
-
-            if (success)
-            {
-                System.Diagnostics.Debug.WriteLine("[TRACE: ONPOST] Shranjevanje USPEŠNO.");
-                TempData["Message"] = "Nastavitve profila so bile uspešno shranjene!";
-                return RedirectToPage("./Profile");
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("[TRACE: ONPOST] Shranjevanje NEUSPEŠNO.");
-                ModelState.AddModelError(string.Empty, "Shranjevanje ni uspelo. Preverite, ali je datoteka zaklenjena.");
-                ExistingProfilePicturePath = newPath;
-                return Page();
-            }
+            return new JsonResult(new { success = success });
         }
-
-        // =======================================================
-        // LOGIKA DELA Z DATOTEKAMI IN JSON
-        // =======================================================
 
         private UserCredentials LoadUserProfile(string username)
         {
             if (!System.IO.File.Exists(_jsonFilePath))
             {
-                System.Diagnostics.Debug.WriteLine($"[TRACE: READ] Datoteka ne obstaja: {_jsonFilePath}");
                 return null;
             }
 
             try
             {
-                // Uporabimo FileShare.ReadWrite za manj konfliktov
-                using var stream = new FileStream(_jsonFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                using var reader = new StreamReader(stream);
-                var jsonString = reader.ReadToEnd();
+                string jsonString = System.IO.File.ReadAllText(_jsonFilePath);
 
-                // Deserializacija z našimi opcijami
+                if (string.IsNullOrWhiteSpace(jsonString))
+                    return null;
+
                 var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
-
-                // POPRAVEK: Case-insensitive iskanje uporabnika
-                var user = allUsers?.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
-
-                return user;
+                return allUsers?.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             }
-            catch (Exception ex)
+            catch
             {
-                System.Diagnostics.Debug.WriteLine($"[TRACE: READ ERROR] {ex.Message}");
                 return null;
             }
         }
 
         private async Task<bool> SaveProfileChanges(string username, InputModel input, string profilePicturePath)
         {
-            if (!System.IO.File.Exists(_jsonFilePath)) return false;
-
-            try
+            if (!System.IO.File.Exists(_jsonFilePath))
             {
-                // 1. PREBERI CELOTNO DATOTEKO
-                string jsonString;
-                using (var stream = new FileStream(_jsonFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (var reader = new StreamReader(stream))
+                return false;
+            }
+
+            for (int attempt = 0; attempt < MaxRetries; attempt++)
+            {
+                try
                 {
-                    jsonString = await reader.ReadToEndAsync();
-                }
+                    string jsonString = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
 
-                var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+                    if (allUsers == null)
+                    {
+                        return false;
+                    }
 
-                if (allUsers == null) return false;
+                    var userToUpdate = allUsers.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
 
-                // 2. NAJDI INDEX in POSODOBI (Case-insensitive)
-                var userToUpdate = allUsers.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
-
-                if (userToUpdate != null)
-                {
-                    System.Diagnostics.Debug.WriteLine($"[TRACE: WRITE] Posodabljam uporabnika: {userToUpdate.Username}");
+                    if (userToUpdate == null)
+                    {
+                        return false;
+                    }
 
                     userToUpdate.FullName = input.FullName;
                     userToUpdate.Email = input.Email;
                     userToUpdate.PhoneNumber = input.PhoneNumber;
                     userToUpdate.ProfilePicturePath = profilePicturePath;
 
-                    // 3. SERIALIZIRAJ 
                     var updatedJsonString = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                    await System.IO.File.WriteAllTextAsync(_jsonFilePath, updatedJsonString);
 
-                    // 4. ZAPIŠI
-                    return await WriteFileWithRetry(updatedJsonString);
+                    return true;
                 }
-                else
+                catch (IOException) when (attempt < MaxRetries - 1)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[TRACE: WRITE] NAPAKA: Uporabnik '{username}' ni najden v seznamu za posodobitev.");
+                    await Task.Delay(200);
+                }
+                catch
+                {
                     return false;
                 }
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[TRACE: WRITE ERROR] {ex.Message}");
-                return false;
-            }
+
+            return false;
         }
 
-        // Zapis datoteke z možnostjo ponovnega poskusa
-        private async Task<bool> WriteFileWithRetry(string content)
+        private async Task<bool> UpdateDarkMode(string username, bool darkMode)
         {
-            for (int i = 0; i < MaxRetries; i++)
+            if (!System.IO.File.Exists(_jsonFilePath))
+            {
+                return false;
+            }
+
+            for (int attempt = 0; attempt < MaxRetries; attempt++)
             {
                 try
                 {
-                    // POPRAVEK: FileMode.Create bo povozil obstoječo vsebino z novo
-                    using (var stream = new FileStream(_jsonFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                    using (var writer = new StreamWriter(stream))
+                    string jsonString = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+
+                    if (allUsers == null)
                     {
-                        await writer.WriteAsync(content);
-                        System.Diagnostics.Debug.WriteLine("[TRACE: WRITE] Pisanje uspešno.");
-                        return true;
+                        return false;
                     }
+
+                    var userToUpdate = allUsers.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+                    if (userToUpdate == null)
+                    {
+                        return false;
+                    }
+
+                    userToUpdate.DarkMode = darkMode;
+
+                    var updatedJsonString = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                    await System.IO.File.WriteAllTextAsync(_jsonFilePath, updatedJsonString);
+
+                    return true;
                 }
-                catch (IOException)
+                catch (IOException) when (attempt < MaxRetries - 1)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[TRACE: WRITE RETRY] Datoteka zaklenjena, čakam... ({i + 1}/{MaxRetries})");
-                    await Task.Delay(100);
+                    await Task.Delay(200);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    System.Diagnostics.Debug.WriteLine($"[TRACE: WRITE FATAL] {ex.Message}");
                     return false;
                 }
             }
+
             return false;
         }
 
@@ -256,16 +291,17 @@ namespace City_Feedback.Pages
                 return existingPath;
             }
 
-            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles");
-            string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ProfilePicture.FileName);
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
             try
             {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles");
+
                 if (!Directory.Exists(uploadsFolder))
                 {
                     Directory.CreateDirectory(uploadsFolder);
                 }
+
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(ProfilePicture.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -274,11 +310,15 @@ namespace City_Feedback.Pages
 
                 return $"/images/profiles/{uniqueFileName}";
             }
-            catch (Exception ex)
+            catch
             {
-                System.Diagnostics.Debug.WriteLine($"[TRACE: UPLOAD ERROR] {ex.Message}");
                 return existingPath;
             }
+        }
+
+        public class DarkModeRequest
+        {
+            public bool DarkMode { get; set; }
         }
     }
 }

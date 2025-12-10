@@ -1,18 +1,13 @@
 [
   {
-    "Username": "testuser",
-    "Password": "password123",
-    "FullName": "Janez Novak",
-    "Email": "janez@example.com",
-    "PhoneNumber": "040123456",
-    "ProfilePicturePath": "/images/default_profile.png"
-  },
-  {
-    "Username": "Tijan",
-    "Password": "123",
-    "FullName": null,
-    "Email": null,
-    "PhoneNumber": null,
-    "ProfilePicturePath": null
+    "Id": 0,
+    "Username": "admin",
+    "Password": "geslo",
+    "FullName": "admin",
+    "Email": "asdas@dsad.com",
+    "PhoneNumber": "12312321",
+    "ProfilePicturePath": "/images/default_profile.png",
+    "DarkMode": false,
+    "Prijave": null
   }
 ]

@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ewKWZ8AZVqw=",
+  "dgSpecHash": "khIp3RZNcCc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\source\\repos\\City-Feedback\\City-Feedback\\City-Feedback.csproj",
+  "projectFilePath": "C:\\Github\\City-Feedback\\City-Feedback\\City-Feedback.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\user\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.22.1\\microsoft.visualstudio.azure.containers.tools.targets.1.22.1.nupkg.sha512"
+    "C:\\Users\\lovro\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.22.1\\microsoft.visualstudio.azure.containers.tools.targets.1.22.1.nupkg.sha512"
   ],
   "logs": []
 }
