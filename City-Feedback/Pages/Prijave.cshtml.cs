@@ -100,6 +100,24 @@ namespace City_Feedback.Pages
 
                 string imagePath = await ProcessUploadedImage();
 
+                // Pridobi podatke trenutnega uporabnika
+                string ownerProfilePicture = "/images/default_profile.png";
+                string ownerFullName = currentUsername;
+
+                var jsonString = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+                var currentUser = allUsers?.FirstOrDefault(u => u.Username.Equals(currentUsername, StringComparison.OrdinalIgnoreCase));
+
+                if (currentUser != null)
+                {
+                    ownerProfilePicture = !string.IsNullOrEmpty(currentUser.ProfilePicturePath)
+                        ? currentUser.ProfilePicturePath
+                        : "/images/default_profile.png";
+                    ownerFullName = !string.IsNullOrEmpty(currentUser.FullName)
+                        ? currentUser.FullName
+                        : currentUsername;
+                }
+
                 var novaPrijava = new Prijava
                 {
                     Id = Guid.NewGuid(),
@@ -109,7 +127,9 @@ namespace City_Feedback.Pages
                     SlikaPot = imagePath,
                     SteviloVseckov = 0,
                     JeReseno = false,
-                    LikedBy = new List<string>()
+                    LikedBy = new List<string>(),
+                    OwnerUsername = ownerFullName,
+                    OwnerProfilePicture = ownerProfilePicture
                 };
 
                 bool success = await AddPrijavaToUser(currentUsername, novaPrijava);
