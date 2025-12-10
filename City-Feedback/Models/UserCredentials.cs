@@ -15,5 +15,6 @@ namespace City_Feedback.Models
         public string ProfilePicturePath { get; set; }
         public bool DarkMode { get; set; }
         public List<Prijava> Prijave { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

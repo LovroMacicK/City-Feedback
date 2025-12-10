@@ -10,7 +10,8 @@
         public int SteviloVseckov { get; set; }
         public bool JeReseno { get; set; }
         public List<string> LikedBy { get; set; } = new List<string>();
-        public string OwnerUsername { get; set; }
-        public string OwnerProfilePicture { get; set; }
+        public string ImeLastnika { get; set; }
+        public string ProfilnaSlikaLastnika { get; set; }
+        public string Kategorija { get; set; } = "Ostalo";
     }
 }

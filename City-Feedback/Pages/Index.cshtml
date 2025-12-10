@@ -4,8 +4,8 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="container">
-    <div class="text-center mb-5">
+<div class="container-fluid">
+    <div class="text-center mb-4">
         <h1 class="display-4">Prijave</h1>
     </div>
 
@@ -25,37 +25,114 @@
         </div>
     }
 
-    <hr class="my-5" />
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="row mb-4 align-items-center">
-                <div class="col">
-                    <h3>Objavljene prijave</h3>
+    <div class="row">
+        <!-- Leva stran - Filtri in razvrščanje -->
+        <div class="col-lg-3 col-md-4 mb-4">
+            <div class="card shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">🔍 Filtri in razvrščanje</h5>
                 </div>
-                <div class="col-auto">
-                    <form method="get" class="d-flex align-items-center">
-                        <label class="me-2 fw-bold">Razvrsti po:</label>
-                        <select name="sortOrder" class="form-select w-auto" onchange="this.form.submit()">
-                            @if (ViewData["CurrentSort"] as string == "date" || ViewData["CurrentSort"] == null)
-                            {
-                                <option value="date" selected>📅 Najnovejše</option>
-                            }
-                            else
-                            {
-                                <option value="date">📅 Najnovejše</option>
-                            }
+                <div class="card-body">
+                    <form method="get">
+                        <!-- Razvrščanje -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">📊 Razvrsti po:</label>
+                            <select name="sortOrder" class="form-select" onchange="this.form.submit()">
+                                <option value="date" selected="@(ViewData["CurrentSort"] as string == "date" || ViewData["CurrentSort"] == null)">
+                                    📅 Najnovejše
+                                </option>
+                                <option value="likes" selected="@(ViewData["CurrentSort"] as string == "likes")">
+                                    ❤️ Najbolj priljubljene
+                                </option>
+                            </select>
+                        </div>
 
-                            @if (ViewData["CurrentSort"] as string == "likes")
-                            {
-                                <option value="likes" selected>❤️ Najbolj priljubljene</option>
-                            }
-                            else
-                            {
-                                <option value="likes">❤️ Najbolj priljubljene</option>
-                            }
-                        </select>
+                        <!-- Filter po kategoriji -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">📁 Kategorija:</label>
+                            <select name="category" class="form-select" onchange="this.form.submit()">
+                                <option value="all" selected="@(ViewData["CurrentCategory"] as string == "all" || ViewData["CurrentCategory"] == null)">
+                                    Vse kategorije
+                                </option>
+                                <option value="Ceste" selected="@(ViewData["CurrentCategory"] as string == "Ceste")">
+                                    🛣️ Ceste
+                                </option>
+                                <option value="Javna razsvetljava" selected="@(ViewData["CurrentCategory"] as string == "Javna razsvetljava")">
+                                    💡 Javna razsvetljava
+                                </option>
+                                <option value="Parki in zelenice" selected="@(ViewData["CurrentCategory"] as string == "Parki in zelenice")">
+                                    🌳 Parki in zelenice
+                                </option>
+                                <option value="Odpadki" selected="@(ViewData["CurrentCategory"] as string == "Odpadki")">
+                                    🗑️ Odpadki
+                                </option>
+                                <option value="Javni prevoz" selected="@(ViewData["CurrentCategory"] as string == "Javni prevoz")">
+                                    🚌 Javni prevoz
+                                </option>
+                                <option value="Vandalizem" selected="@(ViewData["CurrentCategory"] as string == "Vandalizem")">
+                                    ⚠️ Vandalizem
+                                </option>
+                                <option value="Ostalo" selected="@(ViewData["CurrentCategory"] as string == "Ostalo")">
+                                    📋 Ostalo
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Filter po statusu -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">📋 Status:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="statusAll" value="all" 
+                                       checked="@(ViewData["CurrentStatus"] as string == "all" || ViewData["CurrentStatus"] == null)"
+                                       onchange="this.form.submit()">
+                                <label class="form-check-label" for="statusAll">
+                                    Vse prijave
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="statusPending" value="pending"
+                                       checked="@(ViewData["CurrentStatus"] as string == "pending")"
+                                       onchange="this.form.submit()">
+                                <label class="form-check-label" for="statusPending">
+                                    ⏳ Čakajoče
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="status" id="statusResolved" value="resolved"
+                                       checked="@(ViewData["CurrentStatus"] as string == "resolved")"
+                                       onchange="this.form.submit()">
+                                <label class="form-check-label" for="statusResolved">
+                                    ✅ Rešene
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Statistika -->
+                        <hr />
+                        <div class="mt-3">
+                            <h6 class="fw-bold mb-3">📈 Statistika</h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Skupaj prijav:</span>
+                                <span class="badge bg-primary">@Model.Prijave.Count</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Rešenih:</span>
+                                <span class="badge bg-success">@Model.Prijave.Count(p => p.JeReseno)</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Čakajočih:</span>
+                                <span class="badge bg-warning text-dark">@Model.Prijave.Count(p => !p.JeReseno)</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
+            </div>
+        </div>
+
+        <!-- Desna stran - Prijave -->
+        <div class="col-lg-9 col-md-8">
+            <div class="mb-3">
+                <h3>📋 Objavljene prijave</h3>
             </div>
 
             @if (Model.Prijave.Count > 0)
@@ -65,10 +142,9 @@
                     var hasLiked = prijava.LikedBy != null && !string.IsNullOrEmpty(Model.CurrentUsername) && prijava.LikedBy.Contains(Model.CurrentUsername);
 
                     <div class="card mb-3 shadow-sm">
-
                         @if (!string.IsNullOrEmpty(prijava.SlikaPot))
                         {
-                            <img src="@prijava.SlikaPot" class="card-img-top" alt="Slika prijave" style="max-height: 300px; object-fit: cover;">
+                            <img src="@prijava.SlikaPot" class="card-img-top" alt="Slika prijave" style="max-height: 400px; object-fit: cover;">
                         }
 
                         <div class="card-body">
@@ -80,11 +156,23 @@
                                     {
                                         <span class="badge bg-success ms-2" style="font-size: 0.6em;">✅ OPRAVLJENO</span>
                                     }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6em;">⏳ ČAKA</span>
+                                    }
                                 </h5>
                                 <small class="text-muted">@prijava.Datum.ToString("dd.MM.yyyy HH:mm")</small>
                             </div>
 
-                            @* Prikaži uporabnika z profilno sliko *@
+                            <!-- Kategorija -->
+                            @if (!string.IsNullOrEmpty(prijava.Kategorija))
+                            {
+                                <div class="mb-2">
+                                    <span class="badge bg-info text-dark">@prijava.Kategorija</span>
+                                </div>
+                            }
+
+                            <!-- Prikaži uporabnika z profilno sliko -->
                             <div class="d-flex align-items-center mb-3">
                                 <img src="@(string.IsNullOrEmpty(prijava.OwnerProfilePicture) ? "/images/default_profile.png" : prijava.OwnerProfilePicture)"
                                      alt="Profilna slika"
@@ -113,7 +201,6 @@
                                     }
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 }
@@ -124,7 +211,6 @@
                     Trenutno ni nobenih prijav. Bodite prvi!
                 </div>
             }
-
         </div>
     </div>
 </div>

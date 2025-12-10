@@ -1,7 +1,11 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\prijave\05876e96-10b7-435c-81c2-ba5bd2d8b28c.jpg
+wwwroot\images\prijave\0b6dc639-6100-4e44-9a5b-8e2daec551d0.jpg
+wwwroot\images\prijave\24128ba3-a0f3-4cf8-962c-1bcda4ffaae7.jpg
+wwwroot\images\prijave\c430468d-c846-42fc-8885-7abdbba242ad.jpg
 wwwroot\images\prijave\c58ff2b4-1684-4a76-94c8-ac5a81021a01.jpg
+wwwroot\images\profiles\53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg
 wwwroot\images\profiles\ba76c30c-7118-4cfa-afd9-5f70c8af3f65.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
@@ -66,4 +70,3 @@ wwwroot\uploads\405f3530-5f98-40c2-93a4-21a495fbb9ef_Posnetek zaslona 2024-12-27
 wwwroot\uploads\75b2d915-e2bb-4d61-8c47-099415e1f784_Posnetek zaslona 2024-12-27 200610.png
 wwwroot\uploads\e3c68624-d05f-4c42-9cda-de01e5fbdc06_Posnetek zaslona 2024-12-27 200610.png
 wwwroot\uploads\f3bcd57b-356b-4cde-806d-ce85bc8e92b9_Posnetek zaslona 2024-12-27 200610.png
-wwwroot\images\prijave\c430468d-c846-42fc-8885-7abdbba242ad.jpg

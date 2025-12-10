@@ -41,14 +41,19 @@ namespace City_Feedback.Pages
         [BindProperty]
         public IFormFile Image { get; set; }
 
+        [BindProperty]
+        public string Category { get; set; }
+
         public List<Prijava> Prijave { get; set; } = new List<Prijava>();
         public string CurrentUsername { get; set; }
 
-        public void OnGet(string sortOrder)
+        public void OnGet(string sortOrder, string status, string category)
         {
             ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentStatus"] = status ?? "all";
+            ViewData["CurrentCategory"] = category ?? "all";
             CurrentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
-            LoadAllPrijave(sortOrder);
+            LoadAllPrijave(sortOrder, status, category);
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -128,8 +133,9 @@ namespace City_Feedback.Pages
                     SteviloVseckov = 0,
                     JeReseno = false,
                     LikedBy = new List<string>(),
-                    OwnerUsername = ownerFullName,
-                    OwnerProfilePicture = ownerProfilePicture
+                    ImeLastnika = ownerFullName,
+                    ProfilnaSlikaLastnika = ownerProfilePicture,
+                    Kategorija = Category ?? "Ostalo"
                 };
 
                 bool success = await AddPrijavaToUser(currentUsername, novaPrijava);
@@ -208,6 +214,112 @@ namespace City_Feedback.Pages
                             allPrijave.AddRange(user.Prijave);
                         }
                     }
+                }
+
+                // Razvrščanje
+                if (sortOrder == "likes")
+                {
+                    allPrijave = allPrijave.OrderByDescending(p => p.SteviloVseckov).ToList();
+                }
+                else // default: date
+                {
+                    allPrijave = allPrijave.OrderByDescending(p => p.Datum).ToList();
+                }
+
+                Prijave = allPrijave;
+            }
+            catch
+            {
+                Prijave = new List<Prijava>();
+            }
+        }
+
+        private void LoadAllPrijave(string sortOrder, string status)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+            {
+                Prijave = new List<Prijava>();
+                return;
+            }
+
+            try
+            {
+                string jsonString = System.IO.File.ReadAllText(_jsonFilePath);
+                var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+
+                var allPrijave = new List<Prijava>();
+
+                if (allUsers != null)
+                {
+                    foreach (var user in allUsers)
+                    {
+                        if (user.Prijave != null)
+                        {
+                            allPrijave.AddRange(user.Prijave);
+                        }
+                    }
+                }
+
+                // Filtriranje po statusu
+    if (status != null && status != "all")
+    {
+        allPrijave = allPrijave.Where(p => p.JeReseno == (status == "resolved")).ToList();
+    }
+
+                // Razvrščanje
+                if (sortOrder == "likes")
+                {
+                    allPrijave = allPrijave.OrderByDescending(p => p.SteviloVseckov).ToList();
+                }
+                else // default: date
+                {
+                    allPrijave = allPrijave.OrderByDescending(p => p.Datum).ToList();
+                }
+
+                Prijave = allPrijave;
+            }
+            catch
+            {
+                Prijave = new List<Prijava>();
+            }
+        }
+
+        private void LoadAllPrijave(string sortOrder, string status, string category)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+            {
+                Prijave = new List<Prijava>();
+                return;
+            }
+
+            try
+            {
+                string jsonString = System.IO.File.ReadAllText(_jsonFilePath);
+                var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+
+                var allPrijave = new List<Prijava>();
+
+                if (allUsers != null)
+                {
+                    foreach (var user in allUsers)
+                    {
+                        if (user.Prijave != null)
+                        {
+                            allPrijave.AddRange(user.Prijave);
+                        }
+                    }
+                }
+
+                // Filter po statusu
+                if (status != null && status != "all")
+                {
+                    allPrijave = allPrijave.Where(p => p.JeReseno == (status == "resolved")).ToList();
+                }
+
+                // Filter po kategoriji
+                if (!string.IsNullOrEmpty(category) && category != "all")
+                {
+                    allPrijave = allPrijave.Where(p => p.Kategorija == category).ToList();
                 }
 
                 // Razvrščanje
