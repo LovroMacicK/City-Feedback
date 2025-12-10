@@ -7,7 +7,7 @@
     "Email": "asdas@dsad.com",
     "PhoneNumber": "12312321",
     "ProfilePicturePath": "/images/default_profile.png",
-    "DarkMode": false,
+    "DarkMode": true,
     "Prijave": null
   }
 ]

@@ -6,7 +6,7 @@ namespace City_Feedback.Pages
 {
     public class ObcinaModel : PageModel
     {
-        public List<FeedbackItem> PrijaveZaObcino { get; set; }
+        public List<Prijava> PrijaveZaObcino { get; set; }
 
         public IActionResult OnGet()
         {

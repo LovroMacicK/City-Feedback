@@ -1,6 +1,6 @@
 ﻿namespace City_Feedback.Models
 {
-    public class FeedbackItem
+    public class Prijava
     {
         public Guid Id { get; set; }
         public string Naslov { get; set; }

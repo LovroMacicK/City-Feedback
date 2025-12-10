@@ -3,7 +3,9 @@
 namespace City_Feedback.Models
 {
     public class UserCredentials
-    {
+    { 
+        // Model za registracijo uporabnika
+        // (vse kar delas v zvezi z users.json dodaj tu noter)
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -12,6 +14,6 @@ namespace City_Feedback.Models
         public string PhoneNumber { get; set; }
         public string ProfilePicturePath { get; set; }
         public bool DarkMode { get; set; }
-        public List<FeedbackItem> Prijave { get; set; }
+        public List<Prijava> Prijave { get; set; }
     }
 }

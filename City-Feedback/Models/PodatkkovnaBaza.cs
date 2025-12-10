@@ -4,11 +4,11 @@ namespace City_Feedback.Models
 {
     public static class PodatkovnaBaza
     {
-        public static List<FeedbackItem> Prijave = new List<FeedbackItem>();
+        public static List<Prijava> Prijave = new List<Prijava>();
 
         static PodatkovnaBaza()
         {
-            Prijave.Add(new FeedbackItem
+            Prijave.Add(new Prijava
             {
                 Id = Guid.NewGuid(),
                 Naslov = "Luknja na cesti",

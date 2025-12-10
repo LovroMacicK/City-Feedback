@@ -19,7 +19,7 @@ namespace City_Feedback.Pages
         [BindProperty]
         public IFormFile? Image { get; set; }
 
-        public List<FeedbackItem> Prijave { get; set; }
+        public List<Prijava> Prijave { get; set; }
 
         public PrijaveModel(ILogger<PrijaveModel> logger, IWebHostEnvironment environment)
         {
@@ -89,7 +89,7 @@ namespace City_Feedback.Pages
             }
 
             // Preprièaj se, da FeedbackItem bereš iz Models (ne podvajaj razreda spodaj)
-            var novaPrijava = new FeedbackItem
+            var novaPrijava = new Prijava
             {
                 Id = Guid.NewGuid(),
                 Naslov = Title,
