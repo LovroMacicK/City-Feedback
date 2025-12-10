@@ -10,19 +10,43 @@
     "DarkMode": true,
     "Prijave": [
       {
-        "Id": "38bedaf3-c9bd-4a19-b222-1003c12184af",
-        "Naslov": "Fla\u0161e od martinovanja",
+        "Id": "d9a3a7ef-5d48-44ec-90e6-b3bff035a56c",
+        "Naslov": "Fla\u0161e od martinovanja!",
         "Opis": "Prokleti pijanci eni",
-        "Datum": "2025-12-10T16:03:25.6774657+01:00",
-        "SlikaPot": "/images/prijave/24128ba3-a0f3-4cf8-962c-1bcda4ffaae7.jpg",
-        "SteviloVseckov": 0,
+        "Datum": "2025-12-10T17:06:13.9174598+01:00",
+        "SlikaPot": "/images/prijave/6507cab8-7a08-4bd9-8e5d-e2ced8c98b43.jpg",
+        "SteviloVseckov": 1,
         "JeReseno": false,
-        "LikedBy": [],
-        "OwnerUsername": null,
-        "OwnerProfilePicture": null,
-        "Kategorija": "Ostalo"
+        "LikedBy": [
+          "user"
+        ],
+        "OwnerUsername": "Crni Janez",
+        "OwnerProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
+        "Kategorija": "Odpadki",
+        "Komentarji": [
+          {
+            "Id": "2166faf2-2068-483d-a731-08934cdb5772",
+            "Vsebina": "Ja stari grozno je\r\n",
+            "Datum": "2025-12-10T17:37:45.1126728+01:00",
+            "Username": "admin",
+            "UserFullName": "Crni Janez",
+            "UserProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg"
+          }
+        ]
       }
     ],
+    "IsAdmin": false
+  },
+  {
+    "Id": 2,
+    "Username": "user",
+    "Password": "geslo",
+    "FullName": null,
+    "Email": null,
+    "PhoneNumber": null,
+    "ProfilePicturePath": null,
+    "DarkMode": false,
+    "Prijave": null,
     "IsAdmin": false
   }
 ]

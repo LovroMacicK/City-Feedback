@@ -1,0 +1,159 @@
+﻿@page "{id:guid}"
+@model City_Feedback.Pages.PodrobnostiPrijaveModel
+@{
+    ViewData["Title"] = Model.Prijava?.Naslov ?? "Podrobnosti prijave";
+}
+
+<div class="container">
+    <div class="mb-4">
+        <a asp-page="/Index" class="btn btn-outline-primary">
+            ← Nazaj na glavno stran
+        </a>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.Prijava != null)
+    {
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Prikaz prijave -->
+                <div class="card shadow-sm mb-4">
+                    @if (!string.IsNullOrEmpty(Model.Prijava.SlikaPot))
+                    {
+                        <img src="@Model.Prijava.SlikaPot" class="card-img-top" alt="Slika prijave" style="max-height: 500px; object-fit: cover;">
+                    }
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h2 class="card-title text-primary">@Model.Prijava.Naslov</h2>
+                                @if (Model.Prijava.JeReseno)
+                                {
+                                    <span class="badge bg-success">✅ OPRAVLJENO</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">⏳ ČAKA</span>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Prijava.Kategorija))
+                                {
+                                    <span class="badge bg-info text-dark ms-2">@Model.Prijava.Kategorija</span>
+                                }
+                            </div>
+                            <small class="text-muted">@Model.Prijava.Datum.ToString("dd.MM.yyyy HH:mm")</small>
+                        </div>
+
+                        <!-- Lastnik prijave -->
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="@(string.IsNullOrEmpty(Model.Prijava.OwnerProfilePicture) ? "/images/default_profile.png" : Model.Prijava.OwnerProfilePicture)"
+                                 alt="Profilna slika"
+                                 class="rounded-circle me-2"
+                                 style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #dee2e6;">
+                            <div>
+                                <strong>@(string.IsNullOrEmpty(Model.Prijava.OwnerUsername) ? "Neznani uporabnik" : Model.Prijava.OwnerUsername)</strong>
+                            </div>
+                        </div>
+
+                        <p class="card-text" style="font-size: 1.1rem;">@Model.Prijava.Opis</p>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger" style="font-size: 1rem;">
+                                ❤️ @Model.Prijava.SteviloVseckov všečkov
+                            </span>
+                            <span class="text-muted">
+                                💬 @(Model.Prijava.Komentarji?.Count ?? 0) komentarjev
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sekcija komentarjev -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h4 class="mb-0">💬 Komentarji</h4>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.IsAuthenticated)
+                        {
+                            <!-- Obrazec za dodajanje komentarja -->
+                            <form method="post" asp-page-handler="AddComment" asp-route-id="@Model.Prijava.Id" class="mb-4">
+                                <div class="mb-3">
+                                    <label asp-for="KomentarVsebina" class="form-label fw-bold">Dodaj komentar</label>
+                                    <textarea asp-for="KomentarVsebina" class="form-control" rows="3" placeholder="Napišite svoj komentar..."></textarea>
+                                    <span asp-validation-for="KomentarVsebina" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary">📝 Objavi komentar</button>
+                            </form>
+                            <hr />
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                <a asp-page="/Login" class="alert-link">Prijavite se</a>, da boste lahko komentirali.
+                            </div>
+                            <hr />
+                        }
+
+                        <!-- Prikaz komentarjev -->
+                        @if (Model.Prijava.Komentarji != null && Model.Prijava.Komentarji.Any())
+                        {
+                            <div class="comments-list">
+                                @foreach (var komentar in Model.Prijava.Komentarji.OrderByDescending(k => k.Datum))
+                                {
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-start">
+                                                <img src="@(string.IsNullOrEmpty(komentar.UserProfilePicture) ? "/images/default_profile.png" : komentar.UserProfilePicture)"
+                                                     alt="Profilna slika"
+                                                     class="rounded-circle me-3"
+                                                     style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #dee2e6;">
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <strong>@komentar.UserFullName</strong>
+                                                        <small class="text-muted">@komentar.Datum.ToString("dd.MM.yyyy HH:mm")</small>
+                                                    </div>
+                                                    <p class="mb-0">@komentar.Vsebina</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted text-center">Še ni komentarjev. Bodite prvi, ki komentirate!</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            Prijava ne obstaja.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

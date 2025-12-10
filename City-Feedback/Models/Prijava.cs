@@ -13,5 +13,6 @@
         public string OwnerUsername { get; set; }
         public string OwnerProfilePicture { get; set; }
         public string Kategorija { get; set; } = "Ostalo";
+        public List<Komentar> Komentarji { get; set; } = new List<Komentar>();
     }
 }

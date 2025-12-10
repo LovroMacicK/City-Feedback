@@ -22,7 +22,17 @@
         ],
         "OwnerUsername": "Crni Janez",
         "OwnerProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
-        "Kategorija": "Odpadki"
+        "Kategorija": "Odpadki",
+        "Komentarji": [
+          {
+            "Id": "2166faf2-2068-483d-a731-08934cdb5772",
+            "Vsebina": "Ja stari grozno je\r\n",
+            "Datum": "2025-12-10T17:37:45.1126728+01:00",
+            "Username": "admin",
+            "UserFullName": "Crni Janez",
+            "UserProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg"
+          }
+        ]
       }
     ],
     "IsAdmin": false
@@ -31,12 +41,27 @@
     "Id": 2,
     "Username": "user",
     "Password": "geslo",
-    "FullName": null,
-    "Email": null,
-    "PhoneNumber": null,
-    "ProfilePicturePath": null,
+    "FullName": "Jonas",
+    "Email": "jonas@sdsd.com",
+    "PhoneNumber": "2\u0027983\u00272",
+    "ProfilePicturePath": "/images/profiles/085b7100-4b55-4136-a4ef-9e312cb056f4.jpg",
     "DarkMode": false,
-    "Prijave": null,
+    "Prijave": [
+      {
+        "Id": "e0c29586-cd0f-474f-973d-396dce32db96",
+        "Naslov": "Grozne ceste",
+        "Opis": "Tule je vse grozno",
+        "Datum": "2025-12-10T17:49:49.6734821+01:00",
+        "SlikaPot": "/images/prijave/5a00198a-bdf6-46ec-a944-4fd5fe766afd.jpg",
+        "SteviloVseckov": 0,
+        "JeReseno": false,
+        "LikedBy": [],
+        "OwnerUsername": "Jonas",
+        "OwnerProfilePicture": "/images/profiles/085b7100-4b55-4136-a4ef-9e312cb056f4.jpg",
+        "Kategorija": "Ceste",
+        "Komentarji": []
+      }
+    ],
     "IsAdmin": false
   }
 ]

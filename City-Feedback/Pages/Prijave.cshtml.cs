@@ -18,7 +18,7 @@ namespace City_Feedback.Pages
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly string _jsonFilePath;
         private const int MaxRetries = 3;
-        private const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
+        private const long MaxFileSize = 5 * 1024 * 1024;
 
         private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
@@ -105,7 +105,6 @@ namespace City_Feedback.Pages
 
                 string imagePath = await ProcessUploadedImage();
 
-                // Pridobi podatke trenutnega uporabnika
                 string ownerProfilePicture = "/images/default_profile.png";
                 string ownerFullName = currentUsername;
 
@@ -216,12 +215,11 @@ namespace City_Feedback.Pages
                     }
                 }
 
-                // Razvrščanje
                 if (sortOrder == "likes")
                 {
                     allPrijave = allPrijave.OrderByDescending(p => p.SteviloVseckov).ToList();
                 }
-                else // default: date
+                else
                 {
                     allPrijave = allPrijave.OrderByDescending(p => p.Datum).ToList();
                 }
@@ -260,18 +258,16 @@ namespace City_Feedback.Pages
                     }
                 }
 
-                // Filtriranje po statusu
-    if (status != null && status != "all")
-    {
-        allPrijave = allPrijave.Where(p => p.JeReseno == (status == "resolved")).ToList();
-    }
+                if (status != null && status != "all")
+                {
+                    allPrijave = allPrijave.Where(p => p.JeReseno == (status == "resolved")).ToList();
+                }
 
-                // Razvrščanje
                 if (sortOrder == "likes")
                 {
                     allPrijave = allPrijave.OrderByDescending(p => p.SteviloVseckov).ToList();
                 }
-                else // default: date
+                else
                 {
                     allPrijave = allPrijave.OrderByDescending(p => p.Datum).ToList();
                 }
@@ -310,24 +306,21 @@ namespace City_Feedback.Pages
                     }
                 }
 
-                // Filter po statusu
                 if (status != null && status != "all")
                 {
                     allPrijave = allPrijave.Where(p => p.JeReseno == (status == "resolved")).ToList();
                 }
 
-                // Filter po kategoriji
                 if (!string.IsNullOrEmpty(category) && category != "all")
                 {
                     allPrijave = allPrijave.Where(p => p.Kategorija == category).ToList();
                 }
 
-                // Razvrščanje
                 if (sortOrder == "likes")
                 {
                     allPrijave = allPrijave.OrderByDescending(p => p.SteviloVseckov).ToList();
                 }
-                else // default: date
+                else
                 {
                     allPrijave = allPrijave.OrderByDescending(p => p.Datum).ToList();
                 }
@@ -412,7 +405,6 @@ namespace City_Feedback.Pages
 
                     Prijava targetPrijava = null;
 
-                    // Najdi prijavo med vsemi uporabniki
                     foreach (var user in allUsers)
                     {
                         if (user.Prijave != null)
@@ -430,7 +422,6 @@ namespace City_Feedback.Pages
                         return "error";
                     }
 
-                    // Inicializiraj LikedBy če je null
                     if (targetPrijava.LikedBy == null)
                     {
                         targetPrijava.LikedBy = new List<string>();
@@ -438,17 +429,14 @@ namespace City_Feedback.Pages
 
                     string result;
 
-                    // Preveri ali je uporabnik že dal like
                     if (targetPrijava.LikedBy.Contains(username))
                     {
-                        // Odstrani like
                         targetPrijava.LikedBy.Remove(username);
                         targetPrijava.SteviloVseckov = Math.Max(0, targetPrijava.SteviloVseckov - 1);
                         result = "removed";
                     }
                     else
                     {
-                        // Dodaj like
                         targetPrijava.LikedBy.Add(username);
                         targetPrijava.SteviloVseckov++;
                         result = "added";
