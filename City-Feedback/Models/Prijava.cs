@@ -15,10 +15,7 @@ namespace City_Feedback.Models
         public string OwnerUsername { get; set; }
         public string OwnerProfilePicture { get; set; }
         public string Kategorija { get; set; } = "Ostalo";
-        [JsonIgnore]
-        public string OwnerUsername { get; set; }
+        public List<Komentar> Komentarji { get; set; } = new List<Komentar>();
 
-        [JsonIgnore]
-        public string OwnerProfilePicture { get; set; }
     }
 }

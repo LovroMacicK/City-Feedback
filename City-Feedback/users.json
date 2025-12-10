@@ -15,12 +15,15 @@
         "Opis": "Prokleti pijanci eni",
         "Datum": "2025-12-10T16:03:25.6774657+01:00",
         "SlikaPot": "/images/prijave/24128ba3-a0f3-4cf8-962c-1bcda4ffaae7.jpg",
-        "SteviloVseckov": 0,
+        "SteviloVseckov": 1,
         "JeReseno": false,
-        "LikedBy": [],
-        "ImeLastnika": null,
-        "ProfilnaSlikaLastnika": null,
-        "Kategorija": "Ostalo"
+        "LikedBy": [
+          "Tijan"
+        ],
+        "OwnerUsername": null,
+        "OwnerProfilePicture": null,
+        "Kategorija": "Ostalo",
+        "Komentarji": []
       }
     ],
     "IsAdmin": false
@@ -29,6 +32,42 @@
     "Id": 2,
     "Username": "Tijan",
     "Password": "123",
+    "FullName": null,
+    "Email": null,
+    "PhoneNumber": null,
+    "ProfilePicturePath": null,
+    "DarkMode": false,
+    "Prijave": [
+      {
+        "Id": "08f980e3-7d6e-4c46-b2f2-ca30ea99a2cb",
+        "Naslov": "aefaef",
+        "Opis": "afawfaw",
+        "Datum": "2025-12-10T19:49:54.7814564+01:00",
+        "SlikaPot": "/images/prijave/f3c7d3f2-de41-47a3-ad22-0ea802de0898.png",
+        "SteviloVseckov": 0,
+        "JeReseno": false,
+        "LikedBy": [],
+        "OwnerUsername": "Tijan",
+        "OwnerProfilePicture": "/images/default_profile.png",
+        "Kategorija": "Parki in zelenice",
+        "Komentarji": [
+          {
+            "Id": "b74103fd-f693-4e32-9d14-09433c69dcbc",
+            "Vsebina": "noro ejga",
+            "Datum": "2025-12-10T20:03:44.90603+01:00",
+            "Username": "Tijan",
+            "UserFullName": "Tijan",
+            "UserProfilePicture": "/images/default_profile.png"
+          }
+        ]
+      }
+    ],
+    "IsAdmin": false
+  },
+  {
+    "Id": 3,
+    "Username": "novi.uporabnik@test.si",
+    "Password": "Geslo123",
     "FullName": null,
     "Email": null,
     "PhoneNumber": null,
