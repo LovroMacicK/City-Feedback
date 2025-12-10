@@ -46,3 +46,15 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+.navbar .nav-link img.rounded-circle {
+    transition: transform 0.2s ease-in-out;
+}
+
+.navbar .nav-link:hover img.rounded-circle {
+    transform: scale(1.1);
+}
+
+/* Profilna slika pri objavah */
+.card .rounded-circle {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

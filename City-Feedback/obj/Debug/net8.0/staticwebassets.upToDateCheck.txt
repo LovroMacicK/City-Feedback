@@ -1,5 +1,9 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\prijave\05876e96-10b7-435c-81c2-ba5bd2d8b28c.jpg
+wwwroot\images\prijave\c430468d-c846-42fc-8885-7abdbba242ad.jpg
+wwwroot\images\prijave\c58ff2b4-1684-4a76-94c8-ac5a81021a01.jpg
+wwwroot\images\profiles\ba76c30c-7118-4cfa-afd9-5f70c8af3f65.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map

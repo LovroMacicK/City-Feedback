@@ -9,5 +9,8 @@
         public string? SlikaPot { get; set; }
         public int SteviloVseckov { get; set; }
         public bool JeReseno { get; set; }
+        public List<string> LikedBy { get; set; } = new List<string>();
+        public string OwnerUsername { get; set; }
+        public string OwnerProfilePicture { get; set; }
     }
 }

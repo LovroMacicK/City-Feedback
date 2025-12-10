@@ -8,24 +8,46 @@
     <div class="text-center mb-5">
         <h1 class="display-4">Nova prijava</h1>
     </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="card shadow-sm p-4">
                 <form method="post" enctype="multipart/form-data">
 
                     <div class="mb-3">
-                        <label for="Title" class="form-label fw-bold">Naslov prijave</label>
-                        <input type="text" class="form-control" id="Title" name="Title" placeholder="Vnesite kratek naslov..." required />
+                        <label asp-for="Title" class="form-label fw-bold">Naslov prijave</label>
+                        <input asp-for="Title" class="form-control" placeholder="Vnesite kratek naslov..." />
+                        <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label for="Description" class="form-label fw-bold">Opis</label>
-                        <textarea class="form-control" id="Description" name="Description" rows="4" placeholder="Opišite težavo..." required></textarea>
+                        <label asp-for="Description" class="form-label fw-bold">Opis</label>
+                        <textarea asp-for="Description" class="form-control" rows="4" placeholder="Opišite težavo..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label for="Image" class="form-label">Slika (neobvezno)</label>
-                        <input type="file" class="form-control" id="Image" name="Image" accept="image/*" />
+                        <label asp-for="Image" class="form-label">Slika (neobvezno)</label>
+                        <input asp-for="Image" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
 
                     <div class="d-grid gap-2 mt-4">
@@ -33,7 +55,10 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

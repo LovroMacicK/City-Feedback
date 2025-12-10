@@ -1,4 +1,53 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@using System.Text.Json
+@using City_Feedback.Models
+@using System.IO
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment HostEnvironment
+
+@{
+    string currentUserProfilePicture = "/images/default_profile.png";
+    string? currentUserFullName = null;
+
+    var username = User.FindFirst(ClaimTypes.Name)?.Value;
+
+    if (!string.IsNullOrEmpty(username))
+    {
+        var jsonFilePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "users.json");
+
+        if (File.Exists(jsonFilePath))
+        {
+            try
+            {
+                string jsonString = File.ReadAllText(jsonFilePath);
+
+                if (!string.IsNullOrWhiteSpace(jsonString))
+                {
+                    var jsonOptions = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, jsonOptions);
+                    var user = allUsers?.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+                    if (user != null)
+                    {
+                        currentUserProfilePicture = !string.IsNullOrEmpty(user.ProfilePicturePath)
+                            ? user.ProfilePicturePath
+                            : "/images/default_profile.png";
+                        currentUserFullName = user.FullName;
+                    }
+                }
+            }
+            catch
+            {
+                // V primeru napake uporabi default sliko
+            }
+        }
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,7 +68,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                         @if (User.Identity.IsAuthenticated)
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Index">Domov</a>
@@ -39,13 +88,17 @@
                     <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Profile">Pozdravljen, @User.Identity.Name</a>
+                            <li class="nav-item d-flex align-items-center">
+                                <a class="nav-link text-dark d-flex align-items-center" asp-area="" asp-page="/Profile">
+                                    <img src="@currentUserProfilePicture"
+                                         alt="Profilna slika"
+                                         class="rounded-circle me-2"
+                                         style="width: 32px; height: 32px; object-fit: cover; border: 2px solid #dee2e6;">
+                                    <span>Pozdravljen, @(!string.IsNullOrEmpty(currentUserFullName) ? currentUserFullName : User.Identity.Name)</span>
+                                </a>
                             </li>
-                            <li class="nav-item">
-                                <form method="post" asp-page="/Logout">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Odjava</button>
-                                </form>
+                            <li class="nav-item d-flex align-items-center">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Odjava</a>
                             </li>
                         }
                         else

@@ -6,8 +6,47 @@
     "FullName": "admin",
     "Email": "asdas@dsad.com",
     "PhoneNumber": "12312321",
-    "ProfilePicturePath": "/images/default_profile.png",
+    "ProfilePicturePath": "/images/profiles/ba76c30c-7118-4cfa-afd9-5f70c8af3f65.jpg",
     "DarkMode": true,
-    "Prijave": null
+    "Prijave": [
+      {
+        "Id": "4c8d934a-9dce-427d-b55a-3e5fdc1e07ca",
+        "Naslov": "Cesta je zjebana",
+        "Opis": "Jebo vam mater vsem",
+        "Datum": "2025-12-10T14:39:20.7656415+01:00",
+        "SlikaPot": "/images/prijave/05876e96-10b7-435c-81c2-ba5bd2d8b28c.jpg",
+        "SteviloVseckov": 3,
+        "JeReseno": false,
+        "LikedBy": [
+          "admin"
+        ],
+        "OwnerUsername": null,
+        "OwnerProfilePicture": null
+      },
+      {
+        "Id": "47cadea9-d468-4c98-9772-6b0fc95f391b",
+        "Naslov": "vse je zjebano",
+        "Opis": "asdasdas",
+        "Datum": "2025-12-10T14:43:19.9363144+01:00",
+        "SlikaPot": "/images/prijave/c58ff2b4-1684-4a76-94c8-ac5a81021a01.jpg",
+        "SteviloVseckov": 0,
+        "JeReseno": false,
+        "LikedBy": [],
+        "OwnerUsername": null,
+        "OwnerProfilePicture": null
+      },
+      {
+        "Id": "5921f349-8077-4e75-b3c2-2a0268cce30c",
+        "Naslov": "dsfdsf",
+        "Opis": "sdfdsf",
+        "Datum": "2025-12-10T15:49:28.3223191+01:00",
+        "SlikaPot": "/images/prijave/c430468d-c846-42fc-8885-7abdbba242ad.jpg",
+        "SteviloVseckov": 0,
+        "JeReseno": false,
+        "LikedBy": [],
+        "OwnerUsername": null,
+        "OwnerProfilePicture": null
+      }
+    ]
   }
 ]
