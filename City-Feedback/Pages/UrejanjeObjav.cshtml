@@ -1,21 +1,13 @@
-﻿@page
-@model PrijaveModel
+﻿@page "{id:guid}"
+@model City_Feedback.Pages.UrejanjeObjavModel
 @{
-    ViewData["Title"] = "Prijave";
+    ViewData["Title"] = "Urejanje prijave";
 }
 
 <div class="container">
     <div class="text-center mb-5">
-        <h1 class="display-4">Nova prijava</h1>
+        <h1 class="display-4">Uredi prijavo</h1>
     </div>
-
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Message"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
 
     @if (TempData["Error"] != null)
     {
@@ -31,7 +23,6 @@
         <div class="col-md-8 col-lg-6">
             <div class="card shadow-sm p-4">
                 <form method="post" enctype="multipart/form-data">
-
                     <div class="mb-3">
                         <label asp-for="Title" class="form-label fw-bold">Naslov prijave</label>
                         <input asp-for="Title" class="form-control" placeholder="Vnesite kratek naslov..." />
@@ -58,14 +49,26 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
+                    @if (!string.IsNullOrEmpty(Model.CurrentImagePath))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Trenutna slika</label>
+                            <div>
+                                <img src="@Model.CurrentImagePath" alt="Trenutna slika" class="img-thumbnail" style="max-height: 200px;">
+                            </div>
+                        </div>
+                    }
+
                     <div class="mb-3">
-                        <label asp-for="Image" class="form-label">Slika (neobvezno)</label>
-                        <input asp-for="Image" type="file" class="form-control" accept="image/*" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <label asp-for="NewImage" class="form-label">Nova slika (neobvezno)</label>
+                        <input asp-for="NewImage" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="NewImage" class="text-danger"></span>
+                        <small class="text-muted">Če želite obdržati staro sliko, pustite to polje prazno.</small>
                     </div>
 
                     <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary btn-lg">Objavi</button>
+                        <button type="submit" class="btn btn-primary btn-lg">💾 Shrani spremembe</button>
+                        <a asp-page="/Pregled" class="btn btn-secondary btn-lg">❌ Prekliči</a>
                     </div>
                 </form>
             </div>

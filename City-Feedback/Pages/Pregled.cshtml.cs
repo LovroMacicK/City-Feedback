@@ -11,7 +11,8 @@ namespace City_Feedback.Pages
         private readonly string _jsonFilePath;
         private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            WriteIndented = true
         };
 
         public PregledModel()
@@ -39,6 +40,30 @@ namespace City_Feedback.Pages
 
             LoadUserData(username);
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+        {
+            var username = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(username))
+            {
+                TempData["Error"] = "Za brisanje prijave se morate prijaviti.";
+                return RedirectToPage("/Login");
+            }
+
+            bool success = await DeletePrijava(username, id);
+
+            if (success)
+            {
+                TempData["Message"] = "Prijava je bila uspešno izbrisana!";
+            }
+            else
+            {
+                TempData["Error"] = "Napaka pri brisanju prijave.";
+            }
+
+            return RedirectToPage();
         }
 
         private void LoadUserData(string username)
@@ -76,6 +101,50 @@ namespace City_Feedback.Pages
             catch
             {
                 // V primeru napake uporabi privzete vrednosti
+            }
+        }
+
+        private async Task<bool> DeletePrijava(string username, Guid prijavaId)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+            {
+                return false;
+            }
+
+            try
+            {
+                string jsonString = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+
+                if (allUsers == null)
+                {
+                    return false;
+                }
+
+                var user = allUsers.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+                if (user?.Prijave == null)
+                {
+                    return false;
+                }
+
+                var prijavaToDelete = user.Prijave.FirstOrDefault(p => p.Id == prijavaId);
+
+                if (prijavaToDelete == null)
+                {
+                    return false;
+                }
+
+                user.Prijave.Remove(prijavaToDelete);
+
+                var updatedJsonString = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                await System.IO.File.WriteAllTextAsync(_jsonFilePath, updatedJsonString);
+
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

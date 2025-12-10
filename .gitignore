@@ -1,1 +1,23 @@
 .vs
+## Za Visual Studio, .NET Core in Razor Pages ##
+
+# Binarni izhodi in začasne datoteke
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+# Datoteke specifične za Visual Studio IDE
+.vs/
+*.suo
+*.user
+*.pdb
+*.tmp
+
+# Drugi generirani pomnilniki in dnevniki
+*.cache
+*.log
+
+# Orodja in paketi
+**/packages/
+**/node_modules/

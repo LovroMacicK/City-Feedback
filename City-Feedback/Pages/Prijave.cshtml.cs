@@ -133,8 +133,8 @@ namespace City_Feedback.Pages
                     SteviloVseckov = 0,
                     JeReseno = false,
                     LikedBy = new List<string>(),
-                    ImeLastnika = ownerFullName,
-                    ProfilnaSlikaLastnika = ownerProfilePicture,
+                    OwnerUsername = ownerFullName,
+                    OwnerProfilePicture = ownerProfilePicture,
                     Kategorija = Category ?? "Ostalo"
                 };
 
