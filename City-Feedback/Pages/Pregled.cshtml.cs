@@ -100,7 +100,6 @@ namespace City_Feedback.Pages
             }
             catch
             {
-                // V primeru napake uporabi privzete vrednosti
             }
         }
 

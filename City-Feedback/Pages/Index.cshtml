@@ -141,7 +141,7 @@
                 {
                     var hasLiked = prijava.LikedBy != null && !string.IsNullOrEmpty(Model.CurrentUsername) && prijava.LikedBy.Contains(Model.CurrentUsername);
 
-                    <div class="card mb-3 shadow-sm">
+                    <div class="card mb-3 shadow-sm" style="cursor: pointer;" onclick="window.location.href='@Url.Page("/PodrobnostiPrijave", new { id = prijava.Id })'">
                         @if (!string.IsNullOrEmpty(prijava.SlikaPot))
                         {
                             <img src="@prijava.SlikaPot" class="card-img-top" alt="Slika prijave" style="max-height: 400px; object-fit: cover;">
@@ -185,8 +185,9 @@
 
                             <hr />
 
-                            <div class="d-flex justify-content-end">
-                                <form method="post" asp-page-handler="Vote" asp-route-id="@prijava.Id">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">💬 @(prijava.Komentarji?.Count ?? 0) komentarjev</span>
+                                <form method="post" asp-page-handler="Vote" asp-route-id="@prijava.Id" onclick="event.stopPropagation();">
                                     @if (hasLiked)
                                     {
                                         <button type="submit" class="btn btn-danger btn-sm">
