@@ -3,6 +3,8 @@ wwwroot\favicon.ico
 wwwroot\images\prijave\05876e96-10b7-435c-81c2-ba5bd2d8b28c.jpg
 wwwroot\images\prijave\0b6dc639-6100-4e44-9a5b-8e2daec551d0.jpg
 wwwroot\images\prijave\24128ba3-a0f3-4cf8-962c-1bcda4ffaae7.jpg
+wwwroot\images\prijave\4ac316c3-f39a-4b70-a4a3-18e185345432.jpg
+wwwroot\images\prijave\9dd77392-78ce-4ed9-8ec9-00ff547d93c5.jpg
 wwwroot\images\prijave\c430468d-c846-42fc-8885-7abdbba242ad.jpg
 wwwroot\images\prijave\c58ff2b4-1684-4a76-94c8-ac5a81021a01.jpg
 wwwroot\images\profiles\53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg

@@ -8,6 +8,23 @@
     <div class="text-center mb-5">
         <h1 class="display-4">Moj pregled</h1>
     </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="row justify-content-center mb-5">
         <div class="col-md-10 col-lg-8">
             <div class="card shadow-sm">
@@ -56,49 +73,53 @@
             </div>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
             <h3 class="mb-4">📋 Moje prijave</h3>
 
             @if (Model.UserPrijave.Count > 0)
             {
-                @foreach (var prijava in Model.UserPrijave)
-                {
-                    <div class="card mb-3 shadow-sm">
-                        @if (!string.IsNullOrEmpty(prijava.SlikaPot))
-                        {
-                            <img src="@prijava.SlikaPot" class="card-img-top" alt="Slika prijave" style="max-height: 300px; object-fit: cover;">
-                        }
-
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="card-title text-primary mb-0">
-                                    @prijava.Naslov
-
-                                    @if (prijava.JeReseno)
-                                    {
-                                        <span class="badge bg-success ms-2" style="font-size: 0.6em;">✅ OPRAVLJENO</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6em;">⏳ ČAKA</span>
-                                    }
-                                </h5>
-                                <small class="text-muted">@prijava.Datum.ToString("dd.MM.yyyy HH:mm")</small>
-                            </div>
-
-                            <p class="card-text">@prijava.Opis</p>
-
-                            <hr />
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="badge bg-danger">❤️ @prijava.SteviloVseckov všečkov</span>
+                <div class="list-group">
+                    @foreach (var prijava in Model.UserPrijave)
+                    {
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <div class="flex-grow-1">
+                                    <h5 class="mb-1">
+                                        @prijava.Naslov
+                                        @if (prijava.JeReseno)
+                                        {
+                                            <span class="badge bg-success ms-2">✅ OPRAVLJENO</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark ms-2">⏳ ČAKA</span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(prijava.Kategorija))
+                                        {
+                                            <span class="badge bg-info text-dark ms-2">@prijava.Kategorija</span>
+                                        }
+                                    </h5>
+                                    <small class="text-muted">
+                                        @prijava.Datum.ToString("dd.MM.yyyy HH:mm") · ❤️ @prijava.SteviloVseckov všečkov
+                                    </small>
+                                </div>
+                                <div class="btn-group ms-3" role="group">
+                                    <a asp-page="/UrejanjeObjav" asp-route-id="@prijava.Id" class="btn btn-sm btn-outline-primary">
+                                        ✏️ Uredi
+                                    </a>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@prijava.Id" class="d-inline" 
+                                          onsubmit="return confirm('Ali ste prepričani, da želite izbrisati to prijavo?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            🗑️ Odstrani
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             }
             else
             {

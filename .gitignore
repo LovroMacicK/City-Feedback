@@ -1,1 +1,20 @@
 .vs
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+.vs/
+*.suo
+*.user
+*.pdb
+*.tmp
+**/packages/
+**/node_modules/
+wwwroot/lib/
+wwwroot/dist/
+*.mdf
+*.ldf
+*.publishsettings
+appsettings.Development.json # Včasih, če so občutljivi podatki, ampak običajno je del source code-a
+.vshost.exe
+.vshost.exe.config
