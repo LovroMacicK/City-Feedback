@@ -21,32 +21,6 @@
         "OwnerUsername": null,
         "OwnerProfilePicture": null,
         "Kategorija": "Ostalo"
-      },
-      {
-        "Id": "6c44f5a1-04da-4d98-a9f6-c1abd12f7783",
-        "Naslov": "Zjebana cesta",
-        "Opis": "Vse je zjebano jebem vam mater",
-        "Datum": "2025-12-10T16:32:38.4012783+01:00",
-        "SlikaPot": "/images/prijave/4ac316c3-f39a-4b70-a4a3-18e185345432.jpg",
-        "SteviloVseckov": 0,
-        "JeReseno": false,
-        "LikedBy": [],
-        "OwnerUsername": null,
-        "OwnerProfilePicture": null,
-        "Kategorija": "Ceste"
-      },
-      {
-        "Id": "ce1c0670-9516-439b-a530-805d64ee661c",
-        "Naslov": "adas",
-        "Opis": "dasdsa",
-        "Datum": "2025-12-10T16:39:29.7377568+01:00",
-        "SlikaPot": "/images/prijave/9dd77392-78ce-4ed9-8ec9-00ff547d93c5.jpg",
-        "SteviloVseckov": 0,
-        "JeReseno": false,
-        "LikedBy": [],
-        "OwnerUsername": "Crni Janez",
-        "OwnerProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
-        "Kategorija": "Ceste"
       }
     ],
     "IsAdmin": false
