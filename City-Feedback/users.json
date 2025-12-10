@@ -18,9 +18,23 @@
         "SteviloVseckov": 0,
         "JeReseno": false,
         "LikedBy": [],
-        "OwnerUsername": "Crni Janez",
-        "OwnerProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg"
+        "ImeLastnika": null,
+        "ProfilnaSlikaLastnika": null,
+        "Kategorija": "Ostalo"
       }
-    ]
+    ],
+    "IsAdmin": false
+  },
+  {
+    "Id": 2,
+    "Username": "Tijan",
+    "Password": "123",
+    "FullName": null,
+    "Email": null,
+    "PhoneNumber": null,
+    "ProfilePicturePath": null,
+    "DarkMode": false,
+    "Prijave": null,
+    "IsAdmin": false
   }
 ]

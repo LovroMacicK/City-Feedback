@@ -1,4 +1,6 @@
-﻿namespace City_Feedback.Models
+﻿using System.Text.Json.Serialization;
+
+namespace City_Feedback.Models
 {
     public class Prijava
     {
@@ -13,5 +15,10 @@
         public string ImeLastnika { get; set; }
         public string ProfilnaSlikaLastnika { get; set; }
         public string Kategorija { get; set; } = "Ostalo";
+        [JsonIgnore]
+        public string OwnerUsername { get; set; }
+
+        [JsonIgnore]
+        public string OwnerProfilePicture { get; set; }
     }
 }
