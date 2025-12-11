@@ -39,7 +39,7 @@ namespace City_Feedback.Tests
             Assert.AreEqual("Ostalo", prijava.Kategorija);
         }
 
-        // 3. Test: Preveri delovanje seznama komentarjev (BREZ avtorja)
+        // 3. Test: Preveri delovanje seznama komentarjev 
         [TestMethod]
         public void Test_Prijava_DodajanjeKomentarja()
         {
