@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("City-Feedback.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f176dd9ce200504aedab44f3de32bbed52e5a644")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ca7ddaf74a67cb50c071ef636882f874ddeb044")]
 [assembly: System.Reflection.AssemblyProductAttribute("City-Feedback.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("City-Feedback.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
