@@ -80,5 +80,17 @@
     "DarkMode": false,
     "Prijave": null,
     "IsAdmin": false
+  },
+  {
+    "Id": 4,
+    "Username": "testuser",
+    "Password": "geslo",
+    "FullName": "sdasd",
+    "Email": "adssd@sadas.com",
+    "PhoneNumber": "3243243",
+    "ProfilePicturePath": "/images/default_profile.png",
+    "DarkMode": false,
+    "Prijave": null,
+    "IsAdmin": false
   }
 ]

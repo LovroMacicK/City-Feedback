@@ -101,16 +101,12 @@
     document.addEventListener('DOMContentLoaded', () => {
         const switchInput = document.getElementById('darkModeSwitch');
         const htmlElement = document.documentElement;
-
-        // Naloži shranjeno nastavitev iz localStorage (za takojšnjo uporabo)
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             htmlElement.setAttribute('data-bs-theme', 'dark');
         } else {
             htmlElement.setAttribute('data-bs-theme', 'light');
         }
-
-        // Uporabi vrednost iz modela (iz users.json)
         if (switchInput.checked) {
             htmlElement.setAttribute('data-bs-theme', 'dark');
             localStorage.setItem('theme', 'dark');
@@ -129,8 +125,6 @@
                 htmlElement.setAttribute('data-bs-theme', 'light');
                 localStorage.setItem('theme', 'light');
             }
-
-            // Shrani v users.json
             try {
                 const response = await fetch('/Profile?handler=ToggleDarkMode', {
                     method: 'POST',
