@@ -8,35 +8,7 @@
     "PhoneNumber": "909293",
     "ProfilePicturePath": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
     "DarkMode": true,
-    "Prijave": [
-      {
-        "Id": "38bedaf3-c9bd-4a19-b222-1003c12184af",
-        "Naslov": "Fla\u0161e od martinovanja",
-        "Opis": "Prokleti pijanci eni",
-        "Datum": "2025-12-10T16:03:25.6774657+01:00",
-        "SlikaPot": "/images/prijave/24128ba3-a0f3-4cf8-962c-1bcda4ffaae7.jpg",
-        "SteviloVseckov": 2,
-        "JeReseno": false,
-        "LikedBy": [
-          "Tijan",
-          "obcina"
-        ],
-        "OwnerUsername": null,
-        "OwnerProfilePicture": null,
-        "Kategorija": "Ostalo",
-        "LastUpdated": "2025-12-11T11:58:01.1848682+01:00",
-        "Komentarji": [
-          {
-            "Id": "76d21c20-ba01-4fc1-a0d4-ac27e9bfdb96",
-            "Vsebina": "waw",
-            "Datum": "2025-12-11T12:23:56.437184+01:00",
-            "Username": "Tijan",
-            "UserFullName": "Tijan Pa\u0161kvan",
-            "UserProfilePicture": "/images/profiles/b22c64a5-dddd-4a19-b583-9d3bc32155a6.png"
-          }
-        ]
-      }
-    ],
+    "Prijave": [],
     "IsAdmin": false
   },
   {
@@ -55,10 +27,11 @@
         "Opis": "awfawfawf",
         "Datum": "2025-12-11T12:23:36.4838695+01:00",
         "SlikaPot": "/images/prijave/bf9ce1c0-5da0-44ff-8996-ee5a875bbb92.png",
-        "SteviloVseckov": 1,
+        "SteviloVseckov": 2,
         "JeReseno": false,
         "LikedBy": [
-          "obcina"
+          "obcina",
+          "admin"
         ],
         "OwnerUsername": "Tijan Pa\u0161kvan",
         "OwnerProfilePicture": "/images/profiles/b22c64a5-dddd-4a19-b583-9d3bc32155a6.png",

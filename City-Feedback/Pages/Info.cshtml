@@ -4,12 +4,35 @@
     ViewData["Title"] = "Home page";
 }
 <div class="container">
-    <div class="text-center mb-5">
+    <div class="text-center mb-5 mt-4">
         <h1 class="display-4">City Feedback</h1>
+        <p class="text-muted">Vaš glas za boljše mesto</p>
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-4">
-            <p class="justify-content-center">City Feedback je informacijski sistem, namenjen izboljšanju komunikacije med občani in občino.</p>
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <p class="mb-3">
+                        City Feedback je informacijski sistem, namenjen izboljšanju komunikacije med občani in občino.
+                    </p>
+                    <p class="mb-3">
+                        Platforma omogoča hitro in enostavno prijavljanje komunalnih težav, kot so poškodovane ceste, 
+                        nedelujoča javna razsvetljava, neurejeni javni prostori in druge težave v vašem okolju.
+                    </p>
+                    <p class="mb-0">
+                        Z možnostjo komentiranja in všečkanja prijav lahko občani skupaj poudarijo pomembne težave 
+                        in spremljajo njihovo reševanje. Sodelujte in pomagajte ustvariti boljše okolje za vse!
+                    </p>
+                </div>
+            </div>
+
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="text-center mt-4">
+                    <a asp-page="/Register" class="btn btn-primary me-2">Registracija</a>
+                    <a asp-page="/Login" class="btn btn-outline-primary">Prijava</a>
+                </div>
+            }
         </div>
     </div>
 </div>

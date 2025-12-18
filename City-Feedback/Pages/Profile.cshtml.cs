@@ -154,16 +154,23 @@ namespace City_Feedback.Pages
 
         public async Task<IActionResult> OnPostToggleDarkModeAsync([FromBody] DarkModeRequest request)
         {
-            var currentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
+            var username = User.FindFirst(ClaimTypes.Name)?.Value;
 
-            if (string.IsNullOrEmpty(currentUsername))
+            if (string.IsNullOrEmpty(username))
             {
                 return new JsonResult(new { success = false, message = "Uporabnik ni prijavljen" });
             }
 
-            bool success = await UpdateDarkMode(currentUsername, request.DarkMode);
+            bool success = await UpdateDarkMode(username, request.DarkMode);
 
-            return new JsonResult(new { success = success });
+            if (success)
+            {
+                return new JsonResult(new { success = true, message = "Nastavitev je bila posodobljena" });
+            }
+            else
+            {
+                return new JsonResult(new { success = false, message = "Napaka pri posodabljanju" });
+            }
         }
 
         private UserCredentials LoadUserProfile(string username)
@@ -257,14 +264,14 @@ namespace City_Feedback.Pages
                         return false;
                     }
 
-                    var userToUpdate = allUsers.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+                    var user = allUsers.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
 
-                    if (userToUpdate == null)
+                    if (user == null)
                     {
                         return false;
                     }
 
-                    userToUpdate.DarkMode = darkMode;
+                    user.DarkMode = darkMode;
 
                     var updatedJsonString = JsonSerializer.Serialize(allUsers, _jsonOptions);
                     await System.IO.File.WriteAllTextAsync(_jsonFilePath, updatedJsonString);
