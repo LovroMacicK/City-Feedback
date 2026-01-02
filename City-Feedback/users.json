@@ -9,7 +9,9 @@
     "ProfilePicturePath": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
     "DarkMode": true,
     "Prijave": [],
-    "IsAdmin": false
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
   },
   {
     "Id": 2,
@@ -19,7 +21,7 @@
     "Email": "tijan2005@gmail.com",
     "PhoneNumber": "934935844",
     "ProfilePicturePath": "/images/profiles/b22c64a5-dddd-4a19-b583-9d3bc32155a6.png",
-    "DarkMode": false,
+    "DarkMode": true,
     "Prijave": [
       {
         "Id": "04f7ac3f-918e-4ead-8558-8f9a99772069",
@@ -40,7 +42,9 @@
         "Komentarji": []
       }
     ],
-    "IsAdmin": false
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
   },
   {
     "Id": 3,
@@ -52,7 +56,9 @@
     "ProfilePicturePath": null,
     "DarkMode": false,
     "Prijave": null,
-    "IsAdmin": false
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
   },
   {
     "Id": 4,
@@ -64,6 +70,8 @@
     "ProfilePicturePath": "/images/default_profile.png",
     "DarkMode": false,
     "Prijave": null,
-    "IsAdmin": false
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
   }
 ]
