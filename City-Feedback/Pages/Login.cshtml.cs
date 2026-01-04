@@ -44,32 +44,6 @@ namespace City_Feedback.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // ---------------------------------------------------------
-            // 1. POSEBEN PREHOD ZA OBČINO (Admin)
-            // ---------------------------------------------------------
-            if (credential.Username == "obcina" && credential.Password == "admin")
-            {
-                // Nastavimo sejo, da vemo, da je to admin
-                HttpContext.Session.SetString("JeAdmin", "DA");
-
-                // POPRAVEK: Shrani "obcina" kot uporabniško ime, ne "Občina Admin"
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, "obcina"),
-                    new Claim(ClaimTypes.Role, "Admin")
-                };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties { IsPersistent = false };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
-                // Preusmerimo na admin stran
-                return RedirectToPage("/Obcina");
-            }
-
-            // ---------------------------------------------------------
-            // 2. PREVERJANJE NAVADNIH UPORABNIKOV (users.json)
-            // ---------------------------------------------------------
             var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
 
             if (!System.IO.File.Exists(jsonFilePath))
@@ -91,35 +65,45 @@ namespace City_Feedback.Pages
                 return Page();
             }
 
-            // Preverimo uporabnika v JSON datoteki
             var authenticatedUser = allUsers?.FirstOrDefault(u =>
                 u.Username.Equals(credential.Username, StringComparison.OrdinalIgnoreCase) &&
                 u.Password == credential.Password);
 
-            if (authenticatedUser != null)
-            {
-                // Če je uporabnik najden, ustvarimo piškotek (Login)
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, authenticatedUser.Username),
-                };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = false,
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
-                // Navadni uporabniki gredo na prvo stran
-                return LocalRedirect("/");
-            }
-            else
+            if (authenticatedUser == null)
             {
                 ModelState.AddModelError(string.Empty, "Napačno ime ali geslo");
                 return Page();
             }
+
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, authenticatedUser.Username),
+    };
+
+            if (authenticatedUser.IsAdmin)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                HttpContext.Session.SetString("JeAdmin", "DA");
+            }
+            else
+            {
+                HttpContext.Session.Remove("JeAdmin");
+            }
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties { IsPersistent = false };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties
+            );
+
+            if (authenticatedUser.IsAdmin)
+                return RedirectToPage("/Obcina");
+
+            return LocalRedirect("/");
         }
+
     }
 }
