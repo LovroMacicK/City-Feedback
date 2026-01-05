@@ -8,27 +8,7 @@
     "PhoneNumber": "909293",
     "ProfilePicturePath": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
     "DarkMode": true,
-<<<<<<< HEAD
-    "Prijave": [
-      {
-        "Id": "0bec3e3a-2b68-41b1-a4e9-3eab1239ed39",
-        "Naslov": "Urejeno",
-        "Opis": "ertert",
-        "Datum": "2025-12-18T11:45:56.4099406+01:00",
-        "SlikaPot": "/images/prijave/84bc12a0-5360-4d1c-9026-08c24e59d715.jpg",
-        "SteviloVseckov": 0,
-        "JeReseno": false,
-        "LikedBy": [],
-        "OwnerUsername": "Janez",
-        "OwnerProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
-        "Kategorija": "Ceste",
-        "LastUpdated": "2025-12-18T11:45:56.409935+01:00",
-        "Komentarji": []
-      }
-    ],
-=======
     "Prijave": [],
->>>>>>> d49c17794974ca642b582274bdf7cc56fcd93e61
     "IsAdmin": false,
     "ResetToken": null,
     "ResetTokenExpiry": null
@@ -110,18 +90,6 @@
     "ResetTokenExpiry": null
   },
   {
-<<<<<<< HEAD
-    "Id": 5,
-    "Username": "miha",
-    "Password": "geslo",
-    "FullName": null,
-    "Email": null,
-    "PhoneNumber": null,
-    "ProfilePicturePath": null,
-    "DarkMode": false,
-    "Prijave": null,
-    "IsAdmin": false,
-=======
     "Id": 999,
     "Username": "obcina",
     "Password": "admin",
@@ -132,7 +100,6 @@
     "DarkMode": false,
     "Prijave": [],
     "IsAdmin": true,
->>>>>>> d49c17794974ca642b582274bdf7cc56fcd93e61
     "ResetToken": null,
     "ResetTokenExpiry": null
   }
