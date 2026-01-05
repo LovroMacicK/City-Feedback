@@ -8,6 +8,7 @@
     "PhoneNumber": "909293",
     "ProfilePicturePath": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
     "DarkMode": true,
+<<<<<<< HEAD
     "Prijave": [
       {
         "Id": "0bec3e3a-2b68-41b1-a4e9-3eab1239ed39",
@@ -25,6 +26,9 @@
         "Komentarji": []
       }
     ],
+=======
+    "Prijave": [],
+>>>>>>> d49c17794974ca642b582274bdf7cc56fcd93e61
     "IsAdmin": false,
     "ResetToken": null,
     "ResetTokenExpiry": null
@@ -37,7 +41,7 @@
     "Email": "tijan2005@gmail.com",
     "PhoneNumber": "934935844",
     "ProfilePicturePath": "/images/profiles/b22c64a5-dddd-4a19-b583-9d3bc32155a6.png",
-    "DarkMode": false,
+    "DarkMode": true,
     "Prijave": [
       {
         "Id": "04f7ac3f-918e-4ead-8558-8f9a99772069",
@@ -46,7 +50,7 @@
         "Datum": "2025-12-11T12:23:36.4838695+01:00",
         "SlikaPot": "/images/prijave/bf9ce1c0-5da0-44ff-8996-ee5a875bbb92.png",
         "SteviloVseckov": 2,
-        "JeReseno": false,
+        "JeReseno": true,
         "LikedBy": [
           "obcina",
           "admin"
@@ -54,7 +58,22 @@
         "OwnerUsername": "Tijan Pa\u0161kvan",
         "OwnerProfilePicture": "/images/profiles/b22c64a5-dddd-4a19-b583-9d3bc32155a6.png",
         "Kategorija": "Vandalizem",
-        "LastUpdated": "2025-12-11T12:23:36.4838559+01:00",
+        "LastUpdated": "2026-01-04T15:02:15.7465427+01:00",
+        "Komentarji": []
+      },
+      {
+        "Id": "46033c7c-446c-4be6-ac3d-cb5bc2c6bb0a",
+        "Naslov": "test",
+        "Opis": "Test",
+        "Datum": "2026-01-04T14:42:52.2632147+01:00",
+        "SlikaPot": "/images/prijave/a81c5d75-2c30-4793-815a-86e872427454.png",
+        "SteviloVseckov": 0,
+        "JeReseno": false,
+        "LikedBy": [],
+        "OwnerUsername": "Tijan Pa\u0161kvan",
+        "OwnerProfilePicture": "/images/profiles/b22c64a5-dddd-4a19-b583-9d3bc32155a6.png",
+        "Kategorija": "Javni prevoz",
+        "LastUpdated": "2026-01-04T15:02:06.5140746+01:00",
         "Komentarji": []
       }
     ],
@@ -91,6 +110,7 @@
     "ResetTokenExpiry": null
   },
   {
+<<<<<<< HEAD
     "Id": 5,
     "Username": "miha",
     "Password": "geslo",
@@ -101,6 +121,18 @@
     "DarkMode": false,
     "Prijave": null,
     "IsAdmin": false,
+=======
+    "Id": 999,
+    "Username": "obcina",
+    "Password": "admin",
+    "FullName": "Ob\u010Dina",
+    "Email": "obcina@gmail.com",
+    "PhoneNumber": "666555444",
+    "ProfilePicturePath": "/images/profiles/e04d86f4-ad9b-434e-9007-fa8d3f0a43cc.png",
+    "DarkMode": false,
+    "Prijave": [],
+    "IsAdmin": true,
+>>>>>>> d49c17794974ca642b582274bdf7cc56fcd93e61
     "ResetToken": null,
     "ResetTokenExpiry": null
   }

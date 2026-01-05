@@ -80,6 +80,14 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Prijave">Nova prijava</a>
                             </li>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Obcina">Administracija</a>
+                                </li>
+                            }
+
                         }
                         else
                         {

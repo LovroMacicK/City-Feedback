@@ -2,6 +2,7 @@
 
 namespace City_Feedback.Models
 {
+    
     public class Prijava
     {
         public Guid Id { get; set; }
