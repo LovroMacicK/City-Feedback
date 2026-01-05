@@ -13,3 +13,7 @@ City-Feedback\.vs
 *.log
 **/packages/
 **/node_modules/
+City-Feedback.Tests/obj/Debug/net8.0/City-Feedback.Tests.csproj.AssemblyReference.cache
+City-Feedback.Tests/obj/Debug/net8.0/City-Feedback.Tests.AssemblyInfo.cs
+City-Feedback.Tests/obj/Debug/net8.0/City-Feedback.Tests.AssemblyInfoInputs.cache
+City-Feedback.Tests/obj/Debug/net8.0/City-Feedback.Tests.csproj.AssemblyReference.cache
