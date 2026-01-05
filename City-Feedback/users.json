@@ -3,13 +3,31 @@
     "Id": 1,
     "Username": "admin",
     "Password": "geslo",
-    "FullName": "Crni Janez",
-    "Email": "luli@mail.com",
+    "FullName": "Janez",
+    "Email": "Janez@mail.com",
     "PhoneNumber": "909293",
     "ProfilePicturePath": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
     "DarkMode": true,
-    "Prijave": [],
-    "IsAdmin": false
+    "Prijave": [
+      {
+        "Id": "0bec3e3a-2b68-41b1-a4e9-3eab1239ed39",
+        "Naslov": "Urejeno",
+        "Opis": "ertert",
+        "Datum": "2025-12-18T11:45:56.4099406+01:00",
+        "SlikaPot": "/images/prijave/84bc12a0-5360-4d1c-9026-08c24e59d715.jpg",
+        "SteviloVseckov": 0,
+        "JeReseno": false,
+        "LikedBy": [],
+        "OwnerUsername": "Janez",
+        "OwnerProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
+        "Kategorija": "Ceste",
+        "LastUpdated": "2025-12-18T11:45:56.409935+01:00",
+        "Komentarji": []
+      }
+    ],
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
   },
   {
     "Id": 2,
@@ -40,7 +58,9 @@
         "Komentarji": []
       }
     ],
-    "IsAdmin": false
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
   },
   {
     "Id": 3,
@@ -52,7 +72,9 @@
     "ProfilePicturePath": null,
     "DarkMode": false,
     "Prijave": null,
-    "IsAdmin": false
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
   },
   {
     "Id": 4,
@@ -64,6 +86,22 @@
     "ProfilePicturePath": "/images/default_profile.png",
     "DarkMode": false,
     "Prijave": null,
-    "IsAdmin": false
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
+  },
+  {
+    "Id": 5,
+    "Username": "miha",
+    "Password": "geslo",
+    "FullName": null,
+    "Email": null,
+    "PhoneNumber": null,
+    "ProfilePicturePath": null,
+    "DarkMode": false,
+    "Prijave": null,
+    "IsAdmin": false,
+    "ResetToken": null,
+    "ResetTokenExpiry": null
   }
 ]
