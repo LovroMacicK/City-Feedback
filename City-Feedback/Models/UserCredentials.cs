@@ -16,5 +16,6 @@ namespace City_Feedback.Models
         public bool IsAdmin { get; set; }
         public string? ResetToken { get; set; }
         public DateTime? ResetTokenExpiry { get; set; }
+        public string? Obcina { get; set; }
     }
 }

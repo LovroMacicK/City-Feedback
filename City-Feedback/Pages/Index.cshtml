@@ -129,7 +129,9 @@
             {
                 foreach (var prijava in Model.Prijave)
                 {
-                    var hasLiked = prijava.LikedBy != null && !string.IsNullOrEmpty(Model.CurrentUsername) && prijava.LikedBy.Contains(Model.CurrentUsername);
+                    var hasUpvoted = prijava.UpvotedBy != null && !string.IsNullOrEmpty(Model.CurrentUsername) && prijava.UpvotedBy.Contains(Model.CurrentUsername);
+                    var hasDownvoted = prijava.DownvotedBy != null && !string.IsNullOrEmpty(Model.CurrentUsername) && prijava.DownvotedBy.Contains(Model.CurrentUsername);
+                    var netVotes = prijava.Upvotes - prijava.Downvotes;
 
                     <div class="card mb-3 shadow-sm" style="cursor: pointer;" onclick="window.location.href='@Url.Page("/PodrobnostiPrijave", new { id = prijava.Id })'">
                         @if (!string.IsNullOrEmpty(prijava.SlikaPot))
@@ -172,26 +174,29 @@
                         <hr />
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">💬 @(prijava.Komentarji?.Count ?? 0) komentarjev</span>
-                            <form method="post" asp-page-handler="Vote" asp-route-id="@prijava.Id" onclick="event.stopPropagation();">
-                                @if (hasLiked)
-                                    {
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    ❤️ <span class="badge bg-light text-danger ms-1">@prijava.SteviloVseckov</span>
-                                </button>
-                                    }
-                                    else
-                                    {
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    ❤️ <span class="badge bg-danger ms-1">@prijava.SteviloVseckov</span>
-                                </button>
-                                    }
-                            </form>
+                            <div>
+                                <span class="text-muted">💬 @(prijava.Komentarji?.Count ?? 0) komentarjev</span>
+                            </div>
+                            <div class="d-flex gap-2" onclick="event.stopPropagation();">
+                                <form method="post" asp-page-handler="Upvote" asp-route-id="@prijava.Id">
+                                    <button type="submit" class="btn @(hasUpvoted ? "btn-success" : "btn-outline-success") btn-sm">
+                                        👍 <span class="badge @(hasUpvoted ? "bg-light text-success" : "bg-success")">@prijava.Upvotes</span>
+                                    </button>
+                                </form>
+                                <span class="badge @(netVotes > 0 ? "bg-success" : netVotes < 0 ? "bg-danger" : "bg-secondary") align-self-center">
+                                    @(netVotes > 0 ? "+" : "")@netVotes
+                                </span>
+                                <form method="post" asp-page-handler="Downvote" asp-route-id="@prijava.Id">
+                                    <button type="submit" class="btn @(hasDownvoted ? "btn-danger" : "btn-outline-danger") btn-sm">
+                                        👎 <span class="badge @(hasDownvoted ? "bg-light text-danger" : "bg-danger")">@prijava.Downvotes</span>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                         @if (User.Identity?.Name == prijava.OwnerUsername)
 {
                         <a href="/Edit?id=@prijava.Id"
-                           class="btn btn-outline-primary btn-sm ms-2"
+                           class="btn btn-outline-primary btn-sm ms-2 mt-2"
                            onclick="event.stopPropagation();">
                             ✏ Uredi
                         </a>

@@ -44,6 +44,12 @@ namespace City_Feedback.Pages
         [BindProperty]
         public string Category { get; set; }
 
+        [BindProperty]
+        public string Obcina { get; set; }
+
+        [BindProperty]
+        public string Lokacija { get; set; }
+
         public List<Prijava> Prijave { get; set; } = new List<Prijava>();
         public string CurrentUsername { get; set; }
 
@@ -68,6 +74,7 @@ namespace City_Feedback.Pages
                     return RedirectToPage("/Login");
                 }
 
+                // Slika ni obvezna, odstranimo validacijo
                 ModelState.Remove(nameof(Image));
 
                 if (string.IsNullOrWhiteSpace(Title))
@@ -80,13 +87,19 @@ namespace City_Feedback.Pages
                     ModelState.AddModelError(nameof(Description), "Opis je obvezen.");
                 }
 
-                if (Image != null && Image.Length > MaxFileSize)
+                if (string.IsNullOrWhiteSpace(Lokacija))
                 {
-                    ModelState.AddModelError(nameof(Image), $"Slika ne sme biti večja od {MaxFileSize / 1024 / 1024} MB.");
+                    ModelState.AddModelError(nameof(Lokacija), "Lokacija je obvezna.");
                 }
 
+                // Validacija samo če je slika naložena
                 if (Image != null && Image.Length > 0)
                 {
+                    if (Image.Length > MaxFileSize)
+                    {
+                        ModelState.AddModelError(nameof(Image), $"Slika ne sme biti večja od {MaxFileSize / 1024 / 1024} MB.");
+                    }
+
                     var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
                     var extension = Path.GetExtension(Image.FileName).ToLowerInvariant();
 
@@ -134,7 +147,9 @@ namespace City_Feedback.Pages
                     LikedBy = new List<string>(),
                     OwnerUsername = ownerFullName,
                     OwnerProfilePicture = ownerProfilePicture,
-                    Kategorija = Category ?? "Ostalo"
+                    Kategorija = Category ?? "Ostalo",
+                    Obcina = Obcina ?? "Ljubljana",
+                    Lokacija = Lokacija
                 };
 
                 bool success = await AddPrijavaToUser(currentUsername, novaPrijava);
@@ -161,7 +176,7 @@ namespace City_Feedback.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostVoteAsync(Guid id)
+        public async Task<IActionResult> OnPostUpvoteAsync(Guid id)
         {
             var currentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
 
@@ -171,15 +186,43 @@ namespace City_Feedback.Pages
                 return RedirectToPage("/Login");
             }
 
-            var result = await ToggleLike(id, currentUsername);
+            var result = await ToggleUpvote(id, currentUsername);
 
             if (result == "added")
             {
-                TempData["Message"] = "Všeček dodan!";
+                TempData["Message"] = "Upvote dodan!";
             }
             else if (result == "removed")
             {
-                TempData["Message"] = "Všeček odstranjen!";
+                TempData["Message"] = "Upvote odstranjen!";
+            }
+            else
+            {
+                TempData["Error"] = "Napaka pri glasovanju.";
+            }
+
+            return RedirectToPage("/Index");
+        }
+
+        public async Task<IActionResult> OnPostDownvoteAsync(Guid id)
+        {
+            var currentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (string.IsNullOrEmpty(currentUsername))
+            {
+                TempData["Error"] = "Za glasovanje se morate prijaviti.";
+                return RedirectToPage("/Login");
+            }
+
+            var result = await ToggleDownvote(id, currentUsername);
+
+            if (result == "added")
+            {
+                TempData["Message"] = "Downvote dodan!";
+            }
+            else if (result == "removed")
+            {
+                TempData["Message"] = "Downvote odstranjen!";
             }
             else
             {
@@ -316,6 +359,9 @@ namespace City_Feedback.Pages
                     allPrijave = allPrijave.Where(p => p.Kategorija == category).ToList();
                 }
 
+                // Filter out archived posts
+                allPrijave = allPrijave.Where(p => !p.JeArhivirano).ToList();
+
                 if (sortOrder == "likes")
                 {
                     allPrijave = allPrijave.OrderByDescending(p => p.SteviloVseckov).ToList();
@@ -384,7 +430,7 @@ namespace City_Feedback.Pages
             return false;
         }
 
-        private async Task<string> ToggleLike(Guid prijavaId, string username)
+        private async Task<string> ToggleUpvote(Guid prijavaId, string username)
         {
             if (!System.IO.File.Exists(_jsonFilePath))
             {
@@ -422,23 +468,123 @@ namespace City_Feedback.Pages
                         return "error";
                     }
 
-                    if (targetPrijava.LikedBy == null)
+                    if (targetPrijava.UpvotedBy == null)
                     {
-                        targetPrijava.LikedBy = new List<string>();
+                        targetPrijava.UpvotedBy = new List<string>();
+                    }
+                    if (targetPrijava.DownvotedBy == null)
+                    {
+                        targetPrijava.DownvotedBy = new List<string>();
                     }
 
                     string result;
 
-                    if (targetPrijava.LikedBy.Contains(username))
+                    // Remove downvote if exists
+                    if (targetPrijava.DownvotedBy.Contains(username))
                     {
-                        targetPrijava.LikedBy.Remove(username);
-                        targetPrijava.SteviloVseckov = Math.Max(0, targetPrijava.SteviloVseckov - 1);
+                        targetPrijava.DownvotedBy.Remove(username);
+                        targetPrijava.Downvotes = Math.Max(0, targetPrijava.Downvotes - 1);
+                    }
+
+                    // Toggle upvote
+                    if (targetPrijava.UpvotedBy.Contains(username))
+                    {
+                        targetPrijava.UpvotedBy.Remove(username);
+                        targetPrijava.Upvotes = Math.Max(0, targetPrijava.Upvotes - 1);
                         result = "removed";
                     }
                     else
                     {
-                        targetPrijava.LikedBy.Add(username);
-                        targetPrijava.SteviloVseckov++;
+                        targetPrijava.UpvotedBy.Add(username);
+                        targetPrijava.Upvotes++;
+                        result = "added";
+                    }
+
+                    var updatedJsonString = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                    await System.IO.File.WriteAllTextAsync(_jsonFilePath, updatedJsonString);
+
+                    return result;
+                }
+                catch (IOException) when (attempt < MaxRetries - 1)
+                {
+                    await Task.Delay(200);
+                }
+                catch
+                {
+                    return "error";
+                }
+            }
+
+            return "error";
+        }
+
+        private async Task<string> ToggleDownvote(Guid prijavaId, string username)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+            {
+                return "error";
+            }
+
+            for (int attempt = 0; attempt < MaxRetries; attempt++)
+            {
+                try
+                {
+                    string jsonString = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+
+                    if (allUsers == null)
+                    {
+                        return "error";
+                    }
+
+                    Prijava targetPrijava = null;
+
+                    foreach (var user in allUsers)
+                    {
+                        if (user.Prijave != null)
+                        {
+                            targetPrijava = user.Prijave.FirstOrDefault(p => p.Id == prijavaId);
+                            if (targetPrijava != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (targetPrijava == null)
+                    {
+                        return "error";
+                    }
+
+                    if (targetPrijava.UpvotedBy == null)
+                    {
+                        targetPrijava.UpvotedBy = new List<string>();
+                    }
+                    if (targetPrijava.DownvotedBy == null)
+                    {
+                        targetPrijava.DownvotedBy = new List<string>();
+                    }
+
+                    string result;
+
+                    // Remove upvote if exists
+                    if (targetPrijava.UpvotedBy.Contains(username))
+                    {
+                        targetPrijava.UpvotedBy.Remove(username);
+                        targetPrijava.Upvotes = Math.Max(0, targetPrijava.Upvotes - 1);
+                    }
+
+                    // Toggle downvote
+                    if (targetPrijava.DownvotedBy.Contains(username))
+                    {
+                        targetPrijava.DownvotedBy.Remove(username);
+                        targetPrijava.Downvotes = Math.Max(0, targetPrijava.Downvotes - 1);
+                        result = "removed";
+                    }
+                    else
+                    {
+                        targetPrijava.DownvotedBy.Add(username);
+                        targetPrijava.Downvotes++;
                         result = "added";
                     }
 

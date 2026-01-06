@@ -53,15 +53,33 @@
                     </div>
 
                     <div class="mb-3">
+                        <label asp-for="Obcina" class="form-label fw-bold">Občina</label>
+                        <select asp-for="Obcina" class="form-select">
+                            <option value="Ljubljana">🏛️ Ljubljana</option>
+                            <option value="Maribor">🏛️ Maribor</option>
+                            <option value="Celje">🏛️ Celje</option>
+                            <option value="Kranj">🏛️ Kranj</option>
+                            <option value="Koper">🏛️ Koper</option>
+                        </select>
+                        <span asp-validation-for="Obcina" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
                         <label asp-for="Description" class="form-label fw-bold">Opis</label>
                         <textarea asp-for="Description" class="form-control" rows="4" placeholder="Opišite težavo..."></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Image" class="form-label">Slika (neobvezno)</label>
-                        <input asp-for="Image" type="file" class="form-control" accept="image/*" />
-                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <label for="Image" class="form-label">Slika (neobvezno)</label>
+                        <input type="file" id="Image" name="Image" class="form-control" accept="image/*" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Lokacija" class="form-label fw-bold">📍 Lokacija</label>
+                        <input asp-for="Lokacija" class="form-control" placeholder="npr. Slovenska cesta 10, Ljubljana ali Mestni park, Maribor" required />
+                        <span asp-validation-for="Lokacija" class="text-danger"></span>
+                        <small class="text-muted">Vnesite naslov ali opis lokacije težave</small>
                     </div>
 
                     <div class="d-grid gap-2 mt-4">

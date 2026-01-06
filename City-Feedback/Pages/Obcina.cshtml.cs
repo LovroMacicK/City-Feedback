@@ -36,11 +36,24 @@ namespace City_Feedback.Pages
                 return Page();
             }
 
+            // Najdi trenutnega admina in njegovo obèino
+            var currentUsername = User.Identity?.Name;
+            var currentAdmin = allUsers.FirstOrDefault(u => u.Username.Equals(currentUsername, StringComparison.OrdinalIgnoreCase));
+            var adminObcina = currentAdmin?.Obcina;
+
             // Vse prijave vseh uporabnikov
             var vsePrijave = allUsers
                 .Where(u => u?.Prijave != null)
                 .SelectMany(u => u.Prijave!)
                 .ToList();
+
+            // Filtriraj prijave glede na obèino admina (èe je doloèena)
+            if (!string.IsNullOrEmpty(adminObcina))
+            {
+                vsePrijave = vsePrijave
+                    .Where(p => p.Obcina != null && p.Obcina.Equals(adminObcina, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
 
             // Sort: nerešene (v obdelavi) najprej, potem po všeèkih, potem po datumu
             PrijaveZaObcino = vsePrijave
@@ -72,6 +85,42 @@ namespace City_Feedback.Pages
             return RedirectToPage();
         }
 
+        // Handler: arhiviraj prijavo (JeArhivirano = true)
+        public async Task<IActionResult> OnPostArhivirajAsync(Guid id)
+        {
+            if (!User.IsInRole("Admin"))
+                return RedirectToPage("/Login");
+
+            bool ok = await NastaviArhivAsync(id, true);
+            if (ok)
+            {
+                TempData["Message"] = "Prijava je bila uspešno arhivirana.";
+            }
+            else
+            {
+                TempData["Error"] = "Napaka pri arhiviranju prijave.";
+            }
+            return RedirectToPage();
+        }
+
+        // Handler: razveljavi arhiviranje (JeArhivirano = false)
+        public async Task<IActionResult> OnPostRazveljavljArhivAsync(Guid id)
+        {
+            if (!User.IsInRole("Admin"))
+                return RedirectToPage("/Login");
+
+            bool ok = await NastaviArhivAsync(id, false);
+            if (ok)
+            {
+                TempData["Message"] = "Arhiviranje je bilo razveljavljeno.";
+            }
+            else
+            {
+                TempData["Error"] = "Napaka pri razveljavitvi arhiviranja.";
+            }
+            return RedirectToPage();
+        }
+
         private async Task<bool> NastaviStatusAsync(Guid prijavaId, bool jeReseno)
         {
             if (!System.IO.File.Exists(_jsonFilePath))
@@ -98,6 +147,52 @@ namespace City_Feedback.Pages
                     if (target == null) return false;
 
                     target.JeReseno = jeReseno;
+                    target.LastUpdated = DateTime.Now;
+
+                    string updated = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                    await System.IO.File.WriteAllTextAsync(_jsonFilePath, updated);
+
+                    return true;
+                }
+                catch (IOException) when (attempt < MaxRetries - 1)
+                {
+                    await Task.Delay(200);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        private async Task<bool> NastaviArhivAsync(Guid prijavaId, bool jeArhivirano)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+                return false;
+
+            for (int attempt = 0; attempt < MaxRetries; attempt++)
+            {
+                try
+                {
+                    string json = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(json, _jsonOptions);
+                    if (allUsers == null) return false;
+
+                    // Najdi prijavo v kateremkoli uporabniku
+                    Prijava? target = null;
+                    foreach (var u in allUsers)
+                    {
+                        if (u?.Prijave == null) continue;
+
+                        target = u.Prijave.FirstOrDefault(p => p.Id == prijavaId);
+                        if (target != null) break;
+                    }
+
+                    if (target == null) return false;
+
+                    target.JeArhivirano = jeArhivirano;
                     target.LastUpdated = DateTime.Now;
 
                     string updated = JsonSerializer.Serialize(allUsers, _jsonOptions);

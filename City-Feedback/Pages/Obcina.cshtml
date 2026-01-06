@@ -7,40 +7,91 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">Administracija Občine</h1>
 
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <table class="table table-hover shadow-sm">
         <thead class="table-dark">
             <tr>
                 <th>Naslov</th>
                 <th>Opis</th>
-                <th>Všečkov</th>
+                <th>Glasovi</th>
                 <th>Status</th>
+                <th>Akcije</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.PrijaveZaObcino)
             {
-                <tr class="@(item.JeReseno ? "table-success" : "")">
-                    <td class="fw-bold">@item.Naslov</td>
+                var netVotes = item.Upvotes - item.Downvotes;
+                var rowClass = item.JeArhivirano ? "table-secondary" : item.JeReseno ? "table-success" : "";
+                
+                <tr class="@rowClass">
+                    <td class="fw-bold">
+                        @item.Naslov
+                        @if (item.JeArhivirano)
+                        {
+                            <span class="badge bg-secondary ms-2">📦 Arhivirano</span>
+                        }
+                    </td>
                     <td>@item.Opis</td>
-                    <td class="text-center">@item.SteviloVseckov ❤️</td>
+                    <td class="text-center">
+                        <div>
+                            <span class="badge bg-success">👍 @item.Upvotes</span>
+                            <span class="badge bg-danger">👎 @item.Downvotes</span>
+                        </div>
+                        <small class="text-muted">Neto: @(netVotes > 0 ? "+" : "")@netVotes</small>
+                    </td>
                     <td>
                         <div class="d-flex gap-2">
                             <form method="post" asp-page-handler="OznaciKotReseno" asp-route-id="@item.Id">
                                 <button type="submit"
-                                        class="btn btn-sm @(item.JeReseno ? "btn-success" : "btn-outline-success")">
-                                    Označi kot opravljeno
+                                        class="btn btn-sm @(item.JeReseno ? "btn-success" : "btn-outline-success")"
+                                        @(item.JeArhivirano ? "disabled" : "")>
+                                    ✅ Opravljeno
                                 </button>
                             </form>
 
                             <form method="post" asp-page-handler="OznaciKotVObdelavi" asp-route-id="@item.Id">
                                 <button type="submit"
-                                        class="btn btn-sm @(!item.JeReseno ? "btn-warning" : "btn-outline-warning")">
-                                    Označi v obdelavi
+                                        class="btn btn-sm @(!item.JeReseno ? "btn-warning" : "btn-outline-warning")"
+                                        @(item.JeArhivirano ? "disabled" : "")>
+                                    ⏳ V obdelavi
                                 </button>
                             </form>
                         </div>
                     </td>
-
+                    <td>
+                        @if (item.JeArhivirano)
+                        {
+                            <form method="post" asp-page-handler="RazveljavljArhiv" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">
+                                    ↩️ Razarhiviraj
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" asp-page-handler="Arhiviraj" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                    📦 Arhiviraj
+                                </button>
+                            </form>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>

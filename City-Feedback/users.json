@@ -2,16 +2,42 @@
   {
     "Id": 1,
     "Username": "admin",
-    "Password": "geslo",
+    "Password": "geslo12",
     "FullName": "Janez",
     "Email": "Janez@mail.com",
     "PhoneNumber": "909293",
     "ProfilePicturePath": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
     "DarkMode": true,
-    "Prijave": [],
+    "Prijave": [
+      {
+        "Id": "2ebb0b06-eee5-4dda-8616-60e30b662864",
+        "Naslov": "adas",
+        "Opis": "asdads",
+        "Datum": "2026-01-06T11:19:54.7498717+01:00",
+        "SlikaPot": null,
+        "Upvotes": 1,
+        "Downvotes": 0,
+        "UpvotedBy": [
+          "admin"
+        ],
+        "DownvotedBy": [],
+        "SteviloVseckov": 0,
+        "LikedBy": [],
+        "JeReseno": false,
+        "JeArhivirano": false,
+        "OwnerUsername": "Janez",
+        "OwnerProfilePicture": "/images/profiles/53e33ab3-3914-4155-b46b-9a304bb9aa8a.jpg",
+        "Kategorija": "Ceste",
+        "Obcina": "Ljubljana",
+        "Lokacija": null,
+        "LastUpdated": "2026-01-06T11:19:54.7498623+01:00",
+        "Komentarji": []
+      }
+    ],
     "IsAdmin": false,
     "ResetToken": null,
-    "ResetTokenExpiry": null
+    "ResetTokenExpiry": null,
+    "Obcina": null
   },
   {
     "Id": 2,
@@ -29,16 +55,23 @@
         "Opis": "awfawfawf",
         "Datum": "2025-12-11T12:23:36.4838695+01:00",
         "SlikaPot": "/images/prijave/bf9ce1c0-5da0-44ff-8996-ee5a875bbb92.png",
+        "Upvotes": 0,
+        "Downvotes": 0,
+        "UpvotedBy": [],
+        "DownvotedBy": [],
         "SteviloVseckov": 2,
-        "JeReseno": true,
         "LikedBy": [
           "obcina",
           "admin"
         ],
+        "JeReseno": true,
+        "JeArhivirano": false,
         "OwnerUsername": "Tijan Pa\u0161kvan",
         "OwnerProfilePicture": "/images/profiles/b22c64a5-dddd-4a19-b583-9d3bc32155a6.png",
         "Kategorija": "Vandalizem",
-        "LastUpdated": "2026-01-04T15:02:15.7465427+01:00",
+        "Obcina": "Ljubljana",
+        "Lokacija": null,
+        "LastUpdated": "2026-01-06T10:48:13.220277+01:00",
         "Komentarji": []
       },
       {
@@ -47,19 +80,27 @@
         "Opis": "Test",
         "Datum": "2026-01-04T14:42:52.2632147+01:00",
         "SlikaPot": "/images/prijave/a81c5d75-2c30-4793-815a-86e872427454.png",
+        "Upvotes": 0,
+        "Downvotes": 0,
+        "UpvotedBy": [],
+        "DownvotedBy": [],
         "SteviloVseckov": 0,
-        "JeReseno": false,
         "LikedBy": [],
+        "JeReseno": true,
+        "JeArhivirano": false,
         "OwnerUsername": "Tijan Pa\u0161kvan",
         "OwnerProfilePicture": "/images/profiles/b22c64a5-dddd-4a19-b583-9d3bc32155a6.png",
         "Kategorija": "Javni prevoz",
-        "LastUpdated": "2026-01-04T15:02:06.5140746+01:00",
+        "Obcina": "Ljubljana",
+        "Lokacija": null,
+        "LastUpdated": "2026-01-06T10:48:12.782182+01:00",
         "Komentarji": []
       }
     ],
     "IsAdmin": false,
     "ResetToken": null,
-    "ResetTokenExpiry": null
+    "ResetTokenExpiry": null,
+    "Obcina": null
   },
   {
     "Id": 3,
@@ -73,7 +114,8 @@
     "Prijave": null,
     "IsAdmin": false,
     "ResetToken": null,
-    "ResetTokenExpiry": null
+    "ResetTokenExpiry": null,
+    "Obcina": null
   },
   {
     "Id": 4,
@@ -87,13 +129,14 @@
     "Prijave": null,
     "IsAdmin": false,
     "ResetToken": null,
-    "ResetTokenExpiry": null
+    "ResetTokenExpiry": null,
+    "Obcina": null
   },
   {
     "Id": 999,
     "Username": "obcina",
     "Password": "admin",
-    "FullName": "Ob\u010Dina",
+    "FullName": "Ob\u010Dina Maribor",
     "Email": "obcina@gmail.com",
     "PhoneNumber": "666555444",
     "ProfilePicturePath": "/images/profiles/e04d86f4-ad9b-434e-9007-fa8d3f0a43cc.png",
@@ -101,6 +144,22 @@
     "Prijave": [],
     "IsAdmin": true,
     "ResetToken": null,
-    "ResetTokenExpiry": null
+    "ResetTokenExpiry": null,
+    "Obcina": "Maribor"
+  },
+  {
+    "Id": 1000,
+    "Username": "lovro",
+    "Password": "geslo",
+    "FullName": "lovro",
+    "Email": "lovro.macick@gmail.com",
+    "PhoneNumber": "0432932",
+    "ProfilePicturePath": "/images/default_profile.png",
+    "DarkMode": false,
+    "Prijave": null,
+    "IsAdmin": false,
+    "ResetToken": "53dc9fc8b54245e9bc6bd3c986184480",
+    "ResetTokenExpiry": "2026-01-07T12:31:17.3526162+01:00",
+    "Obcina": null
   }
 ]
