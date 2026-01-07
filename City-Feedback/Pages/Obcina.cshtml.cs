@@ -26,7 +26,7 @@ namespace City_Feedback.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // Samo obèina/admin
+
             if (!User.IsInRole("Admin"))
                 return RedirectToPage("/Login");
 
@@ -37,18 +37,15 @@ namespace City_Feedback.Pages
                 return Page();
             }
 
-            // Najdi trenutnega admina in njegovo obèino
             var currentUsername = User.Identity?.Name;
             var currentAdmin = allUsers.FirstOrDefault(u => u.Username.Equals(currentUsername, StringComparison.OrdinalIgnoreCase));
             var adminObcina = currentAdmin?.Obcina;
 
-            // Vse prijave vseh uporabnikov
             var vsePrijave = allUsers
                 .Where(u => u?.Prijave != null)
                 .SelectMany(u => u.Prijave!)
                 .ToList();
 
-            // Filtriraj prijave glede na obèino admina (èe je doloèena)
             if (!string.IsNullOrEmpty(adminObcina))
             {
                 vsePrijave = vsePrijave
@@ -56,9 +53,9 @@ namespace City_Feedback.Pages
                     .ToList();
             }
 
-            // Sort: nerešene (v obdelavi) najprej, potem po všeèkih, potem po datumu
             PrijaveZaObcino = vsePrijave
-                .OrderBy(p => p.JeReseno)
+                .OrderByDescending(p => (int)p.Nujnost)
+                .ThenBy(p => p.JeReseno)
                 .ThenByDescending(p => p.SteviloVseckov)
                 .ThenByDescending(p => p.Datum)
                 .ToList();
@@ -66,7 +63,23 @@ namespace City_Feedback.Pages
             return Page();
         }
 
-        // Handler: nastavi status na opravljeno (JeReseno = true)
+        public async Task<IActionResult> OnPostNastaviPrioritetoAsync(Guid id, int prioriteta)
+        {
+            if (!User.IsInRole("Admin"))
+                return RedirectToPage("/Login");
+
+            bool ok = await NastaviPrioritetoAsync(id, (NivoPrioritet)prioriteta);
+            if (ok)
+            {
+                TempData["Message"] = "Prioriteta je bila uspešno nastavljena.";
+            }
+            else
+            {
+                TempData["Error"] = "Napaka pri nastavljanju prioritete.";
+            }
+            return RedirectToPage();
+        }
+
         public async Task<IActionResult> OnPostOznaciKotResenoAsync(Guid id)
         {
             if (!User.IsInRole("Admin"))
@@ -76,7 +89,6 @@ namespace City_Feedback.Pages
             return RedirectToPage();
         }
 
-        // Handler: nastavi status nazaj na v obdelavi (JeReseno = false)
         public async Task<IActionResult> OnPostOznaciKotVObdelaviAsync(Guid id)
         {
             if (!User.IsInRole("Admin"))
@@ -86,7 +98,6 @@ namespace City_Feedback.Pages
             return RedirectToPage();
         }
 
-        // Handler: arhiviraj prijavo (JeArhivirano = true)
         public async Task<IActionResult> OnPostArhivirajAsync(Guid id)
         {
             if (!User.IsInRole("Admin"))
@@ -104,7 +115,6 @@ namespace City_Feedback.Pages
             return RedirectToPage();
         }
 
-        // Handler: razveljavi arhiviranje (JeArhivirano = false)
         public async Task<IActionResult> OnPostRazveljavljArhivAsync(Guid id)
         {
             if (!User.IsInRole("Admin"))
@@ -122,7 +132,6 @@ namespace City_Feedback.Pages
             return RedirectToPage();
         }
 
-        // Handler: odstrani prijavo (samo prijave iz svoje ob?ine)
         public async Task<IActionResult> OnPostDeleteAsync(Guid id)
         {
             if (!User.IsInRole("Admin"))
@@ -152,8 +161,6 @@ namespace City_Feedback.Pages
                     string json = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
                     var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(json, _jsonOptions);
                     if (allUsers == null) return false;
-
-                    // Najdi prijavo v kateremkoli uporabniku
                     Prijava? target = null;
                     foreach (var u in allUsers)
                     {
@@ -198,8 +205,6 @@ namespace City_Feedback.Pages
                     string json = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
                     var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(json, _jsonOptions);
                     if (allUsers == null) return false;
-
-                    // Najdi prijavo v kateremkoli uporabniku
                     Prijava? target = null;
                     foreach (var u in allUsers)
                     {
@@ -212,6 +217,51 @@ namespace City_Feedback.Pages
                     if (target == null) return false;
 
                     target.JeArhivirano = jeArhivirano;
+                    target.LastUpdated = DateTime.Now;
+
+                    string updated = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                    await System.IO.File.WriteAllTextAsync(_jsonFilePath, updated);
+
+                    return true;
+                }
+                catch (IOException) when (attempt < MaxRetries - 1)
+                {
+                    await Task.Delay(200);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        private async Task<bool> NastaviPrioritetoAsync(Guid prijavaId, NivoPrioritet prioriteta)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+                return false;
+
+            for (int attempt = 0; attempt < MaxRetries; attempt++)
+            {
+                try
+                {
+                    string json = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(json, _jsonOptions);
+                    if (allUsers == null) return false;
+
+                    Prijava? target = null;
+                    foreach (var u in allUsers)
+                    {
+                        if (u?.Prijave == null) continue;
+
+                        target = u.Prijave.FirstOrDefault(p => p.Id == prijavaId);
+                        if (target != null) break;
+                    }
+
+                    if (target == null) return false;
+
+                    target.Nujnost = prioriteta;
                     target.LastUpdated = DateTime.Now;
 
                     string updated = JsonSerializer.Serialize(allUsers, _jsonOptions);

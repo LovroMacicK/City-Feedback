@@ -54,15 +54,16 @@ namespace City_Feedback.Pages
         public List<Prijava> Prijave { get; set; } = new List<Prijava>();
         public string CurrentUsername { get; set; }
 
-        public void OnGet(string sortOrder, string status, string category, string obcina, string searchTerm)
+        public void OnGet(string sortOrder, string status, string category, string obcina, string searchTerm, string prioriteta)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["CurrentStatus"] = status ?? "all";
             ViewData["CurrentCategory"] = category ?? "all";
             ViewData["CurrentObcina"] = obcina ?? "all";
             ViewData["CurrentSearch"] = searchTerm;
+            ViewData["CurrentPrioriteta"] = prioriteta ?? "all";
             CurrentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
-            LoadAllPrijave(sortOrder, status, category, obcina, searchTerm);
+            LoadAllPrijave(sortOrder, status, category, obcina, searchTerm, prioriteta);
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -113,7 +114,7 @@ namespace City_Feedback.Pages
                 if (!ModelState.IsValid)
                 {
                     CurrentUsername = currentUsername;
-                    LoadAllPrijave(null, null, null, null, null);
+                    LoadAllPrijave(null, null, null, null, null, null);
                     return Page();
                 }
 
@@ -164,7 +165,7 @@ namespace City_Feedback.Pages
                 {
                     ModelState.AddModelError(string.Empty, "Shranjevanje ni uspelo. Poskusite ponovno.");
                     CurrentUsername = currentUsername;
-                    LoadAllPrijave(null, null, null, null, null);
+                    LoadAllPrijave(null, null, null, null, null, null);
                     return Page();
                 }
             }
@@ -172,7 +173,7 @@ namespace City_Feedback.Pages
             {
                 ModelState.AddModelError(string.Empty, "Prišlo je do napake pri shranjevanju.");
                 CurrentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
-                LoadAllPrijave(null, null, null, null, null);
+                LoadAllPrijave(null, null, null, null, null, null);
                 return Page();
             }
         }
@@ -207,7 +208,7 @@ namespace City_Feedback.Pages
             return RedirectToPage("/Index");
         }
 
-        private void LoadAllPrijave(string sortOrder, string status, string category, string obcina, string searchTerm)
+        private void LoadAllPrijave(string sortOrder, string status, string category, string obcina, string searchTerm, string prioriteta)
         {
             if (!System.IO.File.Exists(_jsonFilePath))
             {
@@ -254,6 +255,17 @@ namespace City_Feedback.Pages
                 if (!string.IsNullOrEmpty(obcina) && obcina != "all")
                 {
                     allPrijave = allPrijave.Where(p => p.Obcina == obcina).ToList();
+                }
+
+                if (!string.IsNullOrEmpty(prioriteta) && prioriteta != "all")
+                {
+                    allPrijave = prioriteta switch
+                    {
+                        "nujno" => allPrijave.Where(p => p.Nujnost == NivoPrioritet.Nujno).ToList(),
+                        "pomembno" => allPrijave.Where(p => p.Nujnost == NivoPrioritet.Pomembno).ToList(),
+                        "kobomozno" => allPrijave.Where(p => p.Nujnost == NivoPrioritet.KoBoPoslovno).ToList(),
+                        _ => allPrijave
+                    };
                 }
 
                 allPrijave = allPrijave.Where(p => !p.JeArhivirano).ToList();

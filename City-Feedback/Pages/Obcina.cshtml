@@ -59,6 +59,19 @@
                                         {
                                             <span class="badge bg-warning text-dark ms-2">⏳ V obdelavi</span>
                                         }
+                                        
+                                        @switch (item.Nujnost)
+                                        {
+                                            case City_Feedback.Models.NivoPrioritet.Nujno:
+                                                <span class="badge bg-danger ms-2">🔴 NUJNO</span>
+                                                break;
+                                            case City_Feedback.Models.NivoPrioritet.Pomembno:
+                                                <span class="badge bg-warning text-dark ms-2">🟡 POMEMBNO</span>
+                                                break;
+                                            case City_Feedback.Models.NivoPrioritet.KoBoPoslovno:
+                                                <span class="badge bg-secondary ms-2">🟢 KO BO MOŽNO</span>
+                                                break;
+                                        }
                                     </h5>
                                     <p class="card-text text-muted mb-2">@item.Opis</p>
                                     <small class="text-muted">
@@ -75,15 +88,36 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="row mb-3">
-                                        <div class="col-12 text-center">
-                                            <div class="mb-2">
-                                                <span class="badge bg-success">👍 @item.Upvotes</span>
-                                                <span class="badge bg-danger">👎 @item.Downvotes</span>
+                                        <div class="col-12">
+                                            <div class="d-flex justify-content-center gap-2 mb-2">
+                                                <span class="badge bg-success fs-6">👍 @item.Upvotes</span>
+                                                <span class="badge bg-danger fs-6">👎 @item.Downvotes</span>
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="row">
                                         <div class="col-12">
+                                            <label class="form-label fw-bold small mb-2">Prioriteta:</label>
+                                            <div class="d-grid gap-2 mb-3">
+                                                <form method="post" asp-page-handler="NastaviPrioriteto" asp-route-id="@item.Id" asp-route-prioriteta="2">
+                                                    <button type="submit" class="btn btn-sm w-100 @(item.Nujnost == City_Feedback.Models.NivoPrioritet.Nujno ? "btn-danger" : "btn-outline-danger")" @(item.JeArhivirano ? "disabled" : "")>
+                                                        🔴 Nujno
+                                                    </button>
+                                                </form>
+                                                <form method="post" asp-page-handler="NastaviPrioriteto" asp-route-id="@item.Id" asp-route-prioriteta="1">
+                                                    <button type="submit" class="btn btn-sm w-100 @(item.Nujnost == City_Feedback.Models.NivoPrioritet.Pomembno ? "btn-warning text-dark" : "btn-outline-warning")" @(item.JeArhivirano ? "disabled" : "")>
+                                                        🟡 Pomembno
+                                                    </button>
+                                                </form>
+                                                <form method="post" asp-page-handler="NastaviPrioriteto" asp-route-id="@item.Id" asp-route-prioriteta="0">
+                                                    <button type="submit" class="btn btn-sm w-100 @(item.Nujnost == City_Feedback.Models.NivoPrioritet.KoBoPoslovno ? "btn-secondary" : "btn-outline-secondary")" @(item.JeArhivirano ? "disabled" : "")>
+                                                        🟢 Ko bo možno
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                                            <label class="form-label fw-bold small mb-2">Status:</label>
                                             <div class="d-flex gap-2 mb-2">
                                                 <form method="post" asp-page-handler="OznaciKotReseno" asp-route-id="@item.Id" class="flex-fill">
                                                     <button type="submit"
@@ -95,12 +129,14 @@
 
                                                 <form method="post" asp-page-handler="OznaciKotVObdelavi" asp-route-id="@item.Id" class="flex-fill">
                                                     <button type="submit"
-                                                            class="btn btn-sm w-100 @(!item.JeReseno ? "btn-warning" : "btn-outline-warning")"
+                                                            class="btn btn-sm w-100 @(!item.JeReseno ? "btn-warning text-dark" : "btn-outline-warning")"
                                                             @(item.JeArhivirano ? "disabled" : "")>
                                                         ⏳ V obdelavi
                                                     </button>
                                                 </form>
                                             </div>
+                                            
+                                            <label class="form-label fw-bold small mb-2 mt-2">Akcije:</label>
                                             <div class="d-flex gap-2">
                                                 <a asp-page="/PodrobnostiPrijave" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary flex-fill">
                                                     👁️ Poglej

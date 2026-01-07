@@ -2,6 +2,12 @@
 
 namespace City_Feedback.Models
 {
+    public enum NivoPrioritet
+    {
+        KoBoPoslovno = 0,
+        Pomembno = 1,
+        Nujno = 2
+    }
     
     public class Prijava
     {
@@ -11,18 +17,18 @@ namespace City_Feedback.Models
         public DateTime Datum { get; set; }
         public string? SlikaPot { get; set; }
         
-        // Upvote/Downvote system
+
         public int Upvotes { get; set; }
         public int Downvotes { get; set; }
         public List<string> UpvotedBy { get; set; } = new List<string>();
         public List<string> DownvotedBy { get; set; } = new List<string>();
         
-        // Legacy - keep for compatibility
         public int SteviloVseckov { get; set; }
         public List<string> LikedBy { get; set; } = new List<string>();
         
         public bool JeReseno { get; set; }
         public bool JeArhivirano { get; set; } = false;
+        public NivoPrioritet Nujnost { get; set; } = NivoPrioritet.KoBoPoslovno;
         
         public string OwnerUsername { get; set; }
         public string OwnerProfilePicture { get; set; }

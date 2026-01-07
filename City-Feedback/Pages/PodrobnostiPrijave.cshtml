@@ -53,11 +53,19 @@
                                 {
                                     <span class="badge bg-info text-dark ms-2">@Model.Prijava.Kategorija</span>
                                 }
+                                @switch (Model.Prijava.Nujnost)
+                                {
+                                    case City_Feedback.Models.NivoPrioritet.Nujno:
+                                        <span class="badge bg-danger ms-2">🔴 NUJNO</span>
+                                        break;
+                                    case City_Feedback.Models.NivoPrioritet.Pomembno:
+                                        <span class="badge bg-warning text-dark ms-2">🟡 POMEMBNO</span>
+                                        break;
+                                }
                             </div>
                             <small class="text-muted">@Model.Prijava.Datum.ToString("dd.MM.yyyy HH:mm")</small>
                         </div>
 
-                        <!-- Lastnik prijave -->
                         <div class="d-flex align-items-center mb-3">
                             <a href="/UserProfile/@Model.Prijava.OwnerUsername" class="text-decoration-none d-flex align-items-center">
                                 <img src="@(string.IsNullOrEmpty(Model.Prijava.OwnerProfilePicture) ? "/images/default_profile.png" : Model.Prijava.OwnerProfilePicture)"

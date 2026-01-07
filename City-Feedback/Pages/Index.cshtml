@@ -338,6 +338,23 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">🚨 Prioriteta:</label>
+                            <select name="prioriteta" class="form-select" onchange="this.form.submit()">
+                                <option value="all" selected="@(ViewData["CurrentPrioriteta"] as string == "all" || ViewData["CurrentPrioriteta"] == null)">
+                                    Vse prioritete
+                                </option>
+                                <option value="nujno" selected="@(ViewData["CurrentPrioriteta"] as string == "nujno")">
+                                    🔴 Nujno
+                                </option>
+                                <option value="pomembno" selected="@(ViewData["CurrentPrioriteta"] as string == "pomembno")">
+                                    🟡 Pomembno
+                                </option>
+                                <option value="kobomozno" selected="@(ViewData["CurrentPrioriteta"] as string == "kobomozno")">
+                                    🟢 Ko bo možno
+                                </option>
+                            </select>
+                        </div>
                         <hr />
                         <div class="mt-3">
                             <h6 class="fw-bold mb-3">📈 Statistika</h6>
@@ -395,6 +412,16 @@
                                     {
                                 <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6em;">⏳ V OBDELAVI</span>
                                     }
+                                    
+                                @switch (prijava.Nujnost)
+                                {
+                                    case City_Feedback.Models.NivoPrioritet.Nujno:
+                                        <span class="badge bg-danger ms-2" style="font-size: 0.6em;">🔴 NUJNO</span>
+                                        break;
+                                    case City_Feedback.Models.NivoPrioritet.Pomembno:
+                                        <span class="badge bg-warning text-dark ms-2" style="font-size: 0.6em;">🟡 POMEMBNO</span>
+                                        break;
+                                }
                             </h5>
                             <small class="text-muted">@prijava.Datum.ToString("dd.MM.yyyy HH:mm")</small>
                         </div>
