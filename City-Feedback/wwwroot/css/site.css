@@ -8,6 +8,46 @@ html {
   }
 }
 
+/* Remove bold from headings for unified look */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+/* Keep card titles normal weight */
+.card-title {
+  font-weight: normal;
+}
+
+/* Remove bold from strong tags in cards for consistency */
+.card strong {
+  font-weight: normal;
+}
+
+/* Keep table content normal weight */
+table strong {
+  font-weight: normal;
+}
+
+/* Ensure labels are normal weight */
+.form-label {
+  font-weight: normal;
+}
+
+/* Override Bootstrap fw-bold class */
+.fw-bold {
+  font-weight: normal !important;
+}
+
+/* Navbar links normal weight */
+.navbar-nav .nav-link {
+  font-weight: normal;
+}
+
+/* Footer normal weight */
+.footer {
+  font-weight: normal;
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -273,5 +313,20 @@ body[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
 }
 
 body[data-theme="dark"] .table-hover tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.075);
+  background-color: #333 !important;
+  color: #ffffff !important;
+}
+
+body[data-theme="dark"] .table-hover tbody tr:hover td {
+  color: #ffffff !important;
+}
+
+body[data-theme="dark"] .table-hover tbody tr:hover .badge {
+  color: inherit !important;
+}
+
+body[data-theme="dark"] .table-hover tbody tr:hover .text-success,
+body[data-theme="dark"] .table-hover tbody tr:hover .text-warning,
+body[data-theme="dark"] .table-hover tbody tr:hover .text-danger {
+  color: inherit !important;
 }

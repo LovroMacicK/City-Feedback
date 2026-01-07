@@ -1,0 +1,182 @@
+﻿@page
+@model City_Feedback.Pages.NajAktivnejseObcineModel
+@{
+    ViewData["Title"] = "Najbolj Aktivne Občine";
+}
+
+<div class="container mt-5">
+<h1 class="text-center mb-4">📊 Najbolj Aktivne Občine</h1>
+<p class="text-center text-muted mb-5">Statistika občin glede na število rešenih prijav</p>
+
+    @if (Model.VseObcine.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+            Ni podatkov o občinah. Občinske račune je mogoče ustvariti z registracijo in dodeljevanjem administratorskih pravic.
+        </div>
+    }
+    else
+    {
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">🏆 Top 5 Najbolj Aktivnih Občin</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="top5Chart" style="max-height: 400px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Iskanje -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form method="get" class="row g-3">
+                            <div class="col-md-10">
+                                <input type="text" 
+                                       class="form-control" 
+                                       name="searchQuery" 
+                                       value="@Model.SearchQuery" 
+                                       placeholder="🔍 Iskanje občine po imenu...">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">Išči</button>
+                            </div>
+                        </form>
+                        @if (!string.IsNullOrEmpty(Model.SearchQuery))
+                        {
+                            <div class="mt-2">
+                                <a asp-page="/NajAktivnejseObcine" class="btn btn-sm btn-outline-secondary">Počisti iskanje</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lestvica vseh občin -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">📋 Lestvica Vseh Občin</h4>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.VseObcine.Count == 0)
+                        {
+                            <p class="text-center text-muted">Ni rezultatov za iskalni niz "@Model.SearchQuery".</p>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Občina</th>
+                                            <th scope="col" class="text-center">✅ Rešeno</th>
+                                            <th scope="col" class="text-center">⏳ V obdelavi</th>
+                                            <th scope="col" class="text-center">📊 Skupaj</th>
+                                            <th scope="col" class="text-center">👍 Upvoti</th>
+                                            <th scope="col" class="text-center">👎 Downvoti</th>
+                                            <th scope="col" class="text-center">% Rešenih</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{ int rank = 1; }
+                                        @foreach (var obcina in Model.VseObcine)
+                                        {
+                                            var badgeClass = rank <= 3 ? "bg-warning text-dark" : rank <= 5 ? "bg-info text-dark" : "bg-secondary";
+                                            var percentClass = obcina.ProcentResenih >= 75 ? "text-success" : obcina.ProcentResenih >= 50 ? "text-warning" : "text-danger";
+                                            
+                                            <tr>
+                                                <td>
+                                                    <span class="badge @badgeClass">
+                                                        @rank
+                                                    </span>
+                                                </td>
+                                                <td>@obcina.ImeObcine</td>
+                                                <td class="text-center"><span class="badge bg-success">@obcina.SteviloResenih</span></td>
+                                                <td class="text-center"><span class="badge bg-warning text-dark">@obcina.SteviloVObdelavi</span></td>
+                                                <td class="text-center">@obcina.SkupnoPrijav</td>
+                                                <td class="text-center">@obcina.SkupnoUpvotov</td>
+                                                <td class="text-center">@obcina.SkupnoDownvotov</td>
+                                                <td class="text-center">
+                                                    <span class="@percentClass">@obcina.ProcentResenih%</span>
+                                                </td>
+                                            </tr>
+                                            rank++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        @if (Model.Top5Obcine.Count > 0)
+        {
+            <text>
+            const ctx = document.getElementById('top5Chart').getContext('2d');
+            
+            const labels = @Html.Raw(Json.Serialize(Model.Top5Obcine.Select(o => o.ImeObcine)));
+            const resolvedData = @Html.Raw(Json.Serialize(Model.Top5Obcine.Select(o => o.SteviloResenih)));
+            
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '✅ Opravljene prijave',
+                            data: resolvedData,
+                            backgroundColor: 'rgba(40, 167, 69, 0.8)',
+                            borderColor: 'rgba(40, 167, 69, 1)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Top 5 občin po številu opravljenih prijav',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+            </text>
+        }
+    </script>
+}

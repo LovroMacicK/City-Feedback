@@ -59,40 +59,64 @@
 
                         <!-- Lastnik prijave -->
                         <div class="d-flex align-items-center mb-3">
-                            <img src="@(string.IsNullOrEmpty(Model.Prijava.OwnerProfilePicture) ? "/images/default_profile.png" : Model.Prijava.OwnerProfilePicture)"
-                                 alt="Profilna slika"
-                                 class="rounded-circle me-2"
-                                 style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #dee2e6;">
-                            <div>
-                                <strong>@(string.IsNullOrEmpty(Model.Prijava.OwnerUsername) ? "Neznani uporabnik" : Model.Prijava.OwnerUsername)</strong>
-                            </div>
+                            <a href="/UserProfile/@Model.Prijava.OwnerUsername" class="text-decoration-none d-flex align-items-center">
+                                <img src="@(string.IsNullOrEmpty(Model.Prijava.OwnerProfilePicture) ? "/images/default_profile.png" : Model.Prijava.OwnerProfilePicture)"
+                                     alt="Profilna slika"
+                                     class="rounded-circle me-2"
+                                     style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #dee2e6;">
+                                <div>
+                                    <strong class="text-dark">@(string.IsNullOrEmpty(Model.Prijava.OwnerUsername) ? "Neznani uporabnik" : Model.Prijava.OwnerUsername)</strong>
+                                </div>
+                            </a>
                         </div>
 
                         <p class="card-text" style="font-size: 1.1rem;">@Model.Prijava.Opis</p>
 
-                        @if (!string.IsNullOrEmpty(Model.Prijava.Lokacija))
-                        {
-                            <hr />
-                            <div class="mb-3">
-                                <h5 class="mb-2">📍 Lokacija težave</h5>
-                                <p class="text-muted mb-0">
-                                    <i class="bi bi-geo-alt-fill"></i> @Model.Prijava.Lokacija
-                                </p>
-                            </div>
-                        }
-
                         <hr />
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <div>
+                            <div class="d-flex flex-column">
+                                @if (!string.IsNullOrEmpty(Model.Prijava.Lokacija) || !string.IsNullOrEmpty(Model.Prijava.Obcina))
+                                {
+                                    <div class="text-muted small">
+                                        @if (!string.IsNullOrEmpty(Model.Prijava.Lokacija))
+                                        {
+                                            <span>📍 @Model.Prijava.Lokacija</span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.Prijava.Obcina))
+                                        {
+                                            @if (!string.IsNullOrEmpty(Model.Prijava.Lokacija))
+                                            {
+                                                <span class="mx-1">•</span>
+                                            }
+                                            <span>🏛️ @Model.Prijava.Obcina</span>
+                                        }
+                                    </div>
+                                }
                                 <span class="text-muted">💬 @(Model.Prijava.Komentarji?.Count ?? 0) komentarjev</span>
                             </div>
                             <div class="d-flex gap-2 align-items-center">
-                                <span class="badge bg-success">👍 @Model.Prijava.Upvotes</span>
-                                <span class="badge @((Model.Prijava.Upvotes - Model.Prijava.Downvotes) > 0 ? "bg-success" : (Model.Prijava.Upvotes - Model.Prijava.Downvotes) < 0 ? "bg-danger" : "bg-secondary")">
-                                    @((Model.Prijava.Upvotes - Model.Prijava.Downvotes) > 0 ? "+" : "")@(Model.Prijava.Upvotes - Model.Prijava.Downvotes)
-                                </span>
-                                <span class="badge bg-danger">👎 @Model.Prijava.Downvotes</span>
+                                @if (Model.IsAuthenticated)
+                                {
+                                    var hasUpvoted = Model.Prijava.UpvotedBy != null && Model.Prijava.UpvotedBy.Contains(Model.CurrentUsername);
+                                    var hasDownvoted = Model.Prijava.DownvotedBy != null && Model.Prijava.DownvotedBy.Contains(Model.CurrentUsername);
+
+                                    <form method="post" asp-page-handler="Upvote" asp-route-id="@Model.Prijava.Id" class="d-inline">
+                                        <button type="submit" class="btn btn-sm @(hasUpvoted ? "btn-success" : "btn-outline-success")">
+                                            👍 @Model.Prijava.Upvotes
+                                        </button>
+                                    </form>
+                                    <form method="post" asp-page-handler="Downvote" asp-route-id="@Model.Prijava.Id" class="d-inline">
+                                        <button type="submit" class="btn btn-sm @(hasDownvoted ? "btn-danger" : "btn-outline-danger")">
+                                            👎 @Model.Prijava.Downvotes
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">👍 @Model.Prijava.Upvotes</span>
+                                    <span class="badge bg-danger">👎 @Model.Prijava.Downvotes</span>
+                                }
                             </div>
                         </div>
                     </div>
@@ -129,13 +153,17 @@
                                     <div class="card mb-3">
                                         <div class="card-body">
                                             <div class="d-flex align-items-start">
-                                                <img src="@(string.IsNullOrEmpty(komentar.UserProfilePicture) ? "/images/default_profile.png" : komentar.UserProfilePicture)"
-                                                     alt="Profilna slika"
-                                                     class="rounded-circle me-3"
-                                                     style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #dee2e6;">
+                                                <a href="/UserProfile/@komentar.Username" class="text-decoration-none">
+                                                    <img src="@(string.IsNullOrEmpty(komentar.UserProfilePicture) ? "/images/default_profile.png" : komentar.UserProfilePicture)"
+                                                         alt="Profilna slika"
+                                                         class="rounded-circle me-3"
+                                                         style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #dee2e6;">
+                                                </a>
                                                 <div class="flex-grow-1">
                                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <strong>@komentar.UserFullName</strong>
+                                                        <a href="/UserProfile/@komentar.Username" class="text-decoration-none">
+                                                            <strong class="text-dark">@komentar.UserFullName</strong>
+                                                        </a>
                                                         <small class="text-muted">@komentar.Datum.ToString("dd.MM.yyyy HH:mm")</small>
                                                     </div>
                                                     <p class="mb-0">@komentar.Vsebina</p>

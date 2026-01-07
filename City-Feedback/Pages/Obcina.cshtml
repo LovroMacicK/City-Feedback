@@ -23,77 +23,120 @@
         </div>
     }
 
-    <table class="table table-hover shadow-sm">
-        <thead class="table-dark">
-            <tr>
-                <th>Naslov</th>
-                <th>Opis</th>
-                <th>Glasovi</th>
-                <th>Status</th>
-                <th>Akcije</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row">
+        @if (Model.PrijaveZaObcino.Count == 0)
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    Ni prijav za vašo občino.
+                </div>
+            </div>
+        }
+        else
+        {
             @foreach (var item in Model.PrijaveZaObcino)
             {
-                var netVotes = item.Upvotes - item.Downvotes;
-                var rowClass = item.JeArhivirano ? "table-secondary" : item.JeReseno ? "table-success" : "";
+                var cardClass = item.JeArhivirano ? "border-secondary" : item.JeReseno ? "border-success" : "border-warning";
                 
-                <tr class="@rowClass">
-                    <td class="fw-bold">
-                        @item.Naslov
-                        @if (item.JeArhivirano)
-                        {
-                            <span class="badge bg-secondary ms-2">📦 Arhivirano</span>
-                        }
-                    </td>
-                    <td>@item.Opis</td>
-                    <td class="text-center">
-                        <div>
-                            <span class="badge bg-success">👍 @item.Upvotes</span>
-                            <span class="badge bg-danger">👎 @item.Downvotes</span>
-                        </div>
-                        <small class="text-muted">Neto: @(netVotes > 0 ? "+" : "")@netVotes</small>
-                    </td>
-                    <td>
-                        <div class="d-flex gap-2">
-                            <form method="post" asp-page-handler="OznaciKotReseno" asp-route-id="@item.Id">
-                                <button type="submit"
-                                        class="btn btn-sm @(item.JeReseno ? "btn-success" : "btn-outline-success")"
-                                        @(item.JeArhivirano ? "disabled" : "")>
-                                    ✅ Opravljeno
-                                </button>
-                            </form>
+                <div class="col-12 mb-3">
+                    <div class="card shadow-sm @cardClass" style="border-width: 2px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="card-title text-primary mb-2">
+                                        <a asp-page="/PodrobnostiPrijave" asp-route-id="@item.Id" class="text-decoration-none">
+                                            @item.Naslov
+                                        </a>
+                                        @if (item.JeArhivirano)
+                                        {
+                                            <span class="badge bg-secondary ms-2">📦 Arhivirano</span>
+                                        }
+                                        else if (item.JeReseno)
+                                        {
+                                            <span class="badge bg-success ms-2">✅ Opravljeno</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark ms-2">⏳ V obdelavi</span>
+                                        }
+                                    </h5>
+                                    <p class="card-text text-muted mb-2">@item.Opis</p>
+                                    <small class="text-muted">
+                                        📅 @item.Datum.ToString("dd.MM.yyyy HH:mm")
+                                        @if (!string.IsNullOrEmpty(item.Kategorija))
+                                        {
+                                            <span class="badge bg-info text-dark ms-2">@item.Kategorija</span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(item.Lokacija))
+                                        {
+                                            <span class="badge bg-secondary ms-2">📍 @item.Lokacija</span>
+                                        }
+                                    </small>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row mb-3">
+                                        <div class="col-12 text-center">
+                                            <div class="mb-2">
+                                                <span class="badge bg-success">👍 @item.Upvotes</span>
+                                                <span class="badge bg-danger">👎 @item.Downvotes</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="d-flex gap-2 mb-2">
+                                                <form method="post" asp-page-handler="OznaciKotReseno" asp-route-id="@item.Id" class="flex-fill">
+                                                    <button type="submit"
+                                                            class="btn btn-sm w-100 @(item.JeReseno ? "btn-success" : "btn-outline-success")"
+                                                            @(item.JeArhivirano ? "disabled" : "")>
+                                                        ✅ Opravljeno
+                                                    </button>
+                                                </form>
 
-                            <form method="post" asp-page-handler="OznaciKotVObdelavi" asp-route-id="@item.Id">
-                                <button type="submit"
-                                        class="btn btn-sm @(!item.JeReseno ? "btn-warning" : "btn-outline-warning")"
-                                        @(item.JeArhivirano ? "disabled" : "")>
-                                    ⏳ V obdelavi
-                                </button>
-                            </form>
+                                                <form method="post" asp-page-handler="OznaciKotVObdelavi" asp-route-id="@item.Id" class="flex-fill">
+                                                    <button type="submit"
+                                                            class="btn btn-sm w-100 @(!item.JeReseno ? "btn-warning" : "btn-outline-warning")"
+                                                            @(item.JeArhivirano ? "disabled" : "")>
+                                                        ⏳ V obdelavi
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <a asp-page="/PodrobnostiPrijave" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary flex-fill">
+                                                    👁️ Poglej
+                                                </a>
+                                                @if (item.JeArhivirano)
+                                                {
+                                                    <form method="post" asp-page-handler="RazveljavljArhiv" asp-route-id="@item.Id" class="flex-fill">
+                                                        <button type="submit" class="btn btn-sm btn-outline-primary w-100">
+                                                            ↩️ Razarhiviraj
+                                                        </button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <form method="post" asp-page-handler="Arhiviraj" asp-route-id="@item.Id" class="flex-fill">
+                                                        <button type="submit" class="btn btn-sm btn-outline-secondary w-100">
+                                                            📦 Arhiviraj
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </div>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" class="flex-fill" onsubmit="return confirm('Ali ste prepričani, da želite izbrisati to prijavo? Tega dejanja ni mogoče razveljaviti.');">
+                                                    <button type="submit" class="btn btn-sm btn-danger w-100">
+                                                        🗑️ Izbriši
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </td>
-                    <td>
-                        @if (item.JeArhivirano)
-                        {
-                            <form method="post" asp-page-handler="RazveljavljArhiv" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-sm btn-outline-primary">
-                                    ↩️ Razarhiviraj
-                                </button>
-                            </form>
-                        }
-                        else
-                        {
-                            <form method="post" asp-page-handler="Arhiviraj" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                    📦 Arhiviraj
-                                </button>
-                            </form>
-                        }
-                    </td>
-                </tr>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
+        }
+    </div>
 </div>

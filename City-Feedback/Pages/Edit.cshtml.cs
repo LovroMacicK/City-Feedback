@@ -127,7 +127,11 @@ namespace City_Feedback.Pages
                 }
             }
 
-            var newJson = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
+            var newJson = JsonSerializer.Serialize(users, new JsonSerializerOptions 
+            { 
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
             System.IO.File.WriteAllText(_dbPath, newJson);
         }
     }

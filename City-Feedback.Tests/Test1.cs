@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace City_Feedback.Tests
 {
     [TestClass]
-    public class Test1
+    public class BasicPrijavaTests
     {
         [TestMethod]
         public void Test_Prijava_ShraniPodatke()
@@ -22,6 +22,7 @@ namespace City_Feedback.Tests
             Assert.AreEqual("Testna težava", naslov);
             Assert.IsNotNull(prijava.Komentarji);
         }
+
         [TestMethod]
         public void Test_Prijava_PrivzeteVrednosti()
         {

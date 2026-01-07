@@ -10,6 +10,7 @@ namespace City_Feedback.Models
         public string FullName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string CountryCode { get; set; } = "+386"; // Default Slovenia
         public string ProfilePicturePath { get; set; }
         public bool DarkMode { get; set; }
         public List<Prijava> Prijave { get; set; }
@@ -17,5 +18,6 @@ namespace City_Feedback.Models
         public string? ResetToken { get; set; }
         public DateTime? ResetTokenExpiry { get; set; }
         public string? Obcina { get; set; }
+        public bool IsPublicProfile { get; set; } = true;
     }
 }

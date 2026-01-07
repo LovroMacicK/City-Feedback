@@ -27,6 +27,7 @@ namespace City_Feedback.Pages
         public int TotalPrijave { get; set; }
         public int TotalLikes { get; set; }
         public int ResolvedPrijave { get; set; }
+        public int PendingPrijave { get; set; }
         public List<Prijava> UserPrijave { get; set; } = new List<Prijava>();
 
         public IActionResult OnGet()
@@ -95,6 +96,7 @@ namespace City_Feedback.Pages
                         TotalPrijave = UserPrijave.Count;
                         TotalLikes = UserPrijave.Sum(p => p.SteviloVseckov);
                         ResolvedPrijave = UserPrijave.Count(p => p.JeReseno);
+                        PendingPrijave = UserPrijave.Count(p => !p.JeReseno);
                     }
                 }
             }

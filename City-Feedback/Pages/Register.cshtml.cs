@@ -30,6 +30,11 @@ namespace City_Feedback.Pages
             [Display(Name = "Uporabniško ime")]
             public string Username { get; set; }
 
+            [Required(ErrorMessage = "E-poštni naslov je obvezen.")]
+            [EmailAddress(ErrorMessage = "Neveljaven e-poštni naslov.")]
+            [Display(Name = "E-poštni naslov")]
+            public string Email { get; set; }
+
             [Required(ErrorMessage = "Geslo je obvezno.")]
             [DataType(DataType.Password)]
             [Display(Name = "Geslo")]
@@ -75,18 +80,29 @@ namespace City_Feedback.Pages
                 return Page();
             }
 
+            if (allUsers.Any(u => !string.IsNullOrEmpty(u.Email) && u.Email.Equals(Input.Email, StringComparison.OrdinalIgnoreCase)))
+            {
+                ModelState.AddModelError("Input.Email", "Ta e-poštni naslov je že registriran.");
+                return Page();
+            }
+
             int newId = allUsers.Any() ? allUsers.Max(u => u.Id) + 1 : 1;
 
             var newUser = new UserCredentials
             {
                 Id = newId,
                 Username = Input.Username,
+                Email = Input.Email,
                 Password = Input.Password
             };
 
             allUsers.Add(newUser);
 
-            var updatedJsonString = JsonSerializer.Serialize(allUsers, new JsonSerializerOptions { WriteIndented = true });
+            var updatedJsonString = JsonSerializer.Serialize(allUsers, new JsonSerializerOptions 
+            { 
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            });
             await System.IO.File.WriteAllTextAsync(jsonFilePath, updatedJsonString);
 
             TempData["SuccessMessage"] = "Registracija uspešna! Prosimo, prijavite se.";

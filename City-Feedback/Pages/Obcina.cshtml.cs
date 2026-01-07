@@ -13,7 +13,8 @@ namespace City_Feedback.Pages
         private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
-            WriteIndented = true
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
         public List<Prijava> PrijaveZaObcino { get; set; } = new List<Prijava>();
@@ -117,6 +118,24 @@ namespace City_Feedback.Pages
             else
             {
                 TempData["Error"] = "Napaka pri razveljavitvi arhiviranja.";
+            }
+            return RedirectToPage();
+        }
+
+        // Handler: odstrani prijavo (samo prijave iz svoje ob?ine)
+        public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+        {
+            if (!User.IsInRole("Admin"))
+                return RedirectToPage("/Login");
+
+            bool ok = await DeletePrijavaAsync(id);
+            if (ok)
+            {
+                TempData["Message"] = "Prijava je bila uspešno izbrisana.";
+            }
+            else
+            {
+                TempData["Error"] = "Napaka pri brisanju prijave. Prijava ne obstaja ali ne spada v vašo ob?ino.";
             }
             return RedirectToPage();
         }
@@ -236,6 +255,70 @@ namespace City_Feedback.Pages
             }
 
             return null;
+        }
+
+        private async Task<bool> DeletePrijavaAsync(Guid prijavaId)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+                return false;
+
+            for (int attempt = 0; attempt < MaxRetries; attempt++)
+            {
+                try
+                {
+                    string json = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(json, _jsonOptions);
+                    if (allUsers == null) return false;
+
+                    // Najdi trenutnega admina in njegovo ob?ino
+                    var currentUsername = User.Identity?.Name;
+                    var currentAdmin = allUsers.FirstOrDefault(u => u.Username.Equals(currentUsername, StringComparison.OrdinalIgnoreCase));
+                    var adminObcina = currentAdmin?.Obcina;
+
+                    // Najdi prijavo in preveri, ali spada v ob?ino admina
+                    Prijava? target = null;
+                    UserCredentials? targetUser = null;
+                    
+                    foreach (var u in allUsers)
+                    {
+                        if (u?.Prijave == null) continue;
+
+                        target = u.Prijave.FirstOrDefault(p => p.Id == prijavaId);
+                        if (target != null)
+                        {
+                            targetUser = u;
+                            break;
+                        }
+                    }
+
+                    if (target == null || targetUser == null) return false;
+
+                    // Preveri, ali prijava spada v ob?ino admina
+                    if (!string.IsNullOrEmpty(adminObcina) && 
+                        (target.Obcina == null || !target.Obcina.Equals(adminObcina, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        return false; // Prijava ne spada v ob?ino admina
+                    }
+
+                    // Odstrani prijavo
+                    targetUser.Prijave.Remove(target);
+
+                    string updated = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                    await System.IO.File.WriteAllTextAsync(_jsonFilePath, updated);
+
+                    return true;
+                }
+                catch (IOException) when (attempt < MaxRetries - 1)
+                {
+                    await Task.Delay(200);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            return false;
         }
     }
 }

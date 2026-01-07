@@ -18,12 +18,13 @@ namespace City_Feedback.Pages
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly string _jsonFilePath;
         private const int MaxRetries = 3;
-        private const long MaxFileSize = 5 * 1024 * 1024; // 5 MB
+        private const long MaxFileSize = 5 * 1024 * 1024; 
 
         private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
-            WriteIndented = true
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
         public ProfileModel(IWebHostEnvironment webHostEnvironment)
@@ -41,12 +42,58 @@ namespace City_Feedback.Pages
         public string ExistingProfilePicturePath { get; set; } = "/images/default_profile.png";
         public bool DarkMode { get; set; }
 
+        [BindProperty]
+        public bool IsPublicProfile { get; set; }
+
         public class InputModel
         {
             public string FullName { get; set; }
             public string Email { get; set; }
             public string PhoneNumber { get; set; }
+            public string CountryCode { get; set; }
+            public string Obcina { get; set; }
         }
+
+        public bool IsAdmin { get; set; }
+        public List<string> SlovenskeObcine { get; set; } = new List<string>
+        {
+            "Ajdovščina", "Ankaran", "Apače", "Beltinci", "Benedikt", "Bistrica ob Sotli",
+            "Bled", "Bloke", "Bohinj", "Borovnica", "Bovec", "Braslovče", "Brda",
+            "Brezovica", "Brežice", "Cankova", "Celje", "Cerklje na Gorenjskem",
+            "Cerknica", "Cerkno", "Cerkvenjak", "Cirkulane", "Črenšovci", "Črna na Koroškem",
+            "Črnomelj", "Destrnik", "Divača", "Dobje", "Dobrepolje", "Dobrna",
+            "Dobrova-Polhov Gradec", "Dobrovnik", "Dol pri Ljubljani", "Dolenjske Toplice",
+            "Domžale", "Dornava", "Dravograd", "Duplek", "Gorenja vas-Poljane", "Gorišnica",
+            "Gorje", "Gornja Radgona", "Gornji Grad", "Gornji Petrovci", "Grad", "Grosuplje",
+            "Hajdina", "Hoče-Slivnica", "Hodoš", "Horjul", "Hrastnik", "Hrpelje-Kozina",
+            "Idrija", "Ig", "Ilirska Bistrica", "Ivančna Gorica", "Izola", "Jesenice",
+            "Jezersko", "Juršinci", "Kamnik", "Kanal", "Kidričevo", "Kobarid", "Kobilje",
+            "Kočevje", "Komen", "Komenda", "Koper", "Kostanjevica na Krki", "Kostel",
+            "Kozje", "Kranj", "Kranjska Gora", "Križevci", "Kungota", "Kuzma", "Laško",
+            "Lenart", "Lendava", "Litija", "Ljubljana", "Ljubno", "Ljutomer", "Log-Dragomer",
+            "Logatec", "Loška dolina", "Loški Potok", "Lovrenc na Pohorju", "Luče", "Lukovica",
+            "Majšperk", "Makole", "Maribor", "Markovci", "Medvode", "Mengeš", "Metlika",
+            "Mežica", "Miklavž na Dravskem polju", "Miren-Kostanjevica", "Mirna", "Mirna Peč",
+            "Mislinja", "Mokronog-Trebelno", "Moravče", "Moravske Toplice", "Mozirje",
+            "Murska Sobota", "Muta", "Naklo", "Nazarje", "Nova Gorica", "Novo Mesto",
+            "Odranci", "Oplotnica", "Ormož", "Osilnica", "Pesnica", "Piran", "Pivka",
+            "Podčetrtek", "Podlehnik", "Podvelka", "Poljčane", "Polzela", "Postojna",
+            "Prebold", "Preddvor", "Prevalje", "Ptuj", "Puconci", "Rače-Fram", "Radeče",
+            "Radenci", "Radlje ob Dravi", "Radovljica", "Ravne na Koroškem", "Razkrižje",
+            "Rečica ob Savinji", "Renče-Vogrsko", "Ribnica", "Ribnica na Pohorju", "Rogaška Slatina",
+            "Rogašovci", "Rogatec", "Ruše", "Šalovci", "Selnica ob Dravi", "Semič",
+            "Šempeter-Vrtojba", "Šenčur", "Šentilj", "Šentjernej", "Šentjur", "Šentrupert",
+            "Sevnica", "Sežana", "Škocjan", "Škofja Loka", "Škofljica", "Slovenj Gradec",
+            "Slovenska Bistrica", "Slovenske Konjice", "Šmarje pri Jelšah", "Šmarješke Toplice",
+            "Šmartno ob Paki", "Šmartno pri Litiji", "Sodražica", "Solčava", "Šoštanj",
+            "Središče ob Dravi", "Starše", "Štore", "Straža", "Sveta Ana", "Sveta Trojica v Slovenskih goricah",
+            "Sveti Andraž v Slovenskih goricah", "Sveti Jurij ob Ščavnici", "Sveti Jurij v Slovenskih goricah",
+            "Sveti Tomaž", "Tabor", "Tišina", "Tolmin", "Trbovlje", "Trebnje", "Trnovska vas",
+            "Tržič", "Trzin", "Turnišče", "Velenje", "Velika Polana", "Velike Lašče",
+            "Veržej", "Videm", "Vipava", "Vitanje", "Vodice", "Vojnik", "Vransko",
+            "Vrhnika", "Vuzenica", "Zagorje ob Savi", "Žalec", "Zavrč", "Železniki",
+            "Žetale", "Žiri", "Žirovnica", "Zreče", "Žužemberk"
+        };
 
         public void OnGet()
         {
@@ -65,12 +112,16 @@ namespace City_Feedback.Pages
                 {
                     FullName = user.FullName,
                     Email = user.Email,
-                    PhoneNumber = user.PhoneNumber
+                    PhoneNumber = user.PhoneNumber,
+                    CountryCode = user.CountryCode ?? "+386",
+                    Obcina = user.Obcina
                 };
                 ExistingProfilePicturePath = !string.IsNullOrEmpty(user.ProfilePicturePath)
                                              ? user.ProfilePicturePath
                                              : "/images/default_profile.png";
                 DarkMode = user.DarkMode;
+                IsAdmin = user.IsAdmin;
+                IsPublicProfile = user.IsPublicProfile;
             }
             else
             {
@@ -146,6 +197,7 @@ namespace City_Feedback.Pages
                     var user = LoadUserProfile(currentUsername);
                     ExistingProfilePicturePath = user?.ProfilePicturePath ?? "/images/default_profile.png";
                     DarkMode = user?.DarkMode ?? false;
+                    IsAdmin = user?.IsAdmin ?? false;
                 }
 
                 return Page();
@@ -225,7 +277,14 @@ namespace City_Feedback.Pages
                     userToUpdate.FullName = input.FullName;
                     userToUpdate.Email = input.Email;
                     userToUpdate.PhoneNumber = input.PhoneNumber;
+                    userToUpdate.CountryCode = input.CountryCode;
                     userToUpdate.ProfilePicturePath = profilePicturePath;
+                    userToUpdate.IsPublicProfile = IsPublicProfile;
+                    
+                    if (userToUpdate.IsAdmin)
+                    {
+                        userToUpdate.Obcina = input.Obcina;
+                    }
 
                     var updatedJsonString = JsonSerializer.Serialize(allUsers, _jsonOptions);
                     await System.IO.File.WriteAllTextAsync(_jsonFilePath, updatedJsonString);

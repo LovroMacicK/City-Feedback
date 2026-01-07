@@ -29,10 +29,31 @@
         <div class="col-lg-3 col-md-4 mb-4">
             <div class="card shadow-sm sticky-top" style="top: 20px;">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">🔍 Filtri in razvrščanje</h5>
+                    <h5 class="mb-0">Filtri in razvrščanje</h5>
                 </div>
                 <div class="card-body">
                     <form method="get">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">🔎 Iskanje:</label>
+                            <div class="input-group">
+                                <input type="text" 
+                                       name="searchTerm" 
+                                       class="form-control" 
+                                       placeholder="Išči po naslovu..." 
+                                       value="@ViewData["CurrentSearch"]"
+                                       id="searchInput">
+                                <button type="submit" class="btn btn-primary">
+                                    <span>Išči</span>
+                                </button>
+                            </div>
+                            @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"] as string))
+                            {
+                                <a href="@Url.Page("/Index")" class="btn btn-sm btn-outline-secondary mt-2 w-100">
+                                    ✖ Počisti iskanje
+                                </a>
+                            }
+                        </div>
+                        <hr />
                         <div class="mb-4">
                             <label class="form-label fw-bold">📊 Razvrsti po:</label>
                             <select name="sortOrder" class="form-select" onchange="this.form.submit()">
@@ -74,6 +95,223 @@
                             </select>
                         </div>
                         <div class="mb-4">
+                            <label class="form-label fw-bold">🏛️ Občina:</label>
+                            <select name="obcina" class="form-select" onchange="this.form.submit()">
+                                <option value="all" selected="@(ViewData["CurrentObcina"] as string == "all" || ViewData["CurrentObcina"] == null)">Vse občine</option>
+                                <option value="Ajdovščina" selected="@(ViewData["CurrentObcina"] as string == "Ajdovščina")">Ajdovščina</option>
+                                <option value="Ankaran" selected="@(ViewData["CurrentObcina"] as string == "Ankaran")">Ankaran</option>
+                                <option value="Apače" selected="@(ViewData["CurrentObcina"] as string == "Apače")">Apače</option>
+                                <option value="Beltinci" selected="@(ViewData["CurrentObcina"] as string == "Beltinci")">Beltinci</option>
+                                <option value="Benedikt" selected="@(ViewData["CurrentObcina"] as string == "Benedikt")">Benedikt</option>
+                                <option value="Bistrica ob Sotli" selected="@(ViewData["CurrentObcina"] as string == "Bistrica ob Sotli")">Bistrica ob Sotli</option>
+                                <option value="Bled" selected="@(ViewData["CurrentObcina"] as string == "Bled")">Bled</option>
+                                <option value="Bloke" selected="@(ViewData["CurrentObcina"] as string == "Bloke")">Bloke</option>
+                                <option value="Bohinj" selected="@(ViewData["CurrentObcina"] as string == "Bohinj")">Bohinj</option>
+                                <option value="Borovnica" selected="@(ViewData["CurrentObcina"] as string == "Borovnica")">Borovnica</option>
+                                <option value="Bovec" selected="@(ViewData["CurrentObcina"] as string == "Bovec")">Bovec</option>
+                                <option value="Braslovče" selected="@(ViewData["CurrentObcina"] as string == "Braslovče")">Braslovče</option>
+                                <option value="Brda" selected="@(ViewData["CurrentObcina"] as string == "Brda")">Brda</option>
+                                <option value="Brežice" selected="@(ViewData["CurrentObcina"] as string == "Brežice")">Brežice</option>
+                                <option value="Brezovica" selected="@(ViewData["CurrentObcina"] as string == "Brezovica")">Brezovica</option>
+                                <option value="Cankova" selected="@(ViewData["CurrentObcina"] as string == "Cankova")">Cankova</option>
+                                <option value="Celje" selected="@(ViewData["CurrentObcina"] as string == "Celje")">Celje</option>
+                                <option value="Cerklje na Gorenjskem" selected="@(ViewData["CurrentObcina"] as string == "Cerklje na Gorenjskem")">Cerklje na Gorenjskem</option>
+                                <option value="Cerknica" selected="@(ViewData["CurrentObcina"] as string == "Cerknica")">Cerknica</option>
+                                <option value="Cerkno" selected="@(ViewData["CurrentObcina"] as string == "Cerkno")">Cerkno</option>
+                                <option value="Cerkvenjak" selected="@(ViewData["CurrentObcina"] as string == "Cerkvenjak")">Cerkvenjak</option>
+                                <option value="Cirkulane" selected="@(ViewData["CurrentObcina"] as string == "Cirkulane")">Cirkulane</option>
+                                <option value="Črenšovci" selected="@(ViewData["CurrentObcina"] as string == "Črenšovci")">Črenšovci</option>
+                                <option value="Črna na Koroškem" selected="@(ViewData["CurrentObcina"] as string == "Črna na Koroškem")">Črna na Koroškem</option>
+                                <option value="Črnomelj" selected="@(ViewData["CurrentObcina"] as string == "Črnomelj")">Črnomelj</option>
+                                <option value="Destrnik" selected="@(ViewData["CurrentObcina"] as string == "Destrnik")">Destrnik</option>
+                                <option value="Divača" selected="@(ViewData["CurrentObcina"] as string == "Divača")">Divača</option>
+                                <option value="Dobje" selected="@(ViewData["CurrentObcina"] as string == "Dobje")">Dobje</option>
+                                <option value="Dobrepolje" selected="@(ViewData["CurrentObcina"] as string == "Dobrepolje")">Dobrepolje</option>
+                                <option value="Dobrna" selected="@(ViewData["CurrentObcina"] as string == "Dobrna")">Dobrna</option>
+                                <option value="Dobrova-Polhov Gradec" selected="@(ViewData["CurrentObcina"] as string == "Dobrova-Polhov Gradec")">Dobrova-Polhov Gradec</option>
+                                <option value="Dobrovnik" selected="@(ViewData["CurrentObcina"] as string == "Dobrovnik")">Dobrovnik</option>
+                                <option value="Dol pri Ljubljani" selected="@(ViewData["CurrentObcina"] as string == "Dol pri Ljubljani")">Dol pri Ljubljani</option>
+                                <option value="Dolenjske Toplice" selected="@(ViewData["CurrentObcina"] as string == "Dolenjske Toplice")">Dolenjske Toplice</option>
+                                <option value="Domžale" selected="@(ViewData["CurrentObcina"] as string == "Domžale")">Domžale</option>
+                                <option value="Dornava" selected="@(ViewData["CurrentObcina"] as string == "Dornava")">Dornava</option>
+                                <option value="Dravograd" selected="@(ViewData["CurrentObcina"] as string == "Dravograd")">Dravograd</option>
+                                <option value="Duplek" selected="@(ViewData["CurrentObcina"] as string == "Duplek")">Duplek</option>
+                                <option value="Gorenja vas-Poljane" selected="@(ViewData["CurrentObcina"] as string == "Gorenja vas-Poljane")">Gorenja vas-Poljane</option>
+                                <option value="Gorišnica" selected="@(ViewData["CurrentObcina"] as string == "Gorišnica")">Gorišnica</option>
+                                <option value="Gorje" selected="@(ViewData["CurrentObcina"] as string == "Gorje")">Gorje</option>
+                                <option value="Gornja Radgona" selected="@(ViewData["CurrentObcina"] as string == "Gornja Radgona")">Gornja Radgona</option>
+                                <option value="Gornji Grad" selected="@(ViewData["CurrentObcina"] as string == "Gornji Grad")">Gornji Grad</option>
+                                <option value="Gornji Petrovci" selected="@(ViewData["CurrentObcina"] as string == "Gornji Petrovci")">Gornji Petrovci</option>
+                                <option value="Grad" selected="@(ViewData["CurrentObcina"] as string == "Grad")">Grad</option>
+                                <option value="Grosuplje" selected="@(ViewData["CurrentObcina"] as string == "Grosuplje")">Grosuplje</option>
+                                <option value="Hajdina" selected="@(ViewData["CurrentObcina"] as string == "Hajdina")">Hajdina</option>
+                                <option value="Hoče-Slivnica" selected="@(ViewData["CurrentObcina"] as string == "Hoče-Slivnica")">Hoče-Slivnica</option>
+                                <option value="Hodoš" selected="@(ViewData["CurrentObcina"] as string == "Hodoš")">Hodoš</option>
+                                <option value="Horjul" selected="@(ViewData["CurrentObcina"] as string == "Horjul")">Horjul</option>
+                                <option value="Hrastnik" selected="@(ViewData["CurrentObcina"] as string == "Hrastnik")">Hrastnik</option>
+                                <option value="Hrpelje-Kozina" selected="@(ViewData["CurrentObcina"] as string == "Hrpelje-Kozina")">Hrpelje-Kozina</option>
+                                <option value="Idrija" selected="@(ViewData["CurrentObcina"] as string == "Idrija")">Idrija</option>
+                                <option value="Ig" selected="@(ViewData["CurrentObcina"] as string == "Ig")">Ig</option>
+                                <option value="Ilirska Bistrica" selected="@(ViewData["CurrentObcina"] as string == "Ilirska Bistrica")">Ilirska Bistrica</option>
+                                <option value="Ivančna Gorica" selected="@(ViewData["CurrentObcina"] as string == "Ivančna Gorica")">Ivančna Gorica</option>
+                                <option value="Izola" selected="@(ViewData["CurrentObcina"] as string == "Izola")">Izola</option>
+                                <option value="Jesenice" selected="@(ViewData["CurrentObcina"] as string == "Jesenice")">Jesenice</option>
+                                <option value="Jezersko" selected="@(ViewData["CurrentObcina"] as string == "Jezersko")">Jezersko</option>
+                                <option value="Juršinci" selected="@(ViewData["CurrentObcina"] as string == "Juršinci")">Juršinci</option>
+                                <option value="Kamnik" selected="@(ViewData["CurrentObcina"] as string == "Kamnik")">Kamnik</option>
+                                <option value="Kanal" selected="@(ViewData["CurrentObcina"] as string == "Kanal")">Kanal</option>
+                                <option value="Kidričevo" selected="@(ViewData["CurrentObcina"] as string == "Kidričevo")">Kidričevo</option>
+                                <option value="Kobarid" selected="@(ViewData["CurrentObcina"] as string == "Kobarid")">Kobarid</option>
+                                <option value="Kobilje" selected="@(ViewData["CurrentObcina"] as string == "Kobilje")">Kobilje</option>
+                                <option value="Kočevje" selected="@(ViewData["CurrentObcina"] as string == "Kočevje")">Kočevje</option>
+                                <option value="Komen" selected="@(ViewData["CurrentObcina"] as string == "Komen")">Komen</option>
+                                <option value="Komenda" selected="@(ViewData["CurrentObcina"] as string == "Komenda")">Komenda</option>
+                                <option value="Koper" selected="@(ViewData["CurrentObcina"] as string == "Koper")">Koper</option>
+                                <option value="Kostanjevica na Krki" selected="@(ViewData["CurrentObcina"] as string == "Kostanjevica na Krki")">Kostanjevica na Krki</option>
+                                <option value="Kostel" selected="@(ViewData["CurrentObcina"] as string == "Kostel")">Kostel</option>
+                                <option value="Kozje" selected="@(ViewData["CurrentObcina"] as string == "Kozje")">Kozje</option>
+                                <option value="Kranj" selected="@(ViewData["CurrentObcina"] as string == "Kranj")">Kranj</option>
+                                <option value="Kranjska Gora" selected="@(ViewData["CurrentObcina"] as string == "Kranjska Gora")">Kranjska Gora</option>
+                                <option value="Križevci" selected="@(ViewData["CurrentObcina"] as string == "Križevci")">Križevci</option>
+                                <option value="Kungota" selected="@(ViewData["CurrentObcina"] as string == "Kungota")">Kungota</option>
+                                <option value="Kuzma" selected="@(ViewData["CurrentObcina"] as string == "Kuzma")">Kuzma</option>
+                                <option value="Laško" selected="@(ViewData["CurrentObcina"] as string == "Laško")">Laško</option>
+                                <option value="Lenart" selected="@(ViewData["CurrentObcina"] as string == "Lenart")">Lenart</option>
+                                <option value="Lendava" selected="@(ViewData["CurrentObcina"] as string == "Lendava")">Lendava</option>
+                                <option value="Litija" selected="@(ViewData["CurrentObcina"] as string == "Litija")">Litija</option>
+                                <option value="Ljubljana" selected="@(ViewData["CurrentObcina"] as string == "Ljubljana")">Ljubljana</option>
+                                <option value="Ljubno" selected="@(ViewData["CurrentObcina"] as string == "Ljubno")">Ljubno</option>
+                                <option value="Ljutomer" selected="@(ViewData["CurrentObcina"] as string == "Ljutomer")">Ljutomer</option>
+                                <option value="Log-Dragomer" selected="@(ViewData["CurrentObcina"] as string == "Log-Dragomer")">Log-Dragomer</option>
+                                <option value="Logatec" selected="@(ViewData["CurrentObcina"] as string == "Logatec")">Logatec</option>
+                                <option value="Loška dolina" selected="@(ViewData["CurrentObcina"] as string == "Loška dolina")">Loška dolina</option>
+                                <option value="Loški Potok" selected="@(ViewData["CurrentObcina"] as string == "Loški Potok")">Loški Potok</option>
+                                <option value="Lovrenc na Pohorju" selected="@(ViewData["CurrentObcina"] as string == "Lovrenc na Pohorju")">Lovrenc na Pohorju</option>
+                                <option value="Luče" selected="@(ViewData["CurrentObcina"] as string == "Luče")">Luče</option>
+                                <option value="Lukovica" selected="@(ViewData["CurrentObcina"] as string == "Lukovica")">Lukovica</option>
+                                <option value="Majšperk" selected="@(ViewData["CurrentObcina"] as string == "Majšperk")">Majšperk</option>
+                                <option value="Makole" selected="@(ViewData["CurrentObcina"] as string == "Makole")">Makole</option>
+                                <option value="Maribor" selected="@(ViewData["CurrentObcina"] as string == "Maribor")">Maribor</option>
+                                <option value="Markovci" selected="@(ViewData["CurrentObcina"] as string == "Markovci")">Markovci</option>
+                                <option value="Medvode" selected="@(ViewData["CurrentObcina"] as string == "Medvode")">Medvode</option>
+                                <option value="Mengeš" selected="@(ViewData["CurrentObcina"] as string == "Mengeš")">Mengeš</option>
+                                <option value="Metlika" selected="@(ViewData["CurrentObcina"] as string == "Metlika")">Metlika</option>
+                                <option value="Mežica" selected="@(ViewData["CurrentObcina"] as string == "Mežica")">Mežica</option>
+                                <option value="Miklavž na Dravskem polju" selected="@(ViewData["CurrentObcina"] as string == "Miklavž na Dravskem polju")">Miklavž na Dravskem polju</option>
+                                <option value="Miren-Kostanjevica" selected="@(ViewData["CurrentObcina"] as string == "Miren-Kostanjevica")">Miren-Kostanjevica</option>
+                                <option value="Mirna" selected="@(ViewData["CurrentObcina"] as string == "Mirna")">Mirna</option>
+                                <option value="Mirna Peč" selected="@(ViewData["CurrentObcina"] as string == "Mirna Peč")">Mirna Peč</option>
+                                <option value="Mislinja" selected="@(ViewData["CurrentObcina"] as string == "Mislinja")">Mislinja</option>
+                                <option value="Mokronog-Trebelno" selected="@(ViewData["CurrentObcina"] as string == "Mokronog-Trebelno")">Mokronog-Trebelno</option>
+                                <option value="Moravče" selected="@(ViewData["CurrentObcina"] as string == "Moravče")">Moravče</option>
+                                <option value="Moravske Toplice" selected="@(ViewData["CurrentObcina"] as string == "Moravske Toplice")">Moravske Toplice</option>
+                                <option value="Mozirje" selected="@(ViewData["CurrentObcina"] as string == "Mozirje")">Mozirje</option>
+                                <option value="Murska Sobota" selected="@(ViewData["CurrentObcina"] as string == "Murska Sobota")">Murska Sobota</option>
+                                <option value="Muta" selected="@(ViewData["CurrentObcina"] as string == "Muta")">Muta</option>
+                                <option value="Naklo" selected="@(ViewData["CurrentObcina"] as string == "Naklo")">Naklo</option>
+                                <option value="Nazarje" selected="@(ViewData["CurrentObcina"] as string == "Nazarje")">Nazarje</option>
+                                <option value="Nova Gorica" selected="@(ViewData["CurrentObcina"] as string == "Nova Gorica")">Nova Gorica</option>
+                                <option value="Novo mesto" selected="@(ViewData["CurrentObcina"] as string == "Novo mesto")">Novo mesto</option>
+                                <option value="Odranci" selected="@(ViewData["CurrentObcina"] as string == "Odranci")">Odranci</option>
+                                <option value="Oplotnica" selected="@(ViewData["CurrentObcina"] as string == "Oplotnica")">Oplotnica</option>
+                                <option value="Ormož" selected="@(ViewData["CurrentObcina"] as string == "Ormož")">Ormož</option>
+                                <option value="Osilnica" selected="@(ViewData["CurrentObcina"] as string == "Osilnica")">Osilnica</option>
+                                <option value="Pesnica" selected="@(ViewData["CurrentObcina"] as string == "Pesnica")">Pesnica</option>
+                                <option value="Piran" selected="@(ViewData["CurrentObcina"] as string == "Piran")">Piran</option>
+                                <option value="Pivka" selected="@(ViewData["CurrentObcina"] as string == "Pivka")">Pivka</option>
+                                <option value="Podčetrtek" selected="@(ViewData["CurrentObcina"] as string == "Podčetrtek")">Podčetrtek</option>
+                                <option value="Podlehnik" selected="@(ViewData["CurrentObcina"] as string == "Podlehnik")">Podlehnik</option>
+                                <option value="Podvelka" selected="@(ViewData["CurrentObcina"] as string == "Podvelka")">Podvelka</option>
+                                <option value="Poljčane" selected="@(ViewData["CurrentObcina"] as string == "Poljčane")">Poljčane</option>
+                                <option value="Polzela" selected="@(ViewData["CurrentObcina"] as string == "Polzela")">Polzela</option>
+                                <option value="Postojna" selected="@(ViewData["CurrentObcina"] as string == "Postojna")">Postojna</option>
+                                <option value="Prebold" selected="@(ViewData["CurrentObcina"] as string == "Prebold")">Prebold</option>
+                                <option value="Preddvor" selected="@(ViewData["CurrentObcina"] as string == "Preddvor")">Preddvor</option>
+                                <option value="Prevalje" selected="@(ViewData["CurrentObcina"] as string == "Prevalje")">Prevalje</option>
+                                <option value="Ptuj" selected="@(ViewData["CurrentObcina"] as string == "Ptuj")">Ptuj</option>
+                                <option value="Puconci" selected="@(ViewData["CurrentObcina"] as string == "Puconci")">Puconci</option>
+                                <option value="Rače-Fram" selected="@(ViewData["CurrentObcina"] as string == "Rače-Fram")">Rače-Fram</option>
+                                <option value="Radeče" selected="@(ViewData["CurrentObcina"] as string == "Radeče")">Radeče</option>
+                                <option value="Radenci" selected="@(ViewData["CurrentObcina"] as string == "Radenci")">Radenci</option>
+                                <option value="Radlje ob Dravi" selected="@(ViewData["CurrentObcina"] as string == "Radlje ob Dravi")">Radlje ob Dravi</option>
+                                <option value="Radovljica" selected="@(ViewData["CurrentObcina"] as string == "Radovljica")">Radovljica</option>
+                                <option value="Ravne na Koroškem" selected="@(ViewData["CurrentObcina"] as string == "Ravne na Koroškem")">Ravne na Koroškem</option>
+                                <option value="Razkrižje" selected="@(ViewData["CurrentObcina"] as string == "Razkrižje")">Razkrižje</option>
+                                <option value="Rečica ob Savinji" selected="@(ViewData["CurrentObcina"] as string == "Rečica ob Savinji")">Rečica ob Savinji</option>
+                                <option value="Renče-Vogrsko" selected="@(ViewData["CurrentObcina"] as string == "Renče-Vogrsko")">Renče-Vogrsko</option>
+                                <option value="Ribnica" selected="@(ViewData["CurrentObcina"] as string == "Ribnica")">Ribnica</option>
+                                <option value="Ribnica na Pohorju" selected="@(ViewData["CurrentObcina"] as string == "Ribnica na Pohorju")">Ribnica na Pohorju</option>
+                                <option value="Rogaška Slatina" selected="@(ViewData["CurrentObcina"] as string == "Rogaška Slatina")">Rogaška Slatina</option>
+                                <option value="Rogašovci" selected="@(ViewData["CurrentObcina"] as string == "Rogašovci")">Rogašovci</option>
+                                <option value="Rogatec" selected="@(ViewData["CurrentObcina"] as string == "Rogatec")">Rogatec</option>
+                                <option value="Ruše" selected="@(ViewData["CurrentObcina"] as string == "Ruše")">Ruše</option>
+                                <option value="Šalovci" selected="@(ViewData["CurrentObcina"] as string == "Šalovci")">Šalovci</option>
+                                <option value="Selnica ob Dravi" selected="@(ViewData["CurrentObcina"] as string == "Selnica ob Dravi")">Selnica ob Dravi</option>
+                                <option value="Semič" selected="@(ViewData["CurrentObcina"] as string == "Semič")">Semič</option>
+                                <option value="Šempeter-Vrtojba" selected="@(ViewData["CurrentObcina"] as string == "Šempeter-Vrtojba")">Šempeter-Vrtojba</option>
+                                <option value="Šenčur" selected="@(ViewData["CurrentObcina"] as string == "Šenčur")">Šenčur</option>
+                                <option value="Šentilj" selected="@(ViewData["CurrentObcina"] as string == "Šentilj")">Šentilj</option>
+                                <option value="Šentjernej" selected="@(ViewData["CurrentObcina"] as string == "Šentjernej")">Šentjernej</option>
+                                <option value="Šentjur" selected="@(ViewData["CurrentObcina"] as string == "Šentjur")">Šentjur</option>
+                                <option value="Šentrupert" selected="@(ViewData["CurrentObcina"] as string == "Šentrupert")">Šentrupert</option>
+                                <option value="Sevnica" selected="@(ViewData["CurrentObcina"] as string == "Sevnica")">Sevnica</option>
+                                <option value="Sežana" selected="@(ViewData["CurrentObcina"] as string == "Sežana")">Sežana</option>
+                                <option value="Škocjan" selected="@(ViewData["CurrentObcina"] as string == "Škocjan")">Škocjan</option>
+                                <option value="Škofja Loka" selected="@(ViewData["CurrentObcina"] as string == "Škofja Loka")">Škofja Loka</option>
+                                <option value="Škofljica" selected="@(ViewData["CurrentObcina"] as string == "Škofljica")">Škofljica</option>
+                                <option value="Slovenj Gradec" selected="@(ViewData["CurrentObcina"] as string == "Slovenj Gradec")">Slovenj Gradec</option>
+                                <option value="Slovenska Bistrica" selected="@(ViewData["CurrentObcina"] as string == "Slovenska Bistrica")">Slovenska Bistrica</option>
+                                <option value="Slovenske Konjice" selected="@(ViewData["CurrentObcina"] as string == "Slovenske Konjice")">Slovenske Konjice</option>
+                                <option value="Šmarje pri Jelšah" selected="@(ViewData["CurrentObcina"] as string == "Šmarje pri Jelšah")">Šmarje pri Jelšah</option>
+                                <option value="Šmarješke Toplice" selected="@(ViewData["CurrentObcina"] as string == "Šmarješke Toplice")">Šmarješke Toplice</option>
+                                <option value="Šmartno ob Paki" selected="@(ViewData["CurrentObcina"] as string == "Šmartno ob Paki")">Šmartno ob Paki</option>
+                                <option value="Šmartno pri Litiji" selected="@(ViewData["CurrentObcina"] as string == "Šmartno pri Litiji")">Šmartno pri Litiji</option>
+                                <option value="Sodražica" selected="@(ViewData["CurrentObcina"] as string == "Sodražica")">Sodražica</option>
+                                <option value="Solčava" selected="@(ViewData["CurrentObcina"] as string == "Solčava")">Solčava</option>
+                                <option value="Šoštanj" selected="@(ViewData["CurrentObcina"] as string == "Šoštanj")">Šoštanj</option>
+                                <option value="Središče ob Dravi" selected="@(ViewData["CurrentObcina"] as string == "Središče ob Dravi")">Središče ob Dravi</option>
+                                <option value="Starše" selected="@(ViewData["CurrentObcina"] as string == "Starše")">Starše</option>
+                                <option value="Štore" selected="@(ViewData["CurrentObcina"] as string == "Štore")">Štore</option>
+                                <option value="Straža" selected="@(ViewData["CurrentObcina"] as string == "Straža")">Straža</option>
+                                <option value="Sveta Ana" selected="@(ViewData["CurrentObcina"] as string == "Sveta Ana")">Sveta Ana</option>
+                                <option value="Sveta Trojica v Slovenskih goricah" selected="@(ViewData["CurrentObcina"] as string == "Sveta Trojica v Slovenskih goricah")">Sveta Trojica v Slovenskih goricah</option>
+                                <option value="Sveti Andraž v Slovenskih goricah" selected="@(ViewData["CurrentObcina"] as string == "Sveti Andraž v Slovenskih goricah")">Sveti Andraž v Slovenskih goricah</option>
+                                <option value="Sveti Jurij ob Ščavnici" selected="@(ViewData["CurrentObcina"] as string == "Sveti Jurij ob Ščavnici")">Sveti Jurij ob Ščavnici</option>
+                                <option value="Sveti Jurij v Slovenskih goricah" selected="@(ViewData["CurrentObcina"] as string == "Sveti Jurij v Slovenskih goricah")">Sveti Jurij v Slovenskih goricah</option>
+                                <option value="Sveti Tomaž" selected="@(ViewData["CurrentObcina"] as string == "Sveti Tomaž")">Sveti Tomaž</option>
+                                <option value="Tabor" selected="@(ViewData["CurrentObcina"] as string == "Tabor")">Tabor</option>
+                                <option value="Tišina" selected="@(ViewData["CurrentObcina"] as string == "Tišina")">Tišina</option>
+                                <option value="Tolmin" selected="@(ViewData["CurrentObcina"] as string == "Tolmin")">Tolmin</option>
+                                <option value="Trbovlje" selected="@(ViewData["CurrentObcina"] as string == "Trbovlje")">Trbovlje</option>
+                                <option value="Trebnje" selected="@(ViewData["CurrentObcina"] as string == "Trebnje")">Trebnje</option>
+                                <option value="Trnovska vas" selected="@(ViewData["CurrentObcina"] as string == "Trnovska vas")">Trnovska vas</option>
+                                <option value="Trzin" selected="@(ViewData["CurrentObcina"] as string == "Trzin")">Trzin</option>
+                                <option value="Tržič" selected="@(ViewData["CurrentObcina"] as string == "Tržič")">Tržič</option>
+                                <option value="Turnišče" selected="@(ViewData["CurrentObcina"] as string == "Turnišče")">Turnišče</option>
+                                <option value="Velenje" selected="@(ViewData["CurrentObcina"] as string == "Velenje")">Velenje</option>
+                                <option value="Velika Polana" selected="@(ViewData["CurrentObcina"] as string == "Velika Polana")">Velika Polana</option>
+                                <option value="Velike Lašče" selected="@(ViewData["CurrentObcina"] as string == "Velike Lašče")">Velike Lašče</option>
+                                <option value="Veržej" selected="@(ViewData["CurrentObcina"] as string == "Veržej")">Veržej</option>
+                                <option value="Videm" selected="@(ViewData["CurrentObcina"] as string == "Videm")">Videm</option>
+                                <option value="Vipava" selected="@(ViewData["CurrentObcina"] as string == "Vipava")">Vipava</option>
+                                <option value="Vitanje" selected="@(ViewData["CurrentObcina"] as string == "Vitanje")">Vitanje</option>
+                                <option value="Vodice" selected="@(ViewData["CurrentObcina"] as string == "Vodice")">Vodice</option>
+                                <option value="Vojnik" selected="@(ViewData["CurrentObcina"] as string == "Vojnik")">Vojnik</option>
+                                <option value="Vransko" selected="@(ViewData["CurrentObcina"] as string == "Vransko")">Vransko</option>
+                                <option value="Vrhnika" selected="@(ViewData["CurrentObcina"] as string == "Vrhnika")">Vrhnika</option>
+                                <option value="Vuzenica" selected="@(ViewData["CurrentObcina"] as string == "Vuzenica")">Vuzenica</option>
+                                <option value="Zagorje ob Savi" selected="@(ViewData["CurrentObcina"] as string == "Zagorje ob Savi")">Zagorje ob Savi</option>
+                                <option value="Žalec" selected="@(ViewData["CurrentObcina"] as string == "Žalec")">Žalec</option>
+                                <option value="Zavrč" selected="@(ViewData["CurrentObcina"] as string == "Zavrč")">Zavrč</option>
+                                <option value="Železniki" selected="@(ViewData["CurrentObcina"] as string == "Železniki")">Železniki</option>
+                                <option value="Žetale" selected="@(ViewData["CurrentObcina"] as string == "Žetale")">Žetale</option>
+                                <option value="Žiri" selected="@(ViewData["CurrentObcina"] as string == "Žiri")">Žiri</option>
+                                <option value="Žirovnica" selected="@(ViewData["CurrentObcina"] as string == "Žirovnica")">Žirovnica</option>
+                                <option value="Zreče" selected="@(ViewData["CurrentObcina"] as string == "Zreče")">Zreče</option>
+                                <option value="Žužemberk" selected="@(ViewData["CurrentObcina"] as string == "Žužemberk")">Žužemberk</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
                             <label class="form-label fw-bold">📋 Status:</label>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="status" id="statusAll" value="all" 
@@ -88,7 +326,7 @@
                                        checked="@(ViewData["CurrentStatus"] as string == "pending")"
                                        onchange="this.form.submit()">
                                 <label class="form-check-label" for="statusPending">
-                                    ⏳ Čakajoče
+                                    ⏳ V obdelavi
                                 </label>
                             </div>
                             <div class="form-check">
@@ -123,6 +361,12 @@
         <div class="col-lg-9 col-md-8">
             <div class="mb-3">
                 <h3>📋 Objavljene prijave</h3>
+                @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"] as string))
+                {
+                    <p class="text-muted">
+                        Najdenih rezultatov: <strong>@Model.Prijave.Count</strong> za iskalni pojem "<strong>@ViewData["CurrentSearch"]</strong>"
+                    </p>
+                }
             </div>
 
             @if (Model.Prijave.Count > 0)
@@ -131,7 +375,6 @@
                 {
                     var hasUpvoted = prijava.UpvotedBy != null && !string.IsNullOrEmpty(Model.CurrentUsername) && prijava.UpvotedBy.Contains(Model.CurrentUsername);
                     var hasDownvoted = prijava.DownvotedBy != null && !string.IsNullOrEmpty(Model.CurrentUsername) && prijava.DownvotedBy.Contains(Model.CurrentUsername);
-                    var netVotes = prijava.Upvotes - prijava.Downvotes;
 
                     <div class="card mb-3 shadow-sm" style="cursor: pointer;" onclick="window.location.href='@Url.Page("/PodrobnostiPrijave", new { id = prijava.Id })'">
                         @if (!string.IsNullOrEmpty(prijava.SlikaPot))
@@ -183,9 +426,6 @@
                                         👍 <span class="badge @(hasUpvoted ? "bg-light text-success" : "bg-success")">@prijava.Upvotes</span>
                                     </button>
                                 </form>
-                                <span class="badge @(netVotes > 0 ? "bg-success" : netVotes < 0 ? "bg-danger" : "bg-secondary") align-self-center">
-                                    @(netVotes > 0 ? "+" : "")@netVotes
-                                </span>
                                 <form method="post" asp-page-handler="Downvote" asp-route-id="@prijava.Id">
                                     <button type="submit" class="btn @(hasDownvoted ? "btn-danger" : "btn-outline-danger") btn-sm">
                                         👎 <span class="badge @(hasDownvoted ? "bg-light text-danger" : "bg-danger")">@prijava.Downvotes</span>

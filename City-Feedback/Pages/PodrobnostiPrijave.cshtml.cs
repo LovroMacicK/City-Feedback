@@ -13,7 +13,8 @@ namespace City_Feedback.Pages
         private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
-            WriteIndented = true
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
         public PodrobnostiPrijaveModel()
@@ -70,6 +71,38 @@ namespace City_Feedback.Pages
             {
                 TempData["Error"] = "Napaka pri dodajanju komentarja.";
             }
+
+            return RedirectToPage(new { id = id });
+        }
+
+        public async Task<IActionResult> OnPostUpvoteAsync(Guid id)
+        {
+            CurrentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
+            IsAuthenticated = User.Identity?.IsAuthenticated ?? false;
+
+            if (!IsAuthenticated)
+            {
+                TempData["Error"] = "Za glasovanje se morate prijaviti.";
+                return RedirectToPage("/Login");
+            }
+
+            await ToggleUpvote(id, CurrentUsername);
+
+            return RedirectToPage(new { id = id });
+        }
+
+        public async Task<IActionResult> OnPostDownvoteAsync(Guid id)
+        {
+            CurrentUsername = User.FindFirst(ClaimTypes.Name)?.Value;
+            IsAuthenticated = User.Identity?.IsAuthenticated ?? false;
+
+            if (!IsAuthenticated)
+            {
+                TempData["Error"] = "Za glasovanje se morate prijaviti.";
+                return RedirectToPage("/Login");
+            }
+
+            await ToggleDownvote(id, CurrentUsername);
 
             return RedirectToPage(new { id = id });
         }
@@ -191,6 +224,182 @@ namespace City_Feedback.Pages
             }
 
             return false;
+        }
+
+        private async Task<string> ToggleUpvote(Guid prijavaId, string username)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+            {
+                return "error";
+            }
+
+            for (int attempt = 0; attempt < MaxRetries; attempt++)
+            {
+                try
+                {
+                    string jsonString = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+
+                    if (allUsers == null)
+                    {
+                        return "error";
+                    }
+
+                    Prijava targetPrijava = null;
+
+                    foreach (var user in allUsers)
+                    {
+                        if (user.Prijave != null)
+                        {
+                            targetPrijava = user.Prijave.FirstOrDefault(p => p.Id == prijavaId);
+                            if (targetPrijava != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (targetPrijava == null)
+                    {
+                        return "error";
+                    }
+
+                    if (targetPrijava.UpvotedBy == null)
+                    {
+                        targetPrijava.UpvotedBy = new List<string>();
+                    }
+                    if (targetPrijava.DownvotedBy == null)
+                    {
+                        targetPrijava.DownvotedBy = new List<string>();
+                    }
+
+                    string result;
+
+                    // Remove downvote if exists
+                    if (targetPrijava.DownvotedBy.Contains(username))
+                    {
+                        targetPrijava.DownvotedBy.Remove(username);
+                        targetPrijava.Downvotes = Math.Max(0, targetPrijava.Downvotes - 1);
+                    }
+
+                    // Toggle upvote
+                    if (targetPrijava.UpvotedBy.Contains(username))
+                    {
+                        targetPrijava.UpvotedBy.Remove(username);
+                        targetPrijava.Upvotes = Math.Max(0, targetPrijava.Upvotes - 1);
+                        result = "removed";
+                    }
+                    else
+                    {
+                        targetPrijava.UpvotedBy.Add(username);
+                        targetPrijava.Upvotes++;
+                        result = "added";
+                    }
+
+                    var updatedJsonString = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                    await System.IO.File.WriteAllTextAsync(_jsonFilePath, updatedJsonString);
+
+                    return result;
+                }
+                catch (IOException) when (attempt < MaxRetries - 1)
+                {
+                    await Task.Delay(200);
+                }
+                catch
+                {
+                    return "error";
+                }
+            }
+
+            return "error";
+        }
+
+        private async Task<string> ToggleDownvote(Guid prijavaId, string username)
+        {
+            if (!System.IO.File.Exists(_jsonFilePath))
+            {
+                return "error";
+            }
+
+            for (int attempt = 0; attempt < MaxRetries; attempt++)
+            {
+                try
+                {
+                    string jsonString = await System.IO.File.ReadAllTextAsync(_jsonFilePath);
+                    var allUsers = JsonSerializer.Deserialize<List<UserCredentials>>(jsonString, _jsonOptions);
+
+                    if (allUsers == null)
+                    {
+                        return "error";
+                    }
+
+                    Prijava targetPrijava = null;
+
+                    foreach (var user in allUsers)
+                    {
+                        if (user.Prijave != null)
+                        {
+                            targetPrijava = user.Prijave.FirstOrDefault(p => p.Id == prijavaId);
+                            if (targetPrijava != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (targetPrijava == null)
+                    {
+                        return "error";
+                    }
+
+                    if (targetPrijava.UpvotedBy == null)
+                    {
+                        targetPrijava.UpvotedBy = new List<string>();
+                    }
+                    if (targetPrijava.DownvotedBy == null)
+                    {
+                        targetPrijava.DownvotedBy = new List<string>();
+                    }
+
+                    string result;
+
+                    // Remove upvote if exists
+                    if (targetPrijava.UpvotedBy.Contains(username))
+                    {
+                        targetPrijava.UpvotedBy.Remove(username);
+                        targetPrijava.Upvotes = Math.Max(0, targetPrijava.Upvotes - 1);
+                    }
+
+                    // Toggle downvote
+                    if (targetPrijava.DownvotedBy.Contains(username))
+                    {
+                        targetPrijava.DownvotedBy.Remove(username);
+                        targetPrijava.Downvotes = Math.Max(0, targetPrijava.Downvotes - 1);
+                        result = "removed";
+                    }
+                    else
+                    {
+                        targetPrijava.DownvotedBy.Add(username);
+                        targetPrijava.Downvotes++;
+                        result = "added";
+                    }
+
+                    var updatedJsonString = JsonSerializer.Serialize(allUsers, _jsonOptions);
+                    await System.IO.File.WriteAllTextAsync(_jsonFilePath, updatedJsonString);
+
+                    return result;
+                }
+                catch (IOException) when (attempt < MaxRetries - 1)
+                {
+                    await Task.Delay(200);
+                }
+                catch
+                {
+                    return "error";
+                }
+            }
+
+            return "error";
         }
     }
 }

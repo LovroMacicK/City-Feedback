@@ -14,7 +14,8 @@ namespace City_Feedback.Pages
         private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
-            WriteIndented = true
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
         public ForgotPasswordModel()
@@ -26,6 +27,8 @@ namespace City_Feedback.Pages
         [Required(ErrorMessage = "E-poštni naslov je obvezen.")]
         [EmailAddress(ErrorMessage = "Neveljaven e-poštni naslov.")]
         public string Email { get; set; }
+
+        public string ResetLink { get; set; }
 
         public void OnGet()
         {
@@ -42,8 +45,7 @@ namespace City_Feedback.Pages
 
             if (user == null)
             {
-                // Security: Don't reveal if email exists
-                TempData["Message"] = "?e je ta e-poštni naslov registriran, boste prejeli povezavo za ponastavitev gesla.";
+                ModelState.AddModelError(string.Empty, "E-poštni naslov ni registriran.");
                 return Page();
             }
 
@@ -55,18 +57,14 @@ namespace City_Feedback.Pages
 
             if (success)
             {
-                // In production, send email here
-                // For now, we'll show the reset link directly
-                var resetLink = $"{Request.Scheme}://{Request.Host}/ResetPassword?token={resetToken}";
-                
-                TempData["Message"] = $"Povezava za ponastavitev gesla: <a href='{resetLink}' class='alert-link'>{resetLink}</a>";
+                ResetLink = $"{Request.Scheme}://{Request.Host}/ResetPassword?token={resetToken}";
+                return Page();
             }
             else
             {
-                TempData["Error"] = "Prišlo je do napake. Poskusite ponovno.";
+                ModelState.AddModelError(string.Empty, "Prišlo je do napake. Poskusite ponovno.");
+                return Page();
             }
-
-            return Page();
         }
 
         private async Task<UserCredentials> FindUserByEmail(string email)
