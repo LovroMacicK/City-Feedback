@@ -5,6 +5,7 @@
 [Rr]elease/
 .vs/
 City-Feedback\.vs
+City-Feedback.Tests
 *.suo
 *.user
 *.pdb
