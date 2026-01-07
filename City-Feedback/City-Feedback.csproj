@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include=".github\workflows\ci-cd.yml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="users.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
